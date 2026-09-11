@@ -1,0 +1,53 @@
+.pb .engine-switch {
+  --engine-active-border: var(--mood-love);
+  --engine-active-text: var(--mood-love-text);
+  display: flex;
+  gap: 8px;
+  margin: 4px 0 10px;
+  flex-wrap: wrap;
+}
+.pb .engine-btn {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  align-items: flex-start;
+  padding: 7px 14px;
+  border-radius: var(--r-md);
+  border: 1px solid var(--border-soft);
+  background: var(--glass-fill);
+  color: inherit;
+  font-size: var(--fs-label);
+  cursor: pointer;
+  transition: border-color var(--motion-hover), background var(--motion-hover);
+}
+.pb .engine-btn.active {
+  border-color: var(--engine-active-border);
+  background: color-mix(in srgb, var(--mood-love) 14%, transparent);
+  color: var(--engine-active-text);
+}
+.pb .engine-sub {
+  font-size: var(--fs-mono-sm);
+  opacity: 0.6;
+}
+.pb .base-model-picker {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 10px;
+  padding: 10px 12px;
+  border: 1px solid var(--border-soft);
+  border-radius: var(--r-md);
+  background: var(--bg-deep);
+}
+.pb .base-model-picker label { color: var(--text-muted); font-size: var(--fs-label-xs); font-weight: 700; }
+.pb .base-model-picker select {
+  width: 100%;
+  min-width: 0;
+  padding: 7px 9px;
+  border: 1px solid var(--border-soft);
+  border-radius: var(--r-sm);
+  background: var(--bg-surface);
+  color: var(--text-primary);
+  font-size: var(--fs-label-sm);
+}

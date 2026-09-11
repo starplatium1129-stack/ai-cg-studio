@@ -1,6 +1,6 @@
 import { getCurrentScope, onScopeDispose, type Ref } from 'vue'
 import { usePromptBuilderStore, type HistoryEntry, type Scene } from '@/stores/promptBuilderStore'
-import { isCharKey } from '@/composables/scene/useDirectorCatalog'
+import { isCharKey } from '@/composables/scene/directorOptions'
 import { COLOR_MOODS } from '@/config/promptConstants'
 import {
   findScenario,

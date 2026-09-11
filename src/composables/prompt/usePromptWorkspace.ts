@@ -43,8 +43,6 @@ export function usePromptWorkspace() {
     const sdSize = ref('832x1216');
     const sceneCollection = ref<'core' | 'curated' | 'all'>('core');
     const hiddenSceneIds = ref(readHiddenScenes());
-    const tagSearch = ref('');
-    const tagCategory = ref('all');
     const voiceStudioRef = ref<{
         setSuggestedCaption?: (caption: string) => void;
     } | null>(null);
@@ -91,8 +89,6 @@ export function usePromptWorkspace() {
         hiddenSceneIds,
         sceneCollection,
         sceneLimit,
-        tagSearch,
-        tagCategory,
         sdSize,
     });
     // ── Prompt 组装（统一出口，消除视图三元分发）──────────────────────

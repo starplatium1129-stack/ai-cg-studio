@@ -160,7 +160,8 @@ test('flow 1 · 出图：选场景 → 生成 → 成片入册，参数如实送
   // 保存快照 → IndexedDB 落盘 + 历史面板出现记录
   await page.getByRole('button', { name: '存入作品册' }).click();
   await expect(page.locator('.toast-msg')).toContainText('画面已存入本地作品册');
-  // 场景模式会收起高级历史面板，但记录仍应真实写入 DOM / IndexedDB。
+  // 历史按首次访问加载；打开面板再核对真实保存记录。
+  await page.locator('[aria-controls="material-history"]').click();
   await expect(page.locator('.history-item')).toHaveCount(1);
   await expect(page.locator('.history-item').first().locator('.history-meta')).toContainText('seed 4242');
 
@@ -214,6 +215,7 @@ test('flow 1c · 出图队列：串行执行、自动入册', async ({ page, req
 
   // 队列跑完：两张图都出，且都自动写进历史
   await expect(page.locator('.sd-queue')).toBeHidden({ timeout: 20_000 });
+  await page.locator('[aria-controls="material-history"]').click();
   await expect(page.locator('.history-item')).toHaveCount(2, { timeout: 20_000 });
 
   const webuiCalls = await callsTo(request, MOCK.sd, '/sdapi/v1/txt2img');
@@ -546,6 +548,7 @@ test('flow 4 · 备份：导出含图片的备份 → 覆盖恢复回同一份�
   await page.getByRole('button', { name: '生成图片' }).click();
   await expect(page.locator('.result-image')).toBeVisible();
   await page.getByRole('button', { name: '存入作品册' }).click();
+  await page.locator('[aria-controls="material-history"]').click();
   await expect(page.locator('.history-item')).toHaveCount(1);
 
   // 导出
@@ -579,7 +582,9 @@ test('flow 4 · 备份：导出含图片的备份 → 覆盖恢复回同一份�
     });
   });
   await page.reload();
-  // 场景模式会隐藏高级历史面板；这里验证数据已清空，不把可见性误当成存储契约。
+  // 新文档重新按需挂载历史；打开后确认存储清空的状态。
+  await page.getByRole('button', { name: '专家模式', exact: true }).click();
+  await page.locator('[aria-controls="material-history"]').click();
   await expect(page.locator('.history-empty')).toHaveCount(1);
 
   await page.locator('.utility-trigger').click();
@@ -779,12 +784,16 @@ test('flow 6 · 深链：?scene 决定角色，?mood 与场景推断共存', asy
   await page.goto('/prompt-builder?scene=sc005&char=nene&mood=warmth');
 
   await expect(page.locator('.pb')).toHaveAttribute('data-character', 'natsume');
+  await page.locator('[aria-controls="material-character"]').click();
   await expect(page.locator('.char-btn.active')).toContainText('夏目');
+  await page.locator('[aria-controls="material-story"]').click();
   await expect(page.locator('.scene-context-title')).not.toHaveText('');
-  await expect(page.locator('.mood-card.active')).toHaveCount(1);
   // 受控路线：basic 默认 Anima 格式，preview 是角色 exact-token（underscore）
   // 而非 SD 的 <lora:...>；shiki_natsume 是夏目的角色控制词
   await expect(page.locator('.preview-output-structured')).toContainText('shiki_natsume');
+  await page.getByRole('button', { name: '专家模式', exact: true }).click();
+  await page.getByRole('tab', { name: '画面', exact: true }).click();
+  await expect(page.locator('.mood-card.active')).toHaveCount(1);
   // 场景推断出的镜头/光照/构图至少落一项，否则"智能预填"等于没接
   await expect(page.locator('.col-right .option.selected')).not.toHaveCount(0);
 
@@ -815,7 +824,10 @@ test('flow 6c · 深链：?resume=1 恢复上次草稿', async ({ page }) => {
   })).toBe('ok');
 
   await page.goto('/prompt-builder?resume=1');
+  await page.locator('[aria-controls="material-story"]').click();
   await expect(page.locator('.story-input')).toHaveValue('雪天围围巾的温柔一瞬');
+  await page.getByRole('button', { name: '专家模式', exact: true }).click();
+  await page.getByRole('tab', { name: '提示词', exact: true }).click();
   await expect(page.locator('.manual-tag')).toHaveCount(1);
 });
 
@@ -828,6 +840,7 @@ test('flow 6d · 深链：?regen=<id> 复原历史参数与 seed', async ({ page
   await page.getByRole('button', { name: '生成图片' }).click();
   await expect(page.locator('.result-image')).toBeVisible();
   await page.getByRole('button', { name: '存入作品册' }).click();
+  await page.locator('[aria-controls="material-history"]').click();
   await expect(page.locator('.history-item')).toHaveCount(1);
 
   const entryId = await page.evaluate(async () => {
@@ -850,12 +863,14 @@ test('flow 6d · 深链：?regen=<id> 复原历史参数与 seed', async ({ page
   await openGenerationSettings(page);
   await expect(page.locator('.ctrl-seed input[type="number"]')).toHaveValue('777');
   await expect(page.locator('.ctrl-seed input[type="checkbox"]')).toBeChecked();
+  await page.locator('[aria-controls="material-story"]').click();
   await expect(page.locator('.scene-context-title')).not.toHaveText('');
 
   // 兼容旧作品册链接：即使同时带 scene，也必须优先恢复历史快照。
   await page.goto(`/prompt-builder?scene=sc005&regen=${entryId}`);
   await openGenerationSettings(page);
   await expect(page.locator('.ctrl-seed input[type="number"]')).toHaveValue('777');
+  await page.locator('[aria-controls="material-story"]').click();
   await expect(page.locator('.scene-context-title')).toContainText('放学后的等待');
 });
 
@@ -958,6 +973,7 @@ test('flow 6h · studio→popular 深链：工作室场景进热门角色出图�
   await page.locator('.sc[data-scene-id] a.scene-draw-action').first().click();
   await page.waitForURL(/prompt-builder\?scene=/, { timeout: 20000 });
   await expect(page.locator('.pb')).toHaveAttribute('data-subject', 'studio');
+  await page.locator('[aria-controls="material-story"]').click();
   const studioStory = await page.locator('.story-input').inputValue();
 
   // 第 2 步：SPA 跳到热门角色场景（不整页刷新），点「开始绘制」进入 popular 模式
@@ -969,6 +985,7 @@ test('flow 6h · studio→popular 深链：工作室场景进热门角色出图�
   await expect(page.locator('.pb')).toHaveAttribute('data-subject', 'popular');
 
   // 故事框不再是上一个工作室场景的故事（进入热门模式时清空，蓝图选中后为蓝图描述）。
+  await page.locator('[aria-controls="material-story"]').click();
   const popularStory = await page.locator('.story-input').inputValue();
   expect(popularStory.trim()).not.toBe('');
   expect(popularStory).not.toBe(studioStory);

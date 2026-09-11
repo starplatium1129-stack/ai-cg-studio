@@ -134,7 +134,15 @@ if (!/nene:\s*'1girl, solo/.test(storeSource) || !/natsume:\s*'1girl, solo/.test
 }
 
 // ── 2. 导演台视图必须真正接线这些能力 ────────────────────────────────────
-const view = read('src/views/PromptBuilderView.vue') + '\n' + read('src/composables/prompt/usePromptWorkspace.ts') + '\n' + read('src/composables/prompt/usePromptLifecycle.ts') + '\n' + read('src/composables/prompt/promptGenerationActions.ts');
+const viewShell = read('src/views/PromptBuilderView.vue');
+const panelOwners = ['PromptInspectorRender', 'PromptInspectorStyle', 'PromptInspectorPrompt', 'PromptInspectorDelivery', 'PromptMaterialScenes', 'PromptResultDialogs'];
+for (const owner of panelOwners) {
+  assert(viewShell.includes(`<${owner} :workspace="workspace"`), `${owner} must consume the same workspace`);
+  assert(viewShell.includes(`import('@/components/director/${owner}.vue')`), `${owner} must remain lazy`);
+}
+const view = [viewShell, ...panelOwners.map(owner => read(`src/components/director/${owner}.vue`)),
+  read('src/composables/prompt/usePromptWorkspace.ts'), read('src/composables/prompt/usePromptLifecycle.ts'),
+  read('src/composables/prompt/promptGenerationActions.ts')].join('\n');
 const promptAssembly = read('src/composables/prompt/usePromptAssembly.ts');
 const drawingRoute = read('src/utils/drawingRoute.ts');
 const animaPanel = read('src/components/AnimaQuickPanel.vue');

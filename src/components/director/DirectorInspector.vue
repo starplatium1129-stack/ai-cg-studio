@@ -12,7 +12,9 @@
       <section v-for="tab in tabs" v-show="!expert || active === tab.id" :id="`inspector-${tab.id}`" :key="tab.id"
         class="inspector-section" :data-panel="tab.id" :role="expert ? 'tabpanel' : undefined"
         :aria-labelledby="expert ? `inspector-tab-${tab.id}` : undefined">
-        <slot :name="tab.id" />
+        <DeferredPanel :active="expert ? active === tab.id : tab.id !== 'style'">
+          <slot :name="tab.id" />
+        </DeferredPanel>
       </section>
     </div>
   </aside>
@@ -20,6 +22,7 @@
 
 <script setup lang="ts">
 import { ref, nextTick, watch } from 'vue'
+import DeferredPanel from './DeferredPanel.vue'
 import '@/assets/css/director/expert-workspace.css'
 defineProps<{ expert: boolean; queueCount: number; busy: boolean }>()
 const tabs = [{ id: 'render', label: '生成' }, { id: 'style', label: '画面' }, { id: 'prompt', label: '提示词' }, { id: 'delivery', label: '任务' }]

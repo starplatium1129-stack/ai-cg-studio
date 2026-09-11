@@ -1,31 +1,21 @@
 import { computed, type Ref } from 'vue'
 import { usePromptBuilderStore, type Scene } from '@/stores/promptBuilderStore'
 import { EMOTION, SHOT, LIGHTING, COMPOSITION, COLOR_MOODS } from '@/config/promptConstants'
-import {
-  OUTFIT_BUNDLES,
-  OUTFIT_TAG_LABELS,
-  R18_CONTROLS,
-  TAG_CATEGORY_LABELS,
-  NON_MANUAL_TAGS,
-  normalizeCatalogKey,
-} from '@/composables/scene/useDirectorCatalog'
 
 export interface DirectorDerivedInput {
   pb: ReturnType<typeof usePromptBuilderStore>
   hiddenSceneIds: Ref<Set<string>>
   sceneCollection: Ref<'core' | 'curated' | 'all'>
   sceneLimit: Ref<number>
-  tagSearch: Ref<string>
-  tagCategory: Ref<string>
   sdSize: Ref<string>
 }
 
 /**
- * 导演台所有派生状态：场景筛选、词条目录、镜头/光照/情绪摘要、
+ * 导演台派生状态：场景筛选、镜头/光照/情绪摘要、
  * 显存与分辨率风险提示。只做派生，不持有场景/UI/队列生命周期。
  */
 export function useDirectorDerived(input: DirectorDerivedInput) {
-  const { pb, hiddenSceneIds, sceneCollection, sceneLimit, tagSearch, tagCategory, sdSize } = input
+  const { pb, hiddenSceneIds, sceneCollection, sceneLimit, sdSize } = input
 
   const optionName = (options: readonly { id: string; name: string }[], id: string | null) =>
     options.find(option => option.id === id)?.name ?? '自动'
@@ -64,53 +54,6 @@ export function useDirectorDerived(input: DirectorDerivedInput) {
   )
   const curatedCount = computed(() =>
     pb.filteredScenes.filter(scene => !hiddenSceneIds.value.has(scene.id) && curatedIds.value.has(scene.id)).length,
-  )
-
-  const tagCatalog = computed(() => {
-    const merged = new Map(pb.tags.filter(tag => tag.cat !== 'Quality' && !NON_MANUAL_TAGS.has(normalizeCatalogKey(tag.en))).map(tag => [tag.en, tag]))
-    const addSceneTag = (raw: unknown) => {
-      const source = String(raw || '').trim()
-      if (!source || /^<lora:/i.test(source) || /^break$/i.test(source)) return
-      const en = normalizeCatalogKey(source)
-      if (!en || en.length > 64 || NON_MANUAL_TAGS.has(en) || merged.has(en)) return
-      const mature = /(?:^|_)(?:r18|adult|nsfw|nude|topless|nipples|explicit|pussy|penis|sex|lingerie)(?:_|$)/i.test(en)
-      const official = Boolean(OUTFIT_TAG_LABELS[en])
-      merged.set(en, {
-        en,
-        cn: OUTFIT_TAG_LABELS[en] || (mature ? '场景成人词' : '场景词条'),
-        cat: official ? 'Official Outfit' : (mature ? 'Mature' : 'Scene'),
-      })
-    }
-    pb.scenes.forEach(scene => {
-      ;(scene.tags || []).forEach(addSceneTag)
-      String(scene.prompt || '').split(',').forEach(addSceneTag)
-    })
-    OUTFIT_BUNDLES.forEach(bundle => bundle.tags.forEach(en => {
-      if (!merged.has(en)) merged.set(en, {
-        en,
-        cn: OUTFIT_TAG_LABELS[en] || 'v18 训练服装词',
-        cat: 'Official Outfit',
-      })
-    }))
-    return [...merged.values()]
-  })
-  const tagCategories = computed(() => {
-    const found = new Set(tagCatalog.value.map(tag => tag.cat).filter(Boolean))
-    return ['all', ...found].map(id => ({ id, label: TAG_CATEGORY_LABELS[id] || id }))
-  })
-  const visibleTags = computed(() => {
-    const q = tagSearch.value.trim().toLowerCase()
-    return tagCatalog.value
-      .filter(tag => tagCategory.value === 'all' || tag.cat === tagCategory.value)
-      .filter(tag => !q || tag.en.toLowerCase().includes(q) || tag.cn.toLowerCase().includes(q))
-      .sort((a, b) => Number(pb.manualTags.has(b.en)) - Number(pb.manualTags.has(a.en)))
-      .slice(0, 72)
-  })
-  const visibleOutfitBundles = computed(() =>
-    OUTFIT_BUNDLES.filter(bundle => pb.char === 'triad' || bundle.character === pb.char),
-  )
-  const visibleR18Controls = computed(() =>
-    R18_CONTROLS.filter(control => pb.char === 'triad' || control.character === pb.char),
   )
 
   const modeDescription = computed(() => pb.directorMode === 'basic'
@@ -171,11 +114,6 @@ export function useDirectorDerived(input: DirectorDerivedInput) {
     visibleScenes,
     personaCoreCount,
     curatedCount,
-    tagCatalog,
-    tagCategories,
-    visibleTags,
-    visibleOutfitBundles,
-    visibleR18Controls,
     modeDescription,
     vramBudget,
     vramLevel,

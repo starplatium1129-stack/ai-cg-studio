@@ -336,6 +336,7 @@ test('popular creator · manual style controls are available for all characters 
   await page.locator('.material-switch button[aria-controls="material-character"]').click()
   await chooseCharacter(page, '樱岛麻衣')
   await page.getByRole('button', { name: '专家模式', exact: true }).click()
+  await page.getByRole('tab', { name: '画面', exact: true }).click()
   // 全部开放后任何角色都可选成人配方，专家模式风格区（ArtistStylePicker）不被 underage 隐藏。
   await expect(page.locator('[data-testid="artist-style-picker"]')).toHaveCount(1)
 })
@@ -385,6 +386,7 @@ test('popular creator · draft round-trips subject/outfit/blueprint through relo
   await expect(page.locator('.pb')).toHaveAttribute('data-subject', 'popular')
   await expect(page.locator('.directory-item[aria-pressed="true"]')).toContainText('雷电将军')
   await expect(page.locator('.outfit-chip.active')).toHaveCount(1)
+  await page.locator('[aria-controls="material-scenes"]').click()
   await expect(page.locator('.blueprint-card.active')).toHaveCount(1)
   await page.getByRole('button', { name: '专家模式', exact: true }).click()
   await expect(page.locator('.engine-switch button').nth(1)).toHaveClass(/active/)
@@ -530,7 +532,10 @@ test('popular creator · scene library page deep-links character and blueprint i
     .getByRole('link', { name: '开始绘制', exact: true }).click()
   // 深链：绘图页应预选角色 + 展开全部列表 + 激活目标蓝图。
   await page.waitForTimeout(3000)
+  await expect(page.locator('.blueprint-card.active')).toContainText('花海逆光')
+  await page.locator('[aria-controls="material-character"]').click()
   await expect(page.locator('.directory-item[aria-pressed="true"]')).toContainText('雷电将军')
+  await page.locator('[aria-controls="material-scenes"]').click()
   await expect(page.locator('.blueprint-reco-note')).toContainText(/个可选场景/)
   await expect(page.locator('.blueprint-card.active')).toContainText('花海逆光')
   // 成人场景在角色场景库中带 R18 标记，且绘图页展开后可见。

@@ -150,10 +150,13 @@ test('director separates a focused scene mode from the expert tag workflow', asy
   // 专家模式放开引擎选择；SD 格式断言（<lora: / [NEG]）需显式切回 SD 引擎
   await page.locator('.engine-switch button').first().click();
   await expect(page.locator('#baseModel')).toBeVisible();
+  // Camera controls load with the style tab; verify their initial state after opening it.
+  await page.getByRole('tab', { name: '画面', exact: true }).click();
+  await expect(page.locator('#stepCamera')).toBeVisible();
+  await expect(page.locator('#stepCamera')).not.toHaveAttribute('open', '');
   await page.getByRole('tab', { name: '提示词', exact: true }).click();
   await expect(page.locator('#stepTags')).toBeVisible();
   await expect(page.locator('.inspector-section[data-panel="prompt"] > #stepTags')).toHaveCount(1);
-  await expect(page.locator('#stepCamera')).not.toHaveAttribute('open', '');
   await expect(page.locator('.tag-results button')).toHaveCount(72);
   await page.getByPlaceholder('搜索中文或 Danbooru 词条').fill('校服');
   await expect(page.locator('.tag-results')).toContainText('school_uniform');

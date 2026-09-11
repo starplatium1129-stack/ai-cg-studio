@@ -1,0 +1,19 @@
+/* 多场景批量出图入口行 */
+.pb .batch-entry-row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-3); margin: var(--s-2) 0; }
+.pb .batch-entry-count { color: var(--text-secondary); font-size: var(--fs-label-xs); }
+.pb .linklike { border: 0; padding: 0; background: none; color: var(--accent); font: inherit; text-decoration: underline; cursor: pointer; }
+
+/* 出图自动入册偏好行（2026-08-31 用户偏好：默认关） */
+.pb .auto-save-gallery-row {
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+  margin: var(--s-2) 0;
+  padding: var(--s-2) var(--s-3);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--r-md);
+  background: var(--bg-elevated);
+  color: var(--text-primary);
+}
+.pb .auto-save-gallery-label { font-size: var(--fs-label-sm); color: var(--text-primary); }
+.pb .auto-save-gallery-hint { font-size: var(--fs-label-xs); color: var(--text-secondary); }

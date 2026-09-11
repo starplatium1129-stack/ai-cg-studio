@@ -49,7 +49,7 @@
 <script setup lang="ts">
 import { ref, defineAsyncComponent } from 'vue'
 import { usePromptBuilderStore } from '@/stores/promptBuilderStore'
-import { useDirectorCatalog } from '@/composables/scene/useDirectorCatalog'
+import { charOptions } from '@/composables/scene/directorOptions'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 const PopularCharacterPicker = defineAsyncComponent(() => import('@/components/popular/PopularCharacterPicker.vue'))
 import type { PopularCharacter } from '@/utils/popularContent'
@@ -66,6 +66,5 @@ defineEmits<{
 }>()
 
 const pb = usePromptBuilderStore()
-const { charOptions } = useDirectorCatalog()
 const popularSearch = ref('')
 </script>

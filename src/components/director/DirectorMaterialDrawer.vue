@@ -9,16 +9,17 @@
         <ArchiveIcon :name="item.icon" /><span>{{ item.label }}</span>
       </button>
     </div>
-    <!-- 保持素材组件挂载，切换分类不丢失输入、搜索或选中状态。 -->
+    <!-- 首次选中才加载，之后保留输入、搜索与选中状态。 -->
     <div v-for="item in sections" v-show="active === item.id" :id="`material-${item.id}`"
       :key="item.id" class="material-content" :aria-label="item.label">
-      <slot :name="item.id" />
+      <DeferredPanel :active="active === item.id"><slot :name="item.id" /></DeferredPanel>
     </div>
   </section>
 </template>
 
 <script setup lang="ts">
 import { computed, ref, watch, nextTick } from 'vue'
+import DeferredPanel from './DeferredPanel.vue'
 import AnimatedSelection from '../visual/AnimatedSelection.vue'
 import ArchiveIcon, { type ArchiveIconName } from '../visual/ArchiveIcon.vue'
 

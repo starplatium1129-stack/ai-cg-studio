@@ -1,0 +1,38 @@
+<template>
+<!-- 出图大图对比：上一张 vs 当前 -->
+    <Teleport to="body">
+      <Transition name="layer-pop">
+        <PromptComparePanel v-if="compareOpen && prevResult && lastResult"
+          :previous="prevResult" :current="lastResult" @ready="compareEl = $event" @close="closeCompare" />
+      </Transition>
+    </Teleport>
+
+    <!-- Anima 智能局部换装弹窗 -->
+    <Teleport to="body">
+      <DeferredPanel :active="inpaintOpen">
+      <AnimaInpaintModal
+        :open="inpaintOpen"
+        :image-url="displayResultUrl"
+        :image-blob="animaState.result?.blob"
+        :current-prompt="livePrompt"
+        :current-negative="negativePrompt"
+        :character="inpaintCharacter"
+        :adult-enabled="pb.showMatureScenes"
+        :seed="displayResultSeed"
+        :submitting="generationBusy"
+        @close="inpaintOpen = false"
+        @submit="handleInpaintSubmit"
+      />
+      </DeferredPanel>
+    </Teleport>
+</template>
+
+<script setup lang="ts">
+import { defineAsyncComponent } from 'vue'
+import type { usePromptWorkspace } from '@/composables/prompt/usePromptWorkspace'
+import DeferredPanel from './DeferredPanel.vue'
+const PromptComparePanel = defineAsyncComponent(() => import('./PromptComparePanel.vue'))
+const AnimaInpaintModal = defineAsyncComponent(() => import('@/components/AnimaInpaintModal.vue'))
+const props = defineProps<{ workspace: ReturnType<typeof usePromptWorkspace> }>()
+const { compareEl, pb, displayResultUrl, generationBusy, animaState, prevResult, inpaintOpen, compareOpen, displayResultSeed, lastResult, closeCompare, livePrompt, negativePrompt, inpaintCharacter, handleInpaintSubmit } = props.workspace
+</script>

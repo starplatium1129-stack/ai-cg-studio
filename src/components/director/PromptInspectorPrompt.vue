@@ -1,0 +1,26 @@
+<template>
+<DeferredPanel :active="pb.directorMode === 'pro'"><DirectorTagWorkbench /></DeferredPanel>
+
+        <PromptHealthPanel
+          class="advanced-decision basic-visible"
+          :prompt="previewPromptView"
+          :model-name="modelProfileView?.name"
+          :report="reportView"
+          :art-violations="artViolationsView"
+          :lora-text="pb.isPopular ? '' : loraSpecs.map(s => s.name + ':' + s.weight).join(' · ')"
+          :open="pb.directorMode === 'pro'"
+          @copy="copyPrompt"
+          @save="saveCurrentResult"
+        />
+</template>
+
+<script setup lang="ts">
+import { defineAsyncComponent } from 'vue'
+import type { usePromptWorkspace } from '@/composables/prompt/usePromptWorkspace'
+import DeferredPanel from '@/components/director/DeferredPanel.vue'
+const DirectorTagWorkbench = defineAsyncComponent(() => import('@/components/director/DirectorTagWorkbench.vue'))
+const PromptHealthPanel = defineAsyncComponent(() => import('@/components/PromptHealthPanel.vue'))
+
+const props = defineProps<{ workspace: ReturnType<typeof usePromptWorkspace> }>()
+const { pb, previewPromptView, modelProfileView, reportView, artViolationsView, loraSpecs, copyPrompt, saveCurrentResult } = props.workspace
+</script>

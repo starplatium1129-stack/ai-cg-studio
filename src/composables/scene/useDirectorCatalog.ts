@@ -1,28 +1,8 @@
-import type { CharKey } from '@/stores/promptBuilderStore'
-import type { ArchiveIconName } from '@/components/visual/ArchiveIcon.vue'
-
 export interface OutfitBundle {
   id: string
   character: 'nene' | 'natsume'
   label: string
   tags: string[]
-}
-
-export const storyChips = [
-  '放学后在樱花树下等人的宁宁',
-  '第一次在海边看日出的夏目',
-  '夏夜祭典穿浴衣看烟花',
-  '雪天围围巾的温柔一瞬',
-]
-
-export const charOptions: Array<{ id: CharKey; iconName: ArchiveIconName; label: string }> = [
-  { id: 'nene',    iconName: 'nene',    label: '宁宁' },
-  { id: 'natsume', iconName: 'natsume', label: '夏目' },
-  { id: 'triad',   iconName: 'triad',   label: '双人' },
-]
-
-export function isCharKey(value: unknown): value is CharKey {
-  return value === 'nene' || value === 'natsume' || value === 'triad'
 }
 
 export const TAG_CATEGORY_LABELS: Record<string, string> = {
@@ -153,17 +133,3 @@ export const NON_MANUAL_TAGS = new Set([
   'missing_fingers', 'fused_fingers', 'extra_arms', 'extra_legs', 'deformed',
   'bad_proportions', 'duplicate', 'cropped', 'child', 'loli', 'underage',
 ])
-
-export function useDirectorCatalog() {
-  return {
-    storyChips,
-    charOptions,
-    isCharKey,
-    TAG_CATEGORY_LABELS,
-    normalizeCatalogKey,
-    OUTFIT_BUNDLES,
-    OUTFIT_TAG_LABELS,
-    R18_CONTROLS,
-    NON_MANUAL_TAGS,
-  }
-}
