@@ -1,5 +1,5 @@
 import { test, expect, type Page } from '@playwright/test'
-import MOCK_PORTS from './mock-ports.json'
+import MOCK_PORTS from '../../scripts/lib/e2e-ports.js'
 
 async function chooseCharacter(page: Page, name: string) {
   if (new URL(page.url()).pathname === '/prompt-builder') {

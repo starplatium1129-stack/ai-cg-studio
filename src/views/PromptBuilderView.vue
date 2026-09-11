@@ -138,6 +138,7 @@
           :shots-pending="shotsPending"
           :has-prev-result="!!prevResult"
           :result-archived="resultArchived"
+          :saving-result="savingResult"
           :result-temporary="resultTemporary"
           :has-stashed-result="hasStashedResult"
           @generate="callGenerate()"
@@ -321,7 +322,7 @@
           <div class="auto-save-gallery-row" role="group" aria-label="出图自动入册">
             <ToggleSwitch v-model="autoSaveToGallery" label="出图自动存入作品册" />
             <span class="auto-save-gallery-label">出图自动存入作品册</span>
-            <span class="auto-save-gallery-hint">{{ autoSaveToGallery ? '直出成片将自动进作品册' : '直出成片需手动点「保存快照」' }}</span>
+            <span class="auto-save-gallery-hint">{{ autoSaveToGallery ? '画面生成后自动存入作品册' : '生成后，点「存入作品册」保存喜欢的画面' }}</span>
           </div>
 
           <!-- 批量出图入口（多场景 / 多角色） -->
@@ -362,6 +363,7 @@
             :suggested-caption="pb.activeScene?.story || pb.story"
           />
 
+          <DeferredPanel :active="batchOpen">
           <BatchSceneDrawPanel
             :open="batchOpen"
             :scenes="sceneStore.sceneBlueprints"
@@ -371,6 +373,7 @@
             @close="batchOpen = false"
             @running-change="batchRunning = $event"
           />
+          </DeferredPanel>
 
           </div>
         </template>
@@ -382,39 +385,14 @@
     <!-- 出图大图对比：上一张 vs 当前 -->
     <Teleport to="body">
       <Transition name="layer-pop">
-        <div v-if="compareOpen && prevResult && lastResult" class="pb-compare-overlay" @click.self="closeCompare">
-          <div ref="compareEl" class="pb-compare" role="dialog" aria-modal="true" aria-label="出图对比">
-          <div class="pb-compare-head">
-            <div>
-              <div class="pb-compare-kicker">Result compare</div>
-              <h3>与上一张对比</h3>
-            </div>
-            <button class="btn btn-ghost btn-sm" type="button" @click="closeCompare">关闭</button>
-          </div>
-          <div class="pb-compare-grid">
-            <figure v-for="(snap, index) in [prevResult, lastResult]" :key="index" class="pb-compare-card">
-              <div class="pb-compare-visual">
-                <img :src="snap.url" :alt="'对比图 ' + (index + 1)" loading="eager" decoding="async" />
-                <span class="pb-compare-tag" :class="{ current: index === 1 }">{{ index === 0 ? '上一张' : '当前' }}</span>
-              </div>
-              <figcaption class="pb-compare-facts">
-                <span>Seed {{ snap.seed ?? '随机' }}</span>
-                <span>{{ snap.size }}</span>
-                <span>{{ snap.sampler }}</span>
-                <span>CFG {{ snap.cfg }}</span>
-                <span>Steps {{ snap.steps }}</span>
-                <span>Hires {{ snap.hires }}</span>
-                <span class="pb-compare-time">{{ snap.at }}</span>
-              </figcaption>
-            </figure>
-          </div>
-        </div>
-        </div>
+        <PromptComparePanel v-if="compareOpen && prevResult && lastResult"
+          :previous="prevResult" :current="lastResult" @ready="compareEl = $event" @close="closeCompare" />
       </Transition>
     </Teleport>
 
     <!-- Anima 智能局部换装弹窗 -->
     <Teleport to="body">
+      <DeferredPanel :active="inpaintOpen">
       <AnimaInpaintModal
         :open="inpaintOpen"
         :image-url="displayResultUrl"
@@ -428,6 +406,7 @@
         @close="inpaintOpen = false"
         @submit="handleInpaintSubmit"
       />
+      </DeferredPanel>
     </Teleport>
   </article>
 </template>
@@ -435,6 +414,8 @@
 <script setup lang="ts">
 import '@/assets/css/director.css'
 import { defineAsyncComponent } from 'vue'
+import DeferredPanel from '@/components/director/DeferredPanel.vue'
+const PromptComparePanel = defineAsyncComponent(() => import('@/components/director/PromptComparePanel.vue'))
 const DirectorMaterialDrawer = defineAsyncComponent(() => import('@/components/director/DirectorMaterialDrawer.vue'))
 const DirectorInspector = defineAsyncComponent(() => import('@/components/director/DirectorInspector.vue'))
 const VoiceStudio = defineAsyncComponent(() => import('@/components/VoiceStudio.vue'))
@@ -527,7 +508,7 @@ inpaintOriginalUrl,
 inpaintCompareActive,
 shotsPending,
 prevResult,
-resultArchived,
+resultArchived, savingResult,
 resultTemporary,
 hasStashedResult,
 callGenerate,

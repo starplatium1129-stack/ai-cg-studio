@@ -1,7 +1,7 @@
 import { test, expect, type Locator, type Page } from '@playwright/test'
 import { textContrast } from './helpers/contrast'
 
-const base = process.env.AICS_UI_AUDIT_URL || 'http://127.0.0.1:3000'
+const base = process.env.AICS_UI_AUDIT_URL || ''
 const routes = ['/', '/scene-explorer', '/popular-scenes', '/prompt-builder', '/video-studio', '/chat', '/showcase', '/gallery', '/character', '/style', '/lora', '/scene-manager', '/color-script', '/scenario', '/companion', '/companion-chat', '/control']
 
 async function open(page: Page, route: string, theme: string, width: number, height = 640) {

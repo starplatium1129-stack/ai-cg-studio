@@ -1,0 +1,11 @@
+import { defineConfig } from '@playwright/test'
+import regression from './playwright.config'
+
+// Benchmarks run separately, without competing browser workers or mock resets.
+export default defineConfig({
+  ...regression,
+  workers: 1,
+  projects: [{ name: 'performance', testMatch: /office-performance\.bench\.ts$/ }],
+  webServer: Array.isArray(regression.webServer) ? regression.webServer[0] : regression.webServer,
+  outputDir: 'runtime/office-code-2026-09-11/performance-traces',
+})

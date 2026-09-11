@@ -1,3 +1,5 @@
+import { startDiagnosticRequest } from '../utils/localDiagnostics.ts'
+
 export type ApiClientErrorKind =
   | 'http'
   | 'timeout'
@@ -239,7 +241,7 @@ export function createApiClient(fetchImplementation: FetchImplementation = defau
     }
   }
 
-  return {
+  const client: ApiClient = {
     async request<T extends object>(url: string, options: ApiRequestOptions = {}): Promise<T> {
       const callerSignal = options.signal
       if (callerSignal?.aborted) {
@@ -421,6 +423,20 @@ export function createApiClient(fetchImplementation: FetchImplementation = defau
         }
         if (timeoutId !== undefined) clearTimeout(timeoutId)
         if (callerSignal) callerSignal.removeEventListener('abort', abortFromCaller)
+      }
+    },
+  }
+  return {
+    async request<T extends object>(url: string, options: ApiRequestOptions = {}): Promise<T> {
+      const finish = startDiagnosticRequest(url, options.method)
+      try {
+        const result = await client.request<T>(url, options)
+        finish('succeeded')
+        return result
+      } catch (error) {
+        const kind = error instanceof ApiClientError ? error.kind : 'network'
+        finish(kind === 'aborted' ? 'cancelled' : kind === 'timeout' ? 'timeout' : 'failed', error instanceof ApiClientError ? error.status : undefined)
+        throw error
       }
     },
   }

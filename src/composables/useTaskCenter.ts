@@ -1,6 +1,7 @@
 import { computed, getCurrentInstance, onUnmounted, ref, watch } from 'vue'
 import { kvGet, kvSet } from '@/composables/useKVStore'
 import { TASK_CENTER_KV_KEY as KEY } from '@/utils/storageKeys'
+import { recordDiagnosticTask } from '../utils/localDiagnostics.ts'
 
 export type TaskStatus = 'idle' | 'running' | 'succeeded' | 'failed' | 'cancelled' | 'interrupted'
 export interface TaskSummary {
@@ -31,6 +32,7 @@ function persist() {
 export function createTask(summary: TaskSummary, controls: TaskControls = {}): string {
   const id = `task-${Date.now()}-${Math.random().toString(36).slice(2, 10)}`
   tasks.value.unshift({ ...summary, id, createdAt: Date.now(), updatedAt: Date.now() })
+  recordDiagnosticTask(id, summary.kind, summary.status)
   actions.set(id, controls)
   // Running work is never removed to make room for historical summaries.
   let completed = 0
@@ -43,6 +45,7 @@ export function createTask(summary: TaskSummary, controls: TaskControls = {}): s
 export function updateTask(id: string, patch: Partial<TaskSummary>) {
   const task = tasks.value.find(item => item.id === id)
   if (!task) return
+  if (patch.status && patch.status !== task.status) recordDiagnosticTask(id, task.kind, patch.status)
   Object.assign(task, patch, { updatedAt: Date.now() })
   persist()
 }

@@ -4,7 +4,7 @@ var fs = require('fs');
 var path = require('path');
 
 var TOKEN_IN_URL = /([?&]token=)[^&\s"'`]+/gi;
-var TOKEN_KV = /\b(token|aics_token)\b(\s*[:=]\s*)(["']?)[A-Za-z0-9+/=_-]{8,}\3/gi;
+var TOKEN_KV = /(\b(?:token|aics_token|api[-_]?key|password|secret|authorization)\b["']?\s*[:=]\s*)(?:"[^"]*"|'[^']*'|[^\s,;&]+)/gi;
 var HEX_LONG = /\b[a-f0-9]{32,}\b/gi;
 
 function maskSecret(value) {
@@ -17,7 +17,9 @@ function maskSecret(value) {
 function redactText(text) {
   return String(text || '')
     .replace(TOKEN_IN_URL, '$1[REDACTED]')
-    .replace(TOKEN_KV, function (_, key, sep) { return key + sep + '[REDACTED]'; })
+    .replace(/\bBearer\s+[^\s,;"']+/gi, 'Bearer [REDACTED]')
+    .replace(/(https?:\/\/)[^\s/@]+:[^\s/@]+@/gi, '$1[REDACTED]@')
+    .replace(TOKEN_KV, '$1[REDACTED]')
     .replace(HEX_LONG, function (match) {
       // Keep short structural hashes alone; mask likely tokens (>=32 hex).
       return match.length >= 32 ? ('…' + match.slice(-4)) : match;
@@ -74,19 +76,24 @@ function readLogTail(filePath, maxBytes) {
 }
 
 function redactConfig(raw) {
+  if (Array.isArray(raw)) return raw.map(function (item) { return item && typeof item === 'object' ? redactConfig(item) : typeof item === 'string' ? redactText(item) : item; });
   var source = raw && typeof raw === 'object' ? raw : {};
   var out = {};
   Object.keys(source).forEach(function (key) {
     var value = source[key];
-    if (/token|password|secret|auth/i.test(key) && (typeof value === 'string' || typeof value === 'number')) {
-      out[key] = maskSecret(value);
+    if (/token|password|secret|auth|api[-_]?key|cookie|credential|prompt|messages|imageData/i.test(key)) {
+      out[key] = '[REDACTED]';
+      return;
+    }
+    if (Array.isArray(value)) {
+      out[key] = redactConfig(value);
       return;
     }
     if (value && typeof value === 'object' && !Array.isArray(value)) {
       out[key] = redactConfig(value);
       return;
     }
-    out[key] = value;
+    out[key] = typeof value === 'string' ? redactText(value) : value;
   });
   return out;
 }

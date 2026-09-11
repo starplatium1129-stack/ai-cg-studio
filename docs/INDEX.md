@@ -19,6 +19,8 @@
 
 ## 按需查阅
 
+- [办公机代码收尾与验证](archive/audits/office-code-2026-09-11.md)：真实工具取消、首次入册、按需加载、脱敏诊断、桌宠演出与浏览器安全策略复验。
+
 - [内容门禁修复与回归](archive/audits/content-gate-repair-2026-09-10.md)：服装引用覆盖、环境词分层、单句结构误报的修复与本次真实验证边界。
 
 - [场景审计编译检查点与请求层补充修复](archive/audits/scene-audit-compiler-checkpoint-2026-09-10.md)：当前队列的只读编译结果、刷新乱序回归与明确未完成范围。

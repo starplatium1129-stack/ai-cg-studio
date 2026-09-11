@@ -13,7 +13,7 @@ describe('result tools', () => {
     const wrapper = mount(DirectorResultTools, { props })
     expect(wrapper.get('details').attributes('open')).toBeUndefined()
     const buttons = wrapper.findAll('button')
-    const save = buttons.find(button => button.text() === '保存快照')!
+    const save = buttons.find(button => button.text() === '存入作品册')!
     const compare = buttons.find(button => button.text() === '与上一张对比')!
     expect(save.element.closest('details')).toBeNull()
     expect(compare.element.closest('details')).toBeNull()

@@ -332,10 +332,16 @@ const WORKFLOWS = {
     docs: 'package.json',
   },
   'test:e2e:critical': {
-    desc: '关键 e2e 套件（用例数以执行结果为准；studio/flows/a11y/anima-quick/interaction-polish）',
+    desc: '关键 e2e 套件：主流程、双主题/设备、角色及办公机回归（用例数以执行结果为准）',
     cmd: ['npm', 'run', 'test:e2e:critical:run'],
     docs: 'package.json',
     needs: 'playwright 浏览器已安装（npx playwright install）',
+  },
+  'test:e2e:performance': {
+    desc: '独立单 worker 绘图页冷/热进入与首次操作测量',
+    cmd: ['npm', 'run', 'test:e2e:performance'],
+    docs: 'docs/workflow.md',
+    needs: '已完成 build；运行时不要并行构建或执行其他浏览器测试',
   },
   'audit:orphans': {
     desc: '探测 scripts/maintenance/ 下零引用的孤儿脚本（只读，列清单不删）',

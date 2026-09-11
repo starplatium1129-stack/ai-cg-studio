@@ -13,15 +13,19 @@
 var cp = require('child_process');
 
 /** 终止一个 ChildProcess 及其整棵进程树 */
-function killProcessTree(child) {
+function killProcessTree(child, options) {
   if (!child || !child.pid) return;
+  options = options || {};
   if (process.platform === 'win32') {
     try {
-      cp.execFileSync('taskkill', ['/pid', String(child.pid), '/T', '/F'], { stdio: 'ignore' });
-      return;
+      cp.execFileSync('taskkill', ['/pid', String(child.pid), '/T', '/F'], { stdio: 'ignore', windowsHide: true, timeout: 5000 });
+      return true;
     } catch (error) { /* 进程可能已退出，回退到 kill */ }
   }
-  try { child.kill(); } catch (error) {}
+  if (options.group && process.platform !== 'win32') {
+    try { process.kill(-child.pid, options.force ? 'SIGKILL' : 'SIGTERM'); return true; } catch (error) {}
+  }
+  try { return child.kill(options.force ? 'SIGKILL' : 'SIGTERM'); } catch (error) { return false; }
 }
 
 /** 按 pid 终止整棵进程树（fallback process.kill） */

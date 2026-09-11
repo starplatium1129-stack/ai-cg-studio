@@ -39,7 +39,7 @@ export interface CompanionDesktopBridge {
   setWorkspace(root: string): Promise<{ root: string }>
   notify(title: string, body: string): void
   setProgress(progress: number | null): void
-  runTool(name: string, args: Record<string, unknown>): Promise<{ ok: boolean; output: string; imageDataUrl?: string }>
+  runTool(name: string, args: Record<string, unknown>, options?: { signal?: AbortSignal }): Promise<{ ok: boolean; output: string; imageDataUrl?: string }>
   onFileDrop(listener: (files: DesktopFile[]) => void): number
   offFileDrop(subscriptionId: number): void
   onResume(listener: () => void): number

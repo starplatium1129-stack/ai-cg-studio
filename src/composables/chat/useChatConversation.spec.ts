@@ -40,7 +40,11 @@ describe('chat recovery and tool lifecycle', () => {
   })
 
   it('cancels a pending native tool and never starts the next tool or chat round', async () => {
-    const runTool = vi.fn(() => new Promise<{ ok: boolean; output: string }>(() => {}))
+    let toolSignal: AbortSignal | undefined
+    const runTool = vi.fn((_name: string, _args: object, options?: { signal?: AbortSignal }) => {
+      toolSignal = options?.signal
+      return new Promise<{ ok: boolean; output: string }>(() => {})
+    })
     window.companionDesktop = { runTool } as unknown as NonNullable<Window['companionDesktop']>
     const fetchMock = vi.fn().mockResolvedValue(stream([
       { type: 'tool-call', id: 'one', name: 'capture_screen', arguments: '{}' },
@@ -52,6 +56,7 @@ describe('chat recovery and tool lifecycle', () => {
     await vi.waitFor(() => expect(runTool).toHaveBeenCalledTimes(1))
     conversation.stopEverything()
     await pending
+    expect(toolSignal?.aborted).toBe(true)
     expect(busy.value).toBe(false)
     expect(fetchMock).toHaveBeenCalledTimes(1)
     expect(runTool).toHaveBeenCalledTimes(1)

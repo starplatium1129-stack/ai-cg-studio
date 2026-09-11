@@ -1,6 +1,7 @@
 import { defineConfig } from '@playwright/test';
-import { existsSync, readFileSync } from 'node:fs';
+import { existsSync } from 'node:fs';
 import { join } from 'node:path';
+import MOCK_PORTS from './scripts/lib/e2e-ports.js';
 
 const localChromiumCandidates = process.platform === 'win32' ? [
   'C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe',
@@ -12,31 +13,25 @@ const localChromiumCandidates = process.platform === 'win32' ? [
 const executablePath = process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH ||
   localChromiumCandidates.find(candidate => existsSync(candidate));
 
-// 端口只在 tests/e2e/mock-ports.json 里定义一次，Node 侧（mock-stack.js）
-// 与测试侧（flows.spec.ts）共用，避免三处各写一份漂移
-const MOCK_PORTS = JSON.parse(
-  readFileSync(join(__dirname, 'tests', 'e2e', 'mock-ports.json'), 'utf8')
-) as { gateway: number };
+const isolated = Boolean(Number(process.env.AICS_E2E_PORT_OFFSET || 0));
 
 const browserUse = {
-  baseURL: 'http://127.0.0.1:3000',
+  baseURL: `http://127.0.0.1:${MOCK_PORTS.web}`,
   trace: 'retain-on-failure' as const,
   screenshot: 'only-on-failure' as const,
   launchOptions: executablePath ? { executablePath } : {}
 };
 
 /**
- * 主流程回归跑在独立网关上（mock 上游），所以不能跟随 desktop 的 baseURL。
- * 其余 project 必须显式排除 flows.spec.ts，否则它们会拿 3000 端口的真上游去跑
- * —— 真上游没启动时那些用例只会「跳过式通过」，等于白测。
+ * 使用共享模拟上游的套件统一放入单 worker 项目，避免一个用例的 reset/fault
+ * 清除另一个用例的任务或污染请求断言。普通页面与设备回归仍可并行。
  */
-const FLOWS_SPEC = /flows\.spec\.ts/;
+const MOCK_SPECS = /(?:flows|anima-quick|office-code)\.spec\.ts/;
 
 export default defineConfig({
   testDir: './tests/e2e',
   fullyParallel: false,
-  // 本地默认用满 CPU 核并行跑 5 个 project（desktop/flows/窄屏/平板/手机），
-  // 92 个用例从串行 10+ 分钟降到 1-3 分钟；CI 上 2 workers 防止 runner OOM。
+  // 共享模拟服务由 flows 项目的单 worker 独占；其他项目继续并行。
   workers: process.env.CI ? 2 : undefined,
   timeout: 30_000,
   expect: { timeout: 8_000 },
@@ -49,12 +44,13 @@ export default defineConfig({
   projects: [
     {
       name: 'desktop',
-      testIgnore: FLOWS_SPEC,
+      testIgnore: MOCK_SPECS,
       use: { ...browserUse, viewport: { width: 1440, height: 960 } }
     },
     {
       name: 'flows',
-      testMatch: FLOWS_SPEC,
+      testMatch: MOCK_SPECS,
+      workers: 1,
       use: {
         ...browserUse,
         baseURL: `http://127.0.0.1:${MOCK_PORTS.gateway}`,
@@ -80,16 +76,23 @@ export default defineConfig({
   webServer: [
     {
       command: 'node server.js',
-      url: 'http://127.0.0.1:3000/api/health',
-      reuseExistingServer: !process.env.CI,
+      url: `http://127.0.0.1:${MOCK_PORTS.web}/api/health`,
+      reuseExistingServer: !process.env.CI && !isolated,
       timeout: 30_000,
-      env: { DISABLE_TUNNEL: '1' }
+      env: {
+        DISABLE_TUNNEL: '1', PORT: String(MOCK_PORTS.web), HOST: '127.0.0.1',
+        ...(isolated ? {
+          AICS_RUNTIME_ROOT: join(__dirname, 'runtime', `e2e-web-${MOCK_PORTS.web}`),
+          AI_WORKSPACE_ROOT: join(__dirname, 'runtime', `e2e-web-${MOCK_PORTS.web}`, 'AI'),
+          AICS_DISABLE_LEGACY_RUNTIME_MIGRATION: '1',
+        } : {}),
+      }
     },
     {
       // 四个假上游 + 一个真网关，runtime 目录隔离到 tmp
       command: 'node scripts/tests/mock-stack.js',
       url: `http://127.0.0.1:${MOCK_PORTS.gateway}/api/health`,
-      reuseExistingServer: !process.env.CI,
+      reuseExistingServer: !process.env.CI && !isolated,
       timeout: 30_000,
       env: { DISABLE_TUNNEL: '1' }
     }

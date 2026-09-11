@@ -67,7 +67,7 @@
         <div v-else class="stage-idle">
           <div class="stage-placeholder-title">想把哪一刻，留在画里？</div>
           <div class="stage-placeholder-copy">
-            先挑一个场景，或在创作素材里写下你的构思。
+            选好角色，再挑一个场景或写下构思。生成后，把喜欢的这一刻存入作品册。
           </div>
           <div class="stage-quick-actions">
             <button class="btn btn-primary" type="button" @click="$emit('exploreScenes')"><ArchiveIcon name="scene" /> 挑选场景</button>
@@ -109,7 +109,7 @@
       />
       <img v-else class="result-image" :src="displayResultUrl" alt="生成的图片" />
       <DirectorResultTools
-        v-bind="{ generationBusy, interrogateBusy, interrogateMode, displayResultUrl, drawEngine, inpaintOriginalUrl, inpaintCompareActive, shotsPending, hasPrevResult, resultArchived, resultTemporary }"
+        v-bind="{ generationBusy, interrogateBusy, interrogateMode, displayResultUrl, drawEngine, inpaintOriginalUrl, inpaintCompareActive, shotsPending, hasPrevResult, resultArchived, savingResult, resultTemporary }"
         @interrogateCurrent="interrogateCurrentImage" @interrogateUpload="triggerInterrogatePick"
         @openInpaint="$emit('openInpaint')" @update:inpaintCompareActive="$emit('update:inpaintCompareActive', $event)"
         @upscale="$emit('upscale')" @goVideo="$emit('goVideo')" @addToShots="$emit('addToShots')" @goShots="$emit('goShots')"
@@ -147,6 +147,7 @@ const props = defineProps<{
   hasPrevResult: boolean
   /** 当前结果是否已入册（null = 画布无结果，不显示徽章）。 */
   resultArchived?: boolean | null
+  savingResult?: boolean
   resultTemporary?: boolean
   /** Anima/Krea 暂存里还有上一张未入册成片（失败/取消后可找回）。 */
   hasStashedResult?: boolean

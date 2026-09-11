@@ -1,6 +1,6 @@
 import { readFileSync } from 'node:fs';
 import { expect, test, type APIRequestContext, type Locator, type Page } from '@playwright/test';
-import MOCK_PORTS from './mock-ports.json';
+import MOCK_PORTS from '../../scripts/lib/e2e-ports.js';
 
 /**
  * 六条主流程回归 —— 跑在 mock 上游之上（scripts/tests/mock-stack.js）。
@@ -158,8 +158,8 @@ test('flow 1 · 出图：选场景 → 生成 → 成片入册，参数如实送
   expect(String(generated[0].body?.prompt)).toContain('<lora:');
 
   // 保存快照 → IndexedDB 落盘 + 历史面板出现记录
-  await page.getByRole('button', { name: '保存快照' }).click();
-  await expect(page.locator('.toast-msg')).toContainText('快照已存入本地作品册');
+  await page.getByRole('button', { name: '存入作品册' }).click();
+  await expect(page.locator('.toast-msg')).toContainText('画面已存入本地作品册');
   // 场景模式会收起高级历史面板，但记录仍应真实写入 DOM / IndexedDB。
   await expect(page.locator('.history-item')).toHaveCount(1);
   await expect(page.locator('.history-item').first().locator('.history-meta')).toContainText('seed 4242');
@@ -545,7 +545,7 @@ test('flow 4 · 备份：导出含图片的备份 → 覆盖恢复回同一份�
   // 先造一条真实历史（出图 + 保存快照），这样备份里才有 IndexedDB 图片
   await page.getByRole('button', { name: '生成图片' }).click();
   await expect(page.locator('.result-image')).toBeVisible();
-  await page.getByRole('button', { name: '保存快照' }).click();
+  await page.getByRole('button', { name: '存入作品册' }).click();
   await expect(page.locator('.history-item')).toHaveCount(1);
 
   // 导出
@@ -827,7 +827,7 @@ test('flow 6d · 深链：?regen=<id> 复原历史参数与 seed', async ({ page
   await page.locator('.ctrl-seed input[type="number"]').fill('777');
   await page.getByRole('button', { name: '生成图片' }).click();
   await expect(page.locator('.result-image')).toBeVisible();
-  await page.getByRole('button', { name: '保存快照' }).click();
+  await page.getByRole('button', { name: '存入作品册' }).click();
   await expect(page.locator('.history-item')).toHaveCount(1);
 
   const entryId = await page.evaluate(async () => {

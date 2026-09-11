@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test'
 
-const base = process.env.AICS_UI_AUDIT_URL || 'http://127.0.0.1:3000'
+const base = process.env.AICS_UI_AUDIT_URL || ''
 for (const theme of ['dark', 'light']) {
   test.describe(`desktop atelier ${theme}`, () => {
     test.beforeEach(async ({ page }) => {
@@ -8,14 +8,22 @@ for (const theme of ['dark', 'light']) {
       await page.emulateMedia({ reducedMotion: 'reduce' })
       await page.addInitScript(value => localStorage.setItem('aics_theme', value), theme)
     })
-    test('home character choice continues into the scene library and room', async ({ page }) => {
-      await page.goto(base)
+    test('home visual character choice keeps the creation entry and selected room', async ({ page }) => {
+      await page.goto(base + '/')
       await page.getByRole('button', { name: '四季夏目', exact: true }).click()
-      await expect(page.getByRole('link', { name: '和夏目开始', exact: true })).toHaveAttribute('href', '/scene-explorer?character=natsume')
+      await expect(page.getByRole('button', { name: '四季夏目', exact: true })).toHaveAttribute('aria-pressed', 'true')
+      const create = page.getByRole('link', { name: '选场景，开始创作', exact: true })
+      await expect(create).toHaveAttribute('href', '/scene-explorer')
       await expect(page.locator('.tool-card[href="/chat?character=natsume"]')).toHaveCount(1)
-      await page.getByRole('link', { name: '和夏目开始', exact: true }).click()
-      await expect(page.locator('.scene-atlas')).toHaveAttribute('data-companion', 'natsume')
+      await create.click()
+      await expect(page).toHaveURL(/\/scene-explorer$/)
       await expect(page.locator('.scene-grid .sc').first()).toBeVisible()
+      await page.goBack()
+      // The home visual selection is local to this view, rather than a saved character preference.
+      await page.getByRole('button', { name: '四季夏目', exact: true }).click()
+      await page.locator('.tool-card[href="/chat?character=natsume"]').click()
+      await expect(page).toHaveURL(/\/chat\?character=natsume$/)
+      await expect(page.locator('.portrait-stage')).toHaveAttribute('data-character', 'natsume')
     })
     test('adjusting a scene never silently submits generation', async ({ page }) => {
       const submitted: string[] = []

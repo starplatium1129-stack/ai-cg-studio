@@ -152,14 +152,22 @@ export function useControlActions(
     finally { status.actionBusy.value = false; status.pollStatus() }
   }
 
+  const exportingDiag = ref(false)
   async function exportDiag() {
+    if (exportingDiag.value) return
+    exportingDiag.value = true
     showToast('正在整理诊断包…')
     try {
       const data = await control.getDiagnostics()
+      const [{ buildDiagnosticExport }, { version }, { DATA_VERSION }] = await Promise.all([
+        import('../utils/diagnosticExport.ts'), import('../../package.json'), import('../stores/sceneStore'),
+      ])
+      const report = buildDiagnosticExport(data, version, DATA_VERSION)
       const stamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 16)
-      downloadBlob(new Blob([JSON.stringify(data, null, 2)], { type: 'application/json;charset=utf-8' }), 'lingji-diagnostics-' + stamp + '.json')
-      showToast('诊断包已导出')
+      downloadBlob(new Blob([JSON.stringify(report, null, 2)], { type: 'application/json;charset=utf-8' }), 'huiyu-diagnostics-' + stamp + '.json')
+      showToast('脱敏诊断包已保存到本机')
     } catch (e) { showToast(errorMessage(e, '诊断包导出失败'), true) }
+    finally { exportingDiag.value = false }
   }
 
   const buildingWeb = ref(false)
@@ -190,7 +198,7 @@ export function useControlActions(
 
   return {
     tunnelEnabled, errorMessage, copy, toggleTunnel, saveConfig, savingConfig, saveAutoStartVoice,
-    serviceAction, switchMode, doStart, doStop, exportDiag,
+    serviceAction, switchMode, doStart, doStop, exportDiag, exportingDiag,
     buildWeb, buildingWeb,
   }
 }

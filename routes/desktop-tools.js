@@ -16,7 +16,7 @@
 var express = require('express');
 var fs = require('fs');
 var path = require('path');
-var cp = require('child_process');
+var runToolProcess = require('../server/tool-process').runToolProcess;
 var crypto = require('crypto');
 var envelope = require('../server/http-envelope');
 var validationCore = require('../server/validation-core');
@@ -136,6 +136,12 @@ function formatEntryName(entry) {
 
 function runTool(workspaceRoot, name, args, context) {
   var root = path.resolve(workspaceRoot || '.');
+  context = context || {};
+  function checkCancelled() {
+    if (context.signal && context.signal.aborted) {
+      throw Object.assign(new Error('工具操作已取消'), { code: 'ABORT_ERR' });
+    }
+  }
   function fail(error) {
     var message = String(error instanceof Error ? error.message : error).slice(0, 2000);
     var payload = { ok: false, output: message };
@@ -147,6 +153,7 @@ function runTool(workspaceRoot, name, args, context) {
     return payload;
   }
   return Promise.resolve().then(function () {
+    checkCancelled();
     switch (name) {
       case 'list_files': {
         var dir = resolveWorkspacePath(root, String(args.path || ''));
@@ -197,9 +204,11 @@ function runTool(workspaceRoot, name, args, context) {
         if (content.length > MAX_WRITE_BYTES) throw new Error('内容超过 ' + (MAX_WRITE_BYTES / 1024) + 'KB 写入上限');
         return fs.promises.mkdir(path.dirname(writeFile), { recursive: true })
           .then(function () {
+            checkCancelled();
             var temporary = writeFile + '.' + process.pid + '-' + crypto.randomBytes(4).toString('hex') + '.tool.tmp';
             return fs.promises.writeFile(temporary, content, 'utf8')
-              .then(function () { return fs.promises.rename(temporary, writeFile); });
+              .then(function () { checkCancelled(); return fs.promises.rename(temporary, writeFile); })
+              .finally(function () { return fs.promises.rm(temporary, { force: true }); });
           })
           .then(function () {
             return { ok: true, output: '已写入 ' + (path.relative(root, writeFile) || path.basename(writeFile)) + '（' + content.length + ' 字符）' };
@@ -214,22 +223,14 @@ function runTool(workspaceRoot, name, args, context) {
         if (command.length > 256) throw new Error('命令名过长');
         if (rawArgs.length > 16) throw new Error('参数过多');
         if (rawArgs.some(function (arg) { return arg.length > 256; })) throw new Error('参数过长');
-        return new Promise(function (resolve, reject) {
-          cp.execFile(command, rawArgs, {
+        return runToolProcess(command, rawArgs, {
             cwd: root,
             timeout: COMMAND_TIMEOUT_MS,
             maxBuffer: MAX_COMMAND_OUTPUT,
-            windowsHide: true,
+            signal: context.signal,
             env: Object.assign({}, process.env, { PYTHONIOENCODING: 'utf-8' }),
-          }, function (error, stdout, stderr) {
-            var combined = String(stdout || '') + String(stderr || '');
-            combined = combined.trim();
-            if (error && !combined) {
-              reject(new Error('命令执行失败：' + error.message));
-              return;
-            }
-            resolve({ ok: true, output: combined || '（命令已执行，无输出）' });
-          });
+        }).then(function (result) {
+          return { ok: true, output: (result.stdout + result.stderr).trim() || '（命令已执行，无输出）' };
         });
       }
       case 'read_image': {
@@ -271,21 +272,18 @@ function runTool(workspaceRoot, name, args, context) {
           '[System.Convert]::ToBase64String($bytes)'
         ].join('\n');
 
-        return new Promise(function (resolve, reject) {
-          cp.execFile('powershell', ['-NoProfile', '-NonInteractive', '-Command', psScript], {
-            windowsHide: true,
+        return runToolProcess('powershell', ['-NoProfile', '-NonInteractive', '-Command', psScript], {
             maxBuffer: 20 * 1024 * 1024,
             timeout: 10000,
-          }, function (err, stdout, stderr) {
-            if (err) return reject(new Error('截屏执行失败：' + (stderr || err.message)));
-            var base64 = String(stdout || '').trim();
-            if (!base64) return reject(new Error('未捕获到屏幕数据'));
-            resolve({
+            signal: context.signal,
+        }).then(function (result) {
+            var base64 = result.stdout.trim();
+            if (!base64) throw new Error('未捕获到屏幕数据');
+            return {
               ok: true,
               output: '已成功捕获当前桌面屏幕画面（' + Math.round(base64.length * 0.75 / 1024) + ' KB JPEG）',
               imageDataUrl: 'data:image/jpeg;base64,' + base64,
-            });
-          });
+            };
         });
       }
       case 'generate_character_image': {
@@ -364,7 +362,7 @@ function runTool(workspaceRoot, name, args, context) {
       default:
         throw new Error('未知工具：' + name);
     }
-  }).catch(fail);
+  }).then(function (result) { checkCancelled(); return result; }).catch(fail);
 }
 
 function createDesktopToolsRouter(options) {
@@ -387,14 +385,23 @@ function createDesktopToolsRouter(options) {
     }
     var workspaceRoot = process.env.AI_WORKSPACE_ROOT || path.join(__dirname, '..', 'AI');
     // 成人授权取请求体顶层字段（严格 === true），与模型可控的 args 隔离
-    var context = { adultEnabled: payload.adultEnabled === true };
+    var controller = new AbortController();
+    var cancel = function () { if (!res.writableEnded) controller.abort(); };
+    req.once('aborted', cancel);
+    res.once('close', cancel);
+    if (req.aborted || res.destroyed) controller.abort();
+    var context = { adultEnabled: payload.adultEnabled === true, signal: controller.signal };
     runTool(workspaceRoot, name, args, context).then(function (result) {
-      res.json(result);
+      if (!res.destroyed) res.json(result);
     }).catch(function (error) {
+      if (res.destroyed) return;
       var err = error instanceof Error ? error : new Error(String(error));
       var extra = { output: String(err.message).slice(0, 2000) };
       if (err.code) extra.code = err.code;
       envelope.fail(res, envelope.statusFor(err, 500), err.message, extra);
+    }).finally(function () {
+      req.removeListener('aborted', cancel);
+      res.removeListener('close', cancel);
     });
   });
 

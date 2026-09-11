@@ -24,7 +24,7 @@ var loadGatewayConfig = require(path.join(__dirname, '..', '..', 'server', 'conf
 var runtimePaths = require(path.join(__dirname, '..', 'lib', 'runtime-paths.js'));
 var mocks = require('./mock-upstreams');
 
-var PORTS = JSON.parse(fs.readFileSync(path.join(__dirname, '..', '..', 'tests', 'e2e', 'mock-ports.json'), 'utf8'));
+var PORTS = require('../lib/e2e-ports');
 var COMFY_PORT = Number(process.env.AICS_MOCK_COMFY_PORT || PORTS.comfy || (PORTS.translate + 1));
 var ROOT_DIR = path.join(__dirname, '..', '..');
 var TOKEN = 'mock-stack-token-0123456789abcdef0123';

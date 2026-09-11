@@ -1,6 +1,6 @@
 import { expect, test, type Page } from '@playwright/test'
 
-const base = process.env.AICS_UI_AUDIT_URL || 'http://127.0.0.1:3000'
+const base = process.env.AICS_UI_AUDIT_URL || ''
 async function mockControl(page: Page) {
   const state = { ok: true, running: true, sdOnline: true, comfyOnline: true, ttsOnline: false,
     ollamaOnline: true, ollamaModels: [], ollamaVram: 0, webuiManaged: true, comfyManaged: true,

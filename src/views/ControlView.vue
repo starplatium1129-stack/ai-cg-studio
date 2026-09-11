@@ -272,7 +272,7 @@
         <summary>
           <span class="log-summary-title"><ArchiveIcon name="book" /> 运行日志</span>
           <span class="summary-side">
-            <button class="btn btn-ghost btn-sm" type="button" @click.stop="exportDiag">导出诊断包</button>
+            <button class="btn btn-ghost btn-sm" type="button" :disabled="exportingDiag" title="仅保存版本与运行状态，不包含密钥、聊天正文或图片" @click.stop="exportDiag">{{ exportingDiag ? '正在整理…' : '导出诊断包' }}</button>
             <button class="btn btn-ghost btn-sm" type="button" @click.stop="clearLogs">清空显示</button>
             <span class="chevron">›</span>
           </span>
@@ -343,7 +343,7 @@ const {
 // 模板引用解构：操作域
 const {
   tunnelEnabled, copy, toggleTunnel, saveConfig, savingConfig, saveAutoStartVoice,
-  serviceAction, switchMode, doStart, doStop, exportDiag, buildWeb, buildingWeb,
+  serviceAction, switchMode, doStart, doStop, exportDiag, exportingDiag, buildWeb, buildingWeb,
 } = actions
 
 const webBuildStale = computed(() => !!webBuild.value && webBuild.value.stale && webBuild.value.distReady)

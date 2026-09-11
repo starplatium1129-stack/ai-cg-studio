@@ -2,9 +2,10 @@
       <div class="result-image-actions">
         <!-- F2：入册状态如实标注——未入册的成片在临时缓冲里，离页/失败也能找回 -->
         <span v-if="resultArchived !== null" class="stage-archive-badge" :data-archived="resultArchived">
-          {{ resultArchived ? '已入册' : resultTemporary ? '未入册 · 已暂存' : '未入册 · 请保存快照' }}
+          {{ resultArchived ? '已入册' : resultTemporary ? '未入册 · 已暂存' : '未入册 · 请保存画面' }}
         </span>
-        <button class="btn btn-ghost" type="button" @click="$emit('saveResult')">保存快照</button>
+        <RouterLink v-if="resultArchived" class="btn btn-primary" to="/gallery">查看作品册</RouterLink>
+        <button v-else class="btn btn-primary" type="button" :disabled="savingResult" @click="$emit('saveResult')">{{ savingResult ? '正在入册…' : '存入作品册' }}</button>
         <button class="btn btn-ghost" type="button" :disabled="!hasPrevResult" @click="$emit('openCompare')">
           与上一张对比
         </button>
@@ -101,6 +102,7 @@
 </template>
 <script setup lang="ts">
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
+import { RouterLink } from 'vue-router'
 defineProps<{
   generationBusy: boolean
   interrogateBusy: boolean
@@ -112,6 +114,7 @@ defineProps<{
   shotsPending: number
   hasPrevResult: boolean
   resultArchived?: boolean | null
+  savingResult?: boolean
   resultTemporary?: boolean
 }>()
 const BUSY_HINT = '生成中，等这一张出完就能用'

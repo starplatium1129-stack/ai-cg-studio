@@ -250,7 +250,7 @@ export function useChatConversation(options: ChatConversationOptions) {
     }
     let result: ToolCallResult
     if (window.companionDesktop) {
-      result = await abortableTask(() => window.companionDesktop!.runTool(call.name, parsedArgs), signal)
+      result = await abortableTask(() => window.companionDesktop!.runTool(call.name, parsedArgs, { signal }), signal)
     } else {
       const res = await fetch('/api/desktop-tools', {
         method: 'POST',

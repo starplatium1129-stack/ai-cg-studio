@@ -46,7 +46,7 @@
             <strong>陪伴</strong>
             <label class="companion-pop-item" title="实时配音">
               <input type="checkbox" v-model="autoVoice" @change="onAutoVoiceChange" />
-              <span>实时配音：{{ autoVoice ? '开' : '关' }}</span>
+              <span title="播放聊天回复和新问候；勿扰时暂停主动问候">实时配音：{{ autoVoice ? '开' : '关' }}</span>
             </label>
             <button v-if="behaviorEnabled" type="button" class="companion-pop-item" :aria-pressed="dnd" @click="toggleDnd">
               {{ dnd ? '关闭勿扰（恢复主动问候）' : '开启勿扰（暂停主动问候）' }}

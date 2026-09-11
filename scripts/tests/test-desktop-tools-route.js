@@ -14,6 +14,10 @@ const fs = require('fs');
 const os = require('os');
 const path = require('path');
 const express = require('express');
+const vm = require('node:vm');
+const { setTimeout: delay } = require('node:timers/promises');
+const { runToolProcess } = require('../../server/tool-process');
+const { killPid } = require('../../server/process-tree');
 
 const {
   runTool,
@@ -25,6 +29,115 @@ const {
 function tempWorkspace() {
   return fs.mkdtempSync(path.join(os.tmpdir(), 'aics-tools-'));
 }
+
+async function waitFor(predicate) {
+  const deadline = Date.now() + 7000;
+  while (!predicate()) {
+    assert.ok(Date.now() < deadline, 'process lifecycle condition did not settle');
+    await delay(25);
+  }
+}
+
+function isAlive(pid) {
+  try { process.kill(pid, 0); return true; } catch { return false; }
+}
+
+function writeProcessTree(root) {
+  fs.writeFileSync(path.join(root, 'tree.cjs'), [
+    "const fs = require('node:fs');",
+    "const child = require('node:child_process').spawn(process.execPath, ['-e', 'setInterval(() => {}, 1000)'], { stdio: 'ignore' });",
+    "child.once('spawn', () => fs.writeFileSync('ready.json', JSON.stringify([process.pid, child.pid])));",
+    'setInterval(() => {}, 1000);',
+  ].join('\n'));
+}
+
+function nativeBridge(base) {
+  const source = fs.readFileSync(path.join(__dirname, '../../desktop-tauri/src-tauri/src/shim.rs'), 'utf8');
+  const script = source.match(/pub const COMPANION_SHIM_JS: &str = r#"([\s\S]*?)"#;/)?.[1];
+  assert.ok(script, 'native bridge source must be available');
+  const window = { __TAURI__: { core: { invoke: async () => ({}) }, event: { listen: async () => () => {}, emit: async () => {} } } };
+  vm.runInNewContext(script, {
+    window, location: { pathname: '/prompt-builder' },
+    document: { readyState: 'complete', querySelectorAll: () => [], querySelector: () => null },
+    MutationObserver: class { observe() {} disconnect() {} },
+    setTimeout: () => 0, clearTimeout: () => {}, console: { log() {}, error() {} },
+    fetch: (url, options) => fetch(base + url, options),
+  });
+  return window.companionDesktop;
+}
+
+test('run_command：取消已启动进程及子进程，不影响其他请求', async () => {
+  const root = tempWorkspace();
+  const controller = new AbortController();
+  let pids = [];
+  try {
+    writeProcessTree(root);
+    const pending = runTool(root, 'run_command', { command: 'node', args: ['tree.cjs'] }, { signal: controller.signal });
+    await waitFor(() => fs.existsSync(path.join(root, 'ready.json')));
+    pids = JSON.parse(fs.readFileSync(path.join(root, 'ready.json'), 'utf8'));
+    assert.ok(pids.every(isAlive));
+    const other = runTool(root, 'run_command', { command: 'node', args: ['-e', "setTimeout(() => console.log('independent'), 300)"] });
+    controller.abort();
+    const result = await pending;
+    assert.equal(result.ok, false);
+    assert.equal(result.code, 'ABORT_ERR');
+    await waitFor(() => pids.every(pid => !isAlive(pid)));
+    assert.deepEqual(await other, { ok: true, output: 'independent' });
+  } finally {
+    controller.abort();
+    pids.filter(isAlive).forEach(killPid);
+    fs.rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test('run_command：提前取消、超时、输出超限和非零退出均不能冒充成功', async () => {
+  const root = tempWorkspace();
+  try {
+    const controller = new AbortController();
+    controller.abort();
+    const cancelled = await runTool(root, 'write_file', { path: 'never.txt', content: 'must not be written' }, { signal: controller.signal });
+    assert.equal(cancelled.code, 'ABORT_ERR');
+    assert.equal(fs.existsSync(path.join(root, 'never.txt')), false);
+    await assert.rejects(runToolProcess('node', ['-e', 'setInterval(() => {}, 1000)'], { cwd: root, timeout: 300 }), { code: 'COMMAND_TIMEOUT' });
+    const overflow = await runTool(root, 'run_command', { command: 'node', args: ['-e', "process.stdout.write('x'.repeat(100000))"] });
+    assert.equal(overflow.ok, false);
+    assert.equal(overflow.code, 'COMMAND_OUTPUT_LIMIT');
+    const failed = await runTool(root, 'run_command', { command: 'node', args: ['-e', "console.log('partial output'); process.exit(2)"] });
+    assert.equal(failed.ok, false);
+    assert.equal(failed.code, 'COMMAND_FAILED');
+    assert.match(failed.output, /partial output/);
+  } finally { fs.rmSync(root, { recursive: true, force: true }); }
+});
+
+test('生产桌面桥取消：真实 HTTP 断开后终止网关内工具进程树', async () => {
+  const root = tempWorkspace();
+  const previous = process.env.AI_WORKSPACE_ROOT;
+  process.env.AI_WORKSPACE_ROOT = root;
+  const app = express();
+  app.use(createDesktopToolsRouter());
+  const server = app.listen(0, '127.0.0.1');
+  await new Promise(resolve => server.once('listening', resolve));
+  const controller = new AbortController();
+  let pids = [];
+  try {
+    writeProcessTree(root);
+    const bridge = nativeBridge(`http://127.0.0.1:${server.address().port}`);
+    const pending = bridge.runTool('run_command', { command: 'node', args: ['tree.cjs'] }, { signal: controller.signal }).catch(error => error);
+    await waitFor(() => fs.existsSync(path.join(root, 'ready.json')));
+    pids = JSON.parse(fs.readFileSync(path.join(root, 'ready.json'), 'utf8'));
+    controller.abort();
+    assert.equal((await pending).name, 'AbortError');
+    await waitFor(() => pids.every(pid => !isAlive(pid)));
+  } finally {
+    controller.abort();
+    pids.filter(isAlive).forEach(killPid);
+    server.closeAllConnections();
+    await new Promise(resolve => server.close(resolve));
+    if (previous === undefined) delete process.env.AI_WORKSPACE_ROOT;
+    else process.env.AI_WORKSPACE_ROOT = previous;
+    fs.rmSync(root, { recursive: true, force: true });
+  }
+});
 
 test('路径白名单：拒绝绝对路径与 .. 逃逸', () => {
   const root = tempWorkspace();

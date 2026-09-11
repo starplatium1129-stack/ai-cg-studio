@@ -10,6 +10,34 @@ const security = require('../../server/security');
 const diagnostics = require('../../server/diagnostics');
 const maintenance = require('../../routes/maintenance');
 
+for (const method of ['all', 'async', 'entry']) {
+  test('archive dependency: normal extraction and destination link rejection (' + method + ')', async (t) => {
+    const fs = require('node:fs');
+    const os = require('node:os');
+    const path = require('node:path');
+    const AdmZip = require('adm-zip');
+    const root = fs.mkdtempSync(path.join(os.tmpdir(), 'huiyu-zip-regression-'));
+    t.after(() => fs.rmSync(root, { recursive: true, force: true }));
+    const zip = new AdmZip();
+    zip.addFile('linked/fixture.txt', Buffer.from('archive fixture'));
+    const extract = async (target) => {
+      if (method === 'async') await new Promise((resolve, reject) => zip.extractAllToAsync(target, true, false, error => error ? reject(error) : resolve()));
+      else if (method === 'entry') zip.extractEntryTo('linked/fixture.txt', target, true, true);
+      else zip.extractAllTo(target, true);
+    };
+    const normal = path.join(root, 'normal');
+    await extract(normal);
+    assert.equal(fs.readFileSync(path.join(normal, 'linked/fixture.txt'), 'utf8'), 'archive fixture');
+    const target = path.join(root, 'destination');
+    const outside = path.join(root, 'outside');
+    fs.mkdirSync(target); fs.mkdirSync(outside);
+    fs.writeFileSync(path.join(outside, 'fixture.txt'), 'unchanged sentinel');
+    fs.symlinkSync(outside, path.join(target, 'linked'), process.platform === 'win32' ? 'junction' : 'dir');
+    await assert.rejects(extract(target), /ADM-ZIP: (?:There is a file in the way|Unable to create folder)/);
+    assert.equal(fs.readFileSync(path.join(outside, 'fixture.txt'), 'utf8'), 'unchanged sentinel');
+  });
+}
+
 function mockReq(overrides) {
   return Object.assign({
     socket: { remoteAddress: '127.0.0.1' },
@@ -194,6 +222,17 @@ test('诊断脱敏：URL 与 KV token 全部遮蔽', () => {
     length: 16,
     suffix: '…cdef',
   });
+});
+
+test('诊断脱敏：嵌套 API key、数组凭据和认证 URL 不泄漏', () => {
+  const input = { services: [{ apiKey: 'private-key', config: { authorization: ['private-header'] } }],
+    url: 'https://user:private-password@host/path?api_key=private-query',
+    log: 'Authorization: Bearer private-bearer', messages: [{ content: 'private-chat' }] };
+  const text = JSON.stringify(diagnostics.redactConfig(input));
+  assert.ok(!text.includes('private-'));
+  assert.equal(input.services[0].apiKey, 'private-key', 'redaction must not mutate runtime configuration');
+  assert.ok(!diagnostics.redactText('"password": "private secret phrase"').includes('private'));
+  assert.ok(!diagnostics.redactText('api_key="private secret phrase"').includes('secret phrase'));
 });
 
 test('CSP：按路由收紧，非聊天页无 unsafe-eval，字体本地化后无 Google 源', async () => {

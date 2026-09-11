@@ -51,6 +51,7 @@ export function useTempResult(deps: TempResultDeps) {
 
   /** 舞台当前结果对应的作品册条目 id（null=尚未入册；原 P1-14 inpaint 锚点）。 */
   const displayedResultHistoryId = ref<number | null>(null)
+  const savingResult = ref(false)
   watch(deps.displayResultUrl, () => { displayedResultHistoryId.value = null }, { flush: 'sync' })
   const storedResultUrl = ref('')
   const resultTemporary = computed(() => Boolean(deps.displayResultUrl.value && storedResultUrl.value === deps.displayResultUrl.value))
@@ -68,14 +69,14 @@ export function useTempResult(deps: TempResultDeps) {
       const previous = readTempResult()
       if (!writeTempResult({ ...partial, imageId, savedAt: Date.now() })) {
         void imgDelete(imageId).catch(() => {})
-        pb.flash('临时成片写入失败（存储空间不足）：当前图仍可手动保存快照')
+        pb.flash('临时成片写入失败（存储空间不足）：可尝试「存入作品册」或下载原图')
         return
       }
       storedResultUrl.value = url
       if (previous && previous.imageId !== imageId) void imgDelete(previous.imageId).catch(() => {})
     } catch (error) {
       console.warn('[temp-result] capture failed', error)
-      pb.flash('临时成片保存失败：请在离开前保存快照或下载原图')
+      pb.flash('临时成片保存失败：请在离开前存入作品册或下载原图')
     }
   }
 
@@ -139,7 +140,7 @@ export function useTempResult(deps: TempResultDeps) {
       pb.flash('已自动存入作品册')
     } catch (e) {
       console.warn('anima direct autosave failed', e)
-      pb.flash('自动入册失败：成片已保留在临时缓冲，可手动点「保存快照」')
+      pb.flash('自动入册失败：成片已保留在临时缓冲，可手动点「存入作品册」')
       await captureTemp({
         engine: result.metadata.engine,
         prompt: result.metadata.prompt,
@@ -184,7 +185,7 @@ export function useTempResult(deps: TempResultDeps) {
       pb.flash('已自动存入作品册')
     } catch (e) {
       console.warn('direct autosave failed', e)
-      pb.flash('自动入册失败，可手动点「保存快照」')
+      pb.flash('自动入册失败，可手动点「存入作品册」')
       try {
         const blob = await (await fetch(url)).blob()
         await captureTemp({ engine: 'sd', prompt: job.prompt, negative: job.negative,
@@ -195,9 +196,18 @@ export function useTempResult(deps: TempResultDeps) {
 
   /** 手动「保存快照」（原 saveHistory 下沉）：入册成功即释放临时缓冲。 */
   async function saveCurrentResult() {
+    if (savingResult.value || displayedResultHistoryId.value !== null) return
+    savingResult.value = true
     try {
       const url = deps.displayResultUrl.value
       if (!url) { pb.flash('暂无可保存的成片'); return }
+      const frozen = currentContext()
+      const snapshot = JSON.parse(JSON.stringify({
+        context: frozen, seed: deps.displayResultSeed.value ?? undefined,
+        ...deps.historyGenerationFields(), story: frozen?.story,
+        scene: frozen ? (frozen.sceneId ?? null) : undefined,
+      })) as Partial<HistoryEntry>
+      const resultPrompt = sd.resultPrompt.value
       let blob: Blob
       let prompt = deps.livePrompt.value
       let negative = deps.negativePrompt.value
@@ -216,27 +226,25 @@ export function useTempResult(deps: TempResultDeps) {
         }
         blob = await response.blob()
         // 按图取词：SD 结果记录的是提交时实际使用的提示词，面板后续修改不漂移。
-        prompt = sd.resultPrompt.value || prompt
+        prompt = resultPrompt || prompt
       }
       if (!blob.size) { pb.flash('成片数据已失效，请重新生成'); return }
-      const frozen = currentContext()
       const entry = await pb.commitHistoryEntry({
-        context: frozen,
+        ...snapshot,
         blob,
-        seed: deps.displayResultSeed.value ?? undefined,
         negative,
         prompt,
-        ...deps.historyGenerationFields(),
-        // F3：入册跟随冻结上下文（旧行为读当前表单，生成后改过表单就会串味）。
-        story: frozen?.story,
-        scene: frozen ? (frozen.sceneId ?? null) : undefined,
       })
       if (entry) {
-        displayedResultHistoryId.value = entry.id
-        releaseTemp()
-        pb.flash('快照已存入本地作品册')
-      } else pb.flash('保存失败')
-    } catch (e) { pb.flash('保存失败'); console.warn(e) }
+        // A completed save belongs to the clicked image, not a newer result on the canvas.
+        if (deps.displayResultUrl.value === url) {
+          displayedResultHistoryId.value = entry.id
+          releaseTemp()
+        }
+        pb.flash('画面已存入本地作品册')
+      } else pb.flash('入册未成功，画面仍在画布上，请重试或下载原图')
+    } catch (e) { pb.flash('入册未成功，画面仍在画布上，请重试或下载原图'); console.warn(e) }
+    finally { savingResult.value = false }
   }
 
   /**
@@ -282,7 +290,7 @@ export function useTempResult(deps: TempResultDeps) {
       })
       deps.setDrawEngine(record.engine === 'krea2' ? 'krea2' : 'anima')
     }
-    pb.flash('已找回上次未入册的成片：可「保存快照」入册，或点「清除」丢弃')
+    pb.flash('已找回上次未入册的成片：可点「存入作品册」，或点「清除」丢弃')
     storedResultUrl.value = deps.displayResultUrl.value
     return true
   }
@@ -295,6 +303,7 @@ export function useTempResult(deps: TempResultDeps) {
   return {
     displayedResultHistoryId,
     resultArchived,
+    savingResult,
     resultTemporary,
     handleAnimaResult,
     handleSdResult,

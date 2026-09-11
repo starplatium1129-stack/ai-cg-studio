@@ -4,6 +4,7 @@ import { useCompanionAffection } from '@/composables/useCompanionAffection';
 import { useCompanionBehaviorRuntime } from '@/composables/useCompanionBehaviorRuntime';
 import { useCompanionClipboardImport } from '@/composables/useCompanionClipboardImport';
 import { useCompanionSpeechInput } from '@/composables/useCompanionSpeechInput';
+import { useCompanionPerformance } from '@/composables/useCompanionPerformance';
 import { pickCompanionLine } from '@/config/characters';
 import { resolveCompanionPresence } from '@/utils/companionPresence';
 import { scrollBehavior } from '@/utils/motionPreference';
@@ -12,11 +13,12 @@ import { computed,onMounted,onUnmounted,ref,watch } from 'vue';
 /** Owns workspace state and lifecycle; the view only binds presentation. */
 export function useCompanionWorkspace() {
     const CHARACTER_IDS = ['nene', 'natsume'] as const;
-    const { chatListRef, characterStageRef, activeChar, busy, voiceActive, chatError, chatErrorKind, toolActivity, thinkingActivity, voiceStatusText, voiceCapabilityState, isSpeaking, autoVoice, volume, preparingRoom, storage, chatProvider, chatStatusText, statusKind, chatReady, currentCharacter, companionMessages, setupTitle, inputText, replyAnnouncement, onVolumeChange, handleSend, onInputChange, prepareRoom, stopEverything, switchCharacter, onAutoVoiceChange, refreshRoomState } = useCharacterRoomSession();
+    const { voice, chatListRef, characterStageRef, activeChar, busy, voiceActive, chatError, chatErrorKind, toolActivity, thinkingActivity, voiceStatusText, voiceCapabilityState, isSpeaking, autoVoice, volume, preparingRoom, storage, chatProvider, chatStatusText, statusKind, chatReady, currentCharacter, companionMessages, setupTitle, inputText, replyAnnouncement, onVolumeChange, handleSend, onInputChange, prepareRoom, stopEverything, switchCharacter, onAutoVoiceChange, refreshRoomState } = useCharacterRoomSession();
     const desktopBridge = window.companionDesktop;
     const { getScore, getLevelInfo } = useCompanionAffection();
     const affectionScore = computed(() => getScore(activeChar.value));
     const affectionInfo = computed(() => getLevelInfo(activeChar.value));
+    const composerFocused = ref(false);
     const alwaysOnTop = ref(false);
     const ignoreMouseEvents = ref(false);
     const onBatteryPower = ref(false);
@@ -57,6 +59,12 @@ export function useCompanionWorkspace() {
         handleSend,
         isEditableTarget,
     });
+    useCompanionPerformance({ activeChar, reminders: pendingReminders, stage: characterStageRef, voice, autoVoice, voiceActive,
+        voiceId: () => currentCharacter.value.voice, affection: () => affectionScore.value,
+        allowed: () => behaviorEnabled.value && !dnd.value && !inQuietHours.value && pageVisible.value && desktopWindowVisible.value
+            && !busy.value && !thinkingActivity.value && !toolActivity.value && !preparingRoom.value
+            && !composerFocused.value && !inputText.value.trim() && speechState.value !== 'capturing',
+    });
     // ── 剪贴板浮卡 / 本地导入 / 看屏检视（已下沉 useCompanionClipboardImport）──
     // 剪贴板订阅、拖拽监听与浮卡 20s 计时器生命周期由 composable 自持。
     const { importInputRef, clipboardCard, capturingScreen, onImportInputChange, dismissClipboardCard, acceptClipboardCard, onCaptureAndInspectScreen, inspectClipboardImage } = useCompanionClipboardImport({
@@ -86,7 +94,6 @@ export function useCompanionWorkspace() {
     let lastPointerMove = Date.now();
     let mouseToggleBlockedUntil = 0;
     const immersive = ref(false);
-    const composerFocused = ref(false);
     const presence = computed(() => resolveCompanionPresence({
         visible: pageVisible.value,
         dnd: dnd.value,

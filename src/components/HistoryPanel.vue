@@ -11,7 +11,7 @@
     </div>
     <div v-if="!items.length" class="history-empty">
       <ArchiveIcon name="image" class="history-empty-icon" />
-      <span>还没有保存的作品。生成后点“保存快照”，我会把每一张都好好收着。</span>
+      <span>还没有保存的作品。生成后点“存入作品册”，把喜欢的这一刻留在这里。</span>
     </div>
     <div v-else class="history-list compact-history-list">
       <article v-for="item in items" :key="item.id" class="history-item" :data-selected="selectedSet.has(item.id) || undefined">

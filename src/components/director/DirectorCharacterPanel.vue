@@ -47,11 +47,11 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, defineAsyncComponent } from 'vue'
 import { usePromptBuilderStore } from '@/stores/promptBuilderStore'
 import { useDirectorCatalog } from '@/composables/scene/useDirectorCatalog'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
-import PopularCharacterPicker from '@/components/popular/PopularCharacterPicker.vue'
+const PopularCharacterPicker = defineAsyncComponent(() => import('@/components/popular/PopularCharacterPicker.vue'))
 import type { PopularCharacter } from '@/utils/popularContent'
 import '@/assets/css/director/components/DirectorCharacterPanel.css'
 

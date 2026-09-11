@@ -1,5 +1,5 @@
 import { expect, test, type Page } from '@playwright/test'
-import MOCK_PORTS from './mock-ports.json'
+import MOCK_PORTS from '../../scripts/lib/e2e-ports.js'
 import { readFileSync } from 'node:fs'
 
 for (const theme of ['dark', 'light']) {

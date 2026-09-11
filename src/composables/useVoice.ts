@@ -174,6 +174,7 @@ export function useVoice(options: {
   }
 
   function isActive() { return Boolean(pending > 0 || playing || queue.length || replayAudio) }
+  function ownsTurn(mid: string) { return turn?.mid === mid }
   function notifyActivity() { onActivity(isActive()) }
 
   function startTurn(meta: { mid: string; voice: string; character: string }) {
@@ -441,5 +442,5 @@ export function useVoice(options: {
     if (audioContext) audioContext.close().catch(() => {}); audioContext = null; analyser = null
   }
 
-  return { availability, refreshAvailability, readyFor, prepare, ensureAudioContext, isActive, startTurn, append, finishTurn, stop, destroy, playMessage, hasAudio, clearMessages, setVolume }
+  return { availability, refreshAvailability, readyFor, prepare, ensureAudioContext, isActive, ownsTurn, startTurn, append, finishTurn, stop, destroy, playMessage, hasAudio, clearMessages, setVolume }
 }

@@ -62,6 +62,6 @@ test('a portrait result fits the canvas and keeps generation and save actions re
   const action = await page.locator('.gen-bar').boundingBox()
   expect(result!.y + result!.height).toBeLessThan(action!.y + 1)
   expect(action!.y + action!.height).toBeLessThanOrEqual(900)
-  await expect(page.getByRole('button', { name: '保存快照', exact: true })).toBeVisible()
+  await expect(page.getByRole('button', { name: '存入作品册', exact: true })).toBeVisible()
   await page.screenshot({ path: 'runtime/expert-result-verified.png' })
 })

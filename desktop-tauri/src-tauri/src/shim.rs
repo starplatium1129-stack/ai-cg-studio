@@ -111,13 +111,17 @@ pub const COMPANION_SHIM_JS: &str = r#"
     setWorkspace: (root) => invoke('set_workspace', { root }),
     notify: (title, body) => invoke('notify', { title, body }),
     setProgress: (progress) => invoke('set_progress', { progress }),
-    runTool: (name, args) => fetch('/api/desktop-tools', {
+    runTool: (name, args, options = {}) => fetch('/api/desktop-tools', {
       method: 'POST',
+      signal: options.signal,
       headers: { 'Content-Type': 'application/json' },
       // adultEnabled：网关 fail-closed 双门的传输层授权信号；桌面壳即本机用户（Tauri WebView 为 tauri.localhost），
       // 无条件授信，与 src/utils/runtimeEnvironment.ts 的 Tauri 兼容逻辑同源。
       body: JSON.stringify({ name, args, adultEnabled: true }),
-    }).then((r) => r.json()).catch((e) => ({ ok: false, output: String(e) })),
+    }).then((r) => r.json()).catch((e) => {
+      if (options.signal && options.signal.aborted) throw e
+      return { ok: false, output: String(e) }
+    }),
     onFileDrop: () => 0,
     offFileDrop: () => {},
     onResume: (cb) => on('aics:resume', cb), offResume: off,

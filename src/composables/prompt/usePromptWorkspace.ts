@@ -277,7 +277,7 @@ export function usePromptWorkspace() {
         autoSaveToGallery,
         setDrawEngine,
     });
-    const { displayedResultHistoryId, resultArchived, resultTemporary, saveCurrentResult, restoreTempResult, discardTemp } = tempResultTools;
+    const { displayedResultHistoryId, resultArchived, savingResult, resultTemporary, saveCurrentResult, restoreTempResult, discardTemp } = tempResultTools;
     // ── 多场景批量出图（编排由 BatchSceneDrawPanel 持有，宿主只注入依赖快照）──
     // 选 N 个场景蓝图 → 逐张串行出图（SD 走 runJob 同路径 / Anima 直接提交
     // ComfyUI 任务）→ 每张自动入册历史 → 面板内直接预览挑选。
@@ -379,7 +379,7 @@ export function usePromptWorkspace() {
     });
     async function goToVideo() { await goVideoBridge(path => router.push(path)); }
     async function goToShots() { await goShotsNav(path => router.push(path)); }
-    function saveResult() { saveCurrentResult(); }
+    function saveResult() { return saveCurrentResult(); }
     // ── Anima 智能局部换装（编排已下沉 useAnimaInpaint）───────────────────────
     // 热门角色换装：取出角色 Danbooru 身份标签（exactTokens + identityTokens），
     // 换装时拼入提示词锁定「衣服穿在谁身上」；studio 桌宠角色为空数组不影响。
@@ -447,7 +447,7 @@ export function usePromptWorkspace() {
     const hasStashedResult = computed(() => Boolean(animaSession.stashedResult.value));
     function onRestoreStashed() {
         if (animaSession.restoreStashedResult())
-            pb.flash('已恢复上一张未入册的成片，可保存快照或继续新作');
+            pb.flash('已恢复上一张未入册的成片，可存入作品册或继续新作');
     }
     /** 「清除」是显式丢弃：临时缓冲同步清掉，避免下次进页又被找回。 */
     function onClearResult() {
@@ -550,7 +550,7 @@ voiceStudioRef,
         toggleBlueprintList, setSceneCollection, selectScene, resumeHistory, duplicateHistory, deleteHistory,
         handleHistoryToShots, handleHistoryToShotsBatch, generationBusy, generationError, generationStopped, generationStatusText,
         generationProgress, generationProgressStyle, animaState, drawEngine, inpaintOriginalUrl, inpaintCompareActive,
-        shotsPending, prevResult, resultArchived, resultTemporary, hasStashedResult, callGenerate,
+        shotsPending, prevResult, resultArchived, savingResult, resultTemporary, hasStashedResult, callGenerate,
         inpaintOpen, inspector, materialDrawer, upscaleCurrentResult, goToVideo, addToShots,
         goToShots, saveResult, compareOpen, onClearResult, onRestoreStashed, handleInterrogateResult,
         handleInterrogateError, genBarSize, animaBarSizes, generationPresetSummary, generateBlockReason, cancelGeneration,

@@ -9,6 +9,8 @@
 
 ## 审计快照
 
+- [办公机代码收尾与验证（2026-09-11）](audits/office-code-2026-09-11.md)
+
 - [全项目场景审计：目标与批次](audits/all-scene-audit-2026-09-08.md)
 - [莱万汀还原提示词调研 + 8 角色 42 场 SFW 竖版修复](audits/audit-laevatain-and-7char-sfw-2026-09-01.md)
 - [莱万汀调研复核（真相订正版）+ 7 角色 48 场 SFW 评审 + 5 场 P0 中英混杂修复](audits/audit-laevatain-recheck-2026-09-01.md)
