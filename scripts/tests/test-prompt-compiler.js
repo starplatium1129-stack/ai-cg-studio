@@ -82,9 +82,9 @@ test('artist style catalog is unique, allowlisted, limited, and model-native', (
   assert.deepStrictEqual(artistStyles.artistTagsForEngine(['mika_pikazo', 'so-bin'], 'sd'), ['mika_pikazo', 'so-bin']);
   assert.deepStrictEqual(artistStyles.artistTagsForEngine(['mika_pikazo', 'so-bin'], 'anima'), ['@mika pikazo', '@so-bin']);
   assert.deepStrictEqual(artistStyles.artistTagsForEngine(['muririn', 'kobuichi'], 'anima'), ['@muririn', '@kobuichi']);
-  // Anima 空格消歧规则（2026-08-15 规范化）：保留括号消歧名，与 Kohaku 生态一致。
-  assert.deepStrictEqual(artistStyles.artistTagsForEngine(['hiten_(hitenkei)', 'ask_(askzy)'], 'anima'), ['@hiten (hitenkei)', '@ask (askzy)']);
-  assert.deepStrictEqual(artistStyles.artistTagsForEngine(['lam_(ramdayo)'], 'anima'), ['@lam (ramdayo)']);
+  // 消歧括号是画师名称的一部分，必须转义以免被 ComfyUI 当作权重语法。
+  assert.deepStrictEqual(artistStyles.artistTagsForEngine(['hiten_(hitenkei)', 'ask_(askzy)'], 'anima'), [String.raw`@hiten \(hitenkei\)`, String.raw`@ask \(askzy\)`]);
+  assert.deepStrictEqual(artistStyles.artistTagsForEngine(['lam_(ramdayo)'], 'anima'), [String.raw`@lam \(ramdayo\)`]);
   assert.deepStrictEqual(artistStyles.artistTagsForEngine(['azuuru'], 'anima'), ['@azuuru']);
   assert.strictEqual(artistStyles.artistStyleProse(['bunbun', 'rella']), 'with visual styling inspired by Bunbun and Rella');
   assert.strictEqual(artistStyles.artistStyleProse(['yoneyama_mai', 'lack']), 'with visual styling inspired by Yoneyama Mai and Lack');
@@ -100,6 +100,52 @@ test('artist style catalog is unique, allowlisted, limited, and model-native', (
   );
   // 2026-08-30 收录 @gweda/@eufoniuz/@solar_(happymonk)（均 verification=tag）后为 13 位
   assert.strictEqual(artistCatalog.ARTIST_STYLE_OPTIONS.filter(option => option.verification === 'tag').length, 15);
+});
+
+test('artist token previews match the compiled catalog for both tag engines', () => {
+  for (const option of artistCatalog.ARTIST_STYLE_OPTIONS) {
+    for (const [engine, preview] of [['sd', option.waiTag], ['anima', option.animaTag]]) {
+      const artists = artistStyles.artistTagsForEngine([option.id], engine);
+      assert.deepStrictEqual(artists, [preview], `${engine} preview differs for ${option.id}`);
+      const output = compiler.renderPromptPlan(compiler.createPromptPlan({ identity: '1girl', artists }), engine);
+      assert.strictEqual(output.prompt, `1girl, ${preview}`);
+    }
+  }
+});
+
+test('Anima artist name escapes survive compilation, JSON transport, and both workflow branches', () => {
+  const cases = [
+    ['ask_(askzy)', String.raw`@ask \(askzy\)`],
+    ['hiten_(hitenkei)', String.raw`@hiten \(hitenkei\)`],
+    ['lam_(ramdayo)', String.raw`@lam \(ramdayo\)`],
+    ['solar_(happymonk)', String.raw`@solar \(happymonk\)`],
+  ];
+  for (const [id, expectedTag] of cases) {
+    const artists = artistStyles.artistTagsForEngine([id], 'anima');
+    const output = compiler.renderPromptPlan(compiler.createPromptPlan({
+      identity: '1girl', artists, manual: ['(soft lighting:1.2)'],
+    }), 'anima');
+    assert.strictEqual(output.prompt, `1girl, ${expectedTag}, (soft lighting:1.2)`);
+    assert.strictEqual(policy.formatPromptForEngine(output.prompt, 'anima'), output.prompt,
+      'reformatting must not double-escape artist names or change explicit weights');
+    for (const model of [
+      { modelId: 'anima-miaomiao-v1.2' },
+      { modelId: 'anima-base-v1.0', loraId: 'L_NENE_V21_ANIMA', loraStrength: 0.85, character: 'nene' },
+    ]) {
+      const body = JSON.parse(JSON.stringify({
+        ...model, prompt: output.prompt, width: 832, height: 1216, seed: 42,
+      }));
+      const input = animaRoute.validateInput(body, 'anima');
+      const graph = animaRoute.buildWorkflow(input);
+      const sampler = Object.values(graph).find(node => node.class_type === 'KSampler');
+      assert.ok(sampler, 'workflow must have a sampler');
+      const positiveNode = graph[sampler.inputs.positive[0]];
+      assert.strictEqual(positiveNode.class_type, 'CLIPTextEncode');
+      assert.strictEqual(positiveNode.inputs.text, output.prompt, `${id} / ${model.modelId}`);
+    }
+    assert.deepStrictEqual(artistStyles.artistTagsForEngine([id], 'sd'), [id]);
+    assert.deepStrictEqual(artistStyles.artistTagsForEngine([id], 'krea2'), []);
+  }
 });
 
 test('Krea official style LoRA is allowlisted and family-scoped', () => {

@@ -115,9 +115,9 @@ export function artistTagsForEngine(ids: readonly string[], engine: ArtistStyleE
   const capabilities = resolveDrawCapabilities(engine)
   if (capabilities.promptFormat === 'natural-language') return []
   return normalizeArtistStyleIds(ids).map(id => capabilities.promptFormat === 'anima-tags'
-    // Anima 官方空格消歧规则：`lam_(ramdayo)` → `@lam (ramdayo)`，保留括号消歧名，
-    // 与 Kohaku/Illustrious 生态（`ask (askzy)`）一致；主名 `@lam` 在 Danbooru 是弱 tag。
-    ? `@${id.replace(/_/g, ' ')}`
+    // Anima 使用 @ 与空格；名称中的字面括号须转义，避免 ComfyUI 将其解析为权重。
+    // 仅处理目录画师 ID，保留提示词中用户显式设置的 (tag:weight) 语法。
+    ? `@${id.replace(/_/g, ' ').replace(/[()]/g, '\\$&')}`
     : id)
 }
 

@@ -137,7 +137,9 @@ test('三引擎健壮性：100 次随机 × sd/anima/krea2 渲染不抛错且语
     const anima = renderPromptPlan(createPromptPlan(drawToPlanInput(draw, 'nene', 'anima')), 'anima');
     assert.strictEqual(typeof anima.prompt, 'string');
     for (const id of draw.artistStyleIds) {
-      const tag = `@${id.replace(/_/g, ' ')}`;
+      const option = ARTIST_STYLE_OPTIONS.find(artist => artist.id === id);
+      assert.ok(option, `随机画师 ${id} 必须存在于目录`);
+      const tag = option.animaTag;
       assert.ok(anima.prompt.includes(tag), `Anima 输出应含画师标签 ${tag}`);
     }
 
