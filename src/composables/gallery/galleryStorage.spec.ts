@@ -6,6 +6,7 @@ import { ARTWORK_HISTORY_KV_KEY, ARTWORK_PROJECTS_KV_KEY } from '@/utils/storage
 
 const storage = vi.hoisted(() => ({ init: vi.fn(), get: vi.fn(), set: vi.fn() }))
 vi.mock('@/composables/useKVStore', () => ({ kvInit: storage.init, kvGet: storage.get, kvSet: storage.set }))
+vi.mock('@/storage/artworkMutation', () => ({ withArtworkMutation: (work: () => Promise<unknown>) => work() }))
 beforeEach(() => {
   Object.values(storage).forEach(fn => fn.mockReset())
   storage.init.mockResolvedValue(undefined)

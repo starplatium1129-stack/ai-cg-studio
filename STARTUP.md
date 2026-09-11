@@ -25,6 +25,10 @@ AI 外部工作区默认是项目同级 `AI/`，迁移时设置 `AI_WORKSPACE_RO
 
 ## 运行配置与凭据恢复
 
+桌面通用命令默认关闭，文件工具仍可在 AI 工作区内读写，并核对目录链接的实际目标。确需运行 Node、Python、npm 等命令时，由操作员在启动网关的环境中设置 `AICS_DESKTOP_COMMANDS=trusted` 后重启；这会授予命令当前系统账户的能力，工作目录不是文件系统沙箱。网页请求、模型参数及普通配置文件不能开启此权限。取消该环境变量并重启即可恢复默认限制；代码更新不会自动启用它。
+
+Windows 的 npm/npx 通过已安装的 CLI JavaScript 入口执行，不启用通用 shell，也不自动安装依赖。提示 `TOOL_UNAVAILABLE` 时检查 Node/npm 安装；提示 `TRUSTED_EXECUTION_REQUIRED` 时先确认确实需要上述执行权限，不能靠修改模型参数解决。
+
 - 服务地址和语音配置保存在 `runtime/config.json`；环境变量优先于保存配置，具体映射见 `server/config.js`。上游仅支持当前电脑的 HTTP loopback 地址。
 - 分享令牌由网关自动生成并保存于 `runtime/state/gateway_token`，也可由 `TOKEN` 环境变量覆盖。记录所在位置即可，不把令牌正文写入文档、提交或截图。
 - 网关、控制面板与隧道日志位于 `runtime/logs/`。迁移时保留配置和必要凭据，PID 文件属于旧进程，不用作新机服务已启动的依据。
@@ -32,6 +36,8 @@ AI 外部工作区默认是项目同级 `AI/`，迁移时设置 `AI_WORKSPACE_RO
 - 桌面安装版可能使用独立的运行目录；从托盘的运行目录入口确认实际位置，部署与完整安装按 [桌面部署指南](docs/desktop-deployment.md) 操作。
 
 ## 完整模式：连接 SD WebUI
+
+远程访客的生成与取消使用应用任务接口。原生 SD 配置写入、直接生成、中断和 WebSocket 兼容通道只允许本机直连；持有分享 token 不会获得这些全局操作能力。模型、采样器和进度等必要只读查询继续保留。
 
 ### 准备条件
 

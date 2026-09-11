@@ -1,5 +1,6 @@
 import { imgPutRecord, imgDeleteMany } from '@/composables/useImageStore'
 import { kvGet, kvSetMany } from '@/composables/useKVStore'
+import { withArtworkMutation } from './artworkMutation'
 import { mergeBackupRecords, type BackupFile, type BackupRecord } from '@/utils/backupCore'
 import { prepareBackupSettings } from '@/utils/backupSettings'
 import { ARTWORK_HISTORY_KV_KEY, ARTWORK_PROJECTS_KV_KEY, collectLiveLocalSettings, isLiveLocalKey } from '@/utils/storageKeys'
@@ -19,6 +20,10 @@ function writeSettings(settings: Record<string, string>) {
 
 /** Stage new images under fresh IDs, then atomically publish history/projects. Never erase originals. */
 export async function restoreBackupData(imported: BackupFile, replace: boolean): Promise<void> {
+  return withArtworkMutation(() => restoreBackupDataNow(imported, replace))
+}
+
+async function restoreBackupDataNow(imported: BackupFile, replace: boolean): Promise<void> {
   const stagedIds: string[] = []
   const previousSettings = collectLiveLocalSettings(localStorage)
   const nextSettings = prepareBackupSettings(previousSettings, imported.data.settings, replace)

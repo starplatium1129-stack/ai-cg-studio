@@ -19,7 +19,8 @@ const browserUse = {
   baseURL: `http://127.0.0.1:${MOCK_PORTS.web}`,
   trace: 'retain-on-failure' as const,
   screenshot: 'only-on-failure' as const,
-  launchOptions: executablePath ? { executablePath } : {}
+  // Real getUserMedia policy tests use a synthetic device, never the operator's microphone.
+  launchOptions: { ...(executablePath ? { executablePath } : {}), args: ['--use-fake-device-for-media-stream'] }
 };
 
 /**

@@ -8,6 +8,7 @@ var cp = require('child_process');
 var createProxyMiddleware = require('http-proxy-middleware').createProxyMiddleware;
 var loadGatewayConfig = require('./server/config').loadGatewayConfig;
 var security = require('./server/security');
+var sdProxyPolicy = require('./server/sd-proxy-policy');
 var envelope = require('./server/http-envelope');
 var { precompressed } = require('./server/precompressed');
 var { createTunnelManager } = require('./server/tunnel');
@@ -29,16 +30,7 @@ var ONE_YEAR = 365 * ONE_DAY;
 // SD WebUI 只放行前端真正调用的端点。
 // 之前整段透传 /sdapi、/controlnet、/adetailer —— SD 的 API 能换模型，
 // 装了扩展还能碰文件系统，等于把这些能力一并交给任何 token 持有者。
-var SD_PROXY_ALLOWLIST = [
-  '/sdapi/v1/sd-models',
-  '/sdapi/v1/samplers',
-  '/sdapi/v1/schedulers',
-  '/sdapi/v1/upscalers',
-  '/sdapi/v1/options',
-  '/sdapi/v1/progress',
-  '/sdapi/v1/txt2img',
-  '/sdapi/v1/interrupt'
-];
+var SD_PROXY_ALLOWLIST = sdProxyPolicy.paths;
 
 function staticOptions(maxAge) {
   return {
@@ -97,7 +89,7 @@ function createGateway(options) {
   var interrogate = createInterrogateRouter(config);
   var video = createVideoRouter(config, options.services);
   var videoAi = require('./routes/video-ai').createVideoAiRouter(config, options.services);
-  var desktopTools = require('./routes/desktop-tools').createDesktopToolsRouter({ security: security });
+  var desktopTools = require('./routes/desktop-tools').createDesktopToolsRouter({ security: security, config: config });
 
   // 控制面板路由需要访问 gateway 对象（tunnelUrl、startTunnel/stopTunnel）
   // 用闭包延迟引用，避免循环依赖
@@ -307,6 +299,7 @@ function createGateway(options) {
   // txt2img 是唯一真正吃 GPU 的 SD 端点，单独限流。
   // 容量按前端出图队列的上限（8 个任务）留余量；补充速率远慢于单张出图耗时，
   // 所以正常使用碰不到，持续刷才会碰到。其余白名单端点是廉价读，不限。
+  app.use(sdProxyPolicy.middleware);
   app.post('/sdapi/v1/txt2img', security.rateLimit({
     capacity:12, refillMs:5000, label:'出图'
   }));
@@ -393,6 +386,11 @@ function createGateway(options) {
       if (!authorized) {
         try { socket.write('HTTP/1.1 401 Unauthorized\r\nConnection: close\r\n\r\n'); } catch (error) {}
         socket.destroy();
+        return;
+      }
+      var policyStatus = sdProxyPolicy.denial(req, pathname, true);
+      if (policyStatus) {
+        socket.end('HTTP/1.1 ' + policyStatus + ' Forbidden\r\nConnection: close\r\n\r\n');
         return;
       }
       sdProxy.upgrade(req, socket, head);

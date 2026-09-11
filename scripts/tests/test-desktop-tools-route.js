@@ -20,11 +20,129 @@ const { runToolProcess } = require('../../server/tool-process');
 const { killPid } = require('../../server/process-tree');
 
 const {
-  runTool,
+  runTool: runToolUntrusted,
   isPathInsideWorkspace,
   resolveWorkspacePath,
   createDesktopToolsRouter,
 } = require('../../routes/desktop-tools.js');
+
+// Existing command lifecycle tests explicitly exercise the operator-enabled profile.
+function runTool(root, name, args, context) {
+  return runToolUntrusted(root, name, args, { trustedCommands: true, ...context });
+}
+
+test('默认文件工具拒绝外向目录链接，允许内部链接与新文件', async () => {
+  const parent = tempWorkspace();
+  const root = path.join(parent, 'workspace');
+  const outside = path.join(parent, 'outside');
+  fs.mkdirSync(root); fs.mkdirSync(outside);
+  fs.mkdirSync(path.join(root, 'inside'));
+  fs.writeFileSync(path.join(outside, 'marker.txt'), 'OUTSIDE_FIXTURE');
+  fs.writeFileSync(path.join(root, 'inside', 'marker.txt'), 'INSIDE_FIXTURE');
+  const linkType = process.platform === 'win32' ? 'junction' : 'dir';
+  fs.symlinkSync(outside, path.join(root, 'outward'), linkType);
+  fs.symlinkSync(path.join(root, 'inside'), path.join(root, 'inward'), linkType);
+  try {
+    for (const [name, args] of [
+      ['read_file', { path: 'outward/marker.txt' }],
+      ['read_image', { path: 'outward/marker.txt' }],
+      ['list_files', { path: 'outward' }],
+      ['write_file', { path: 'outward/new/deep.txt', content: 'must not write' }],
+    ]) {
+      const denied = await runToolUntrusted(root, name, args);
+      assert.equal(denied.ok, false, name);
+      assert.match(denied.output, /工作区外/);
+    }
+    assert.equal(fs.existsSync(path.join(outside, 'new')), false);
+    assert.equal(fs.readFileSync(path.join(outside, 'marker.txt'), 'utf8'), 'OUTSIDE_FIXTURE');
+    assert.equal((await runToolUntrusted(root, 'read_file', { path: 'inward/marker.txt' })).output, 'INSIDE_FIXTURE');
+    assert.equal((await runToolUntrusted(root, 'write_file', { path: 'inward/new/deep.txt', content: 'inside' })).ok, true);
+    assert.equal(fs.readFileSync(path.join(root, 'inside/new/deep.txt'), 'utf8'), 'inside');
+  } finally { fs.rmSync(parent, { recursive: true, force: true }); }
+});
+
+test('通用命令必须由操作员启用，模型参数不能声明信任', async () => {
+  const root = tempWorkspace();
+  const app = express();
+  app.use(createDesktopToolsRouter({ config: { AI_WORKSPACE_ROOT: root, DESKTOP_TRUSTED_COMMANDS: false } }));
+  const server = app.listen(0, '127.0.0.1');
+  await new Promise(resolve => server.once('listening', resolve));
+  try {
+    const args = { command: 'node', args: ['--version'], trustedCommands: true };
+    const direct = await runToolUntrusted(root, 'run_command', args);
+    assert.equal(direct.code, 'TRUSTED_EXECUTION_REQUIRED');
+    const response = await fetch(`http://127.0.0.1:${server.address().port}/api/desktop-tools`, {
+      method: 'POST', headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ name: 'run_command', args, trustedCommands: true, commandMode: 'trusted' }),
+    });
+    assert.equal((await response.json()).code, 'TRUSTED_EXECUTION_REQUIRED');
+    const info = await runToolUntrusted(root, 'get_workspace_info', {});
+    assert.equal(JSON.parse(info.output).commandMode, 'disabled');
+  } finally {
+    server.closeAllConnections(); await new Promise(resolve => server.close(resolve));
+    fs.rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test('受信任命令档：实际 npm/npx 版本查询与含空格工作目录', async () => {
+  const parent = tempWorkspace();
+  const root = path.join(parent, 'workspace with spaces');
+  fs.mkdirSync(root);
+  try {
+    for (const command of ['npm', 'npx']) {
+      const result = await runTool(root, 'run_command', { command, args: ['--version'] });
+      assert.equal(result.ok, true, result.output);
+      assert.match(result.output, /^\d+\.\d+\.\d+/);
+    }
+    fs.writeFileSync(path.join(root, 'package.json'), JSON.stringify({ scripts: { verify: 'node check.cjs' } }));
+    fs.writeFileSync(path.join(root, 'check.cjs'), "console.log(JSON.stringify(process.argv.slice(2))); process.exit(3);");
+    const failed = await runTool(root, 'run_command', { command: 'npm', args: ['run', 'verify', '--', 'argument with spaces'] });
+    assert.equal(failed.ok, false);
+    assert.equal(failed.code, 'COMMAND_FAILED');
+    assert.match(failed.output, /argument with spaces/);
+  } finally { fs.rmSync(parent, { recursive: true, force: true }); }
+});
+
+test('受信任 npm 脚本取消后，包装器下的父子进程均退出', async () => {
+  const parent = tempWorkspace();
+  const root = path.join(parent, 'npm workspace with spaces');
+  fs.mkdirSync(root);
+  const controller = new AbortController();
+  let pids = [];
+  try {
+    writeProcessTree(root);
+    fs.writeFileSync(path.join(root, 'package.json'), JSON.stringify({ scripts: { wait: 'node tree.cjs' } }));
+    const pending = runTool(root, 'run_command', { command: 'npm', args: ['run', 'wait'] }, { signal: controller.signal });
+    await waitFor(() => fs.existsSync(path.join(root, 'ready.json')));
+    pids = JSON.parse(fs.readFileSync(path.join(root, 'ready.json'), 'utf8'));
+    assert.ok(pids.every(isAlive));
+    controller.abort();
+    assert.equal((await pending).code, 'ABORT_ERR');
+    await waitFor(() => pids.every(pid => !isAlive(pid)));
+  } finally {
+    controller.abort(); pids.filter(isAlive).forEach(killPid);
+    fs.rmSync(parent, { recursive: true, force: true });
+  }
+});
+
+test('工具路由沿用注入的网关工作区，进程环境不能覆盖它', async () => {
+  const root = tempWorkspace();
+  const app = express();
+  app.use(createDesktopToolsRouter({ config: { AI_WORKSPACE_ROOT: root, DESKTOP_TRUSTED_COMMANDS: false } }));
+  const server = app.listen(0, '127.0.0.1');
+  await new Promise(resolve => server.once('listening', resolve));
+  try {
+    const response = await fetch(`http://127.0.0.1:${server.address().port}/api/desktop-tools`, {
+      method: 'POST', headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ name: 'get_workspace_info', args: {} }),
+    });
+    const result = await response.json();
+    assert.equal(JSON.parse(result.output).workspaceRoot, root);
+  } finally {
+    server.closeAllConnections(); await new Promise(resolve => server.close(resolve));
+    fs.rmSync(root, { recursive: true, force: true });
+  }
+});
 
 function tempWorkspace() {
   return fs.mkdtempSync(path.join(os.tmpdir(), 'aics-tools-'));
@@ -114,7 +232,7 @@ test('生产桌面桥取消：真实 HTTP 断开后终止网关内工具进程�
   const previous = process.env.AI_WORKSPACE_ROOT;
   process.env.AI_WORKSPACE_ROOT = root;
   const app = express();
-  app.use(createDesktopToolsRouter());
+  app.use(createDesktopToolsRouter({ config: { AI_WORKSPACE_ROOT: root, DESKTOP_TRUSTED_COMMANDS: true } }));
   const server = app.listen(0, '127.0.0.1');
   await new Promise(resolve => server.once('listening', resolve));
   const controller = new AbortController();

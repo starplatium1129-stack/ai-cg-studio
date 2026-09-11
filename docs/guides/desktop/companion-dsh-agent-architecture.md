@@ -31,9 +31,11 @@
 | DSH 原生工具 | 桌宠对齐工具 | 对应端点/实现 | 说明 |
 | :--- | :--- | :--- | :--- |
 | `read_image` | `capture_screen` / `read_image` | `/api/desktop-tools` (`name: capture_screen`) | 毫秒级抓取 Windows 桌面画面或读取工作区图片，转为 Base64 DataURL |
-| `pwsh` | `run_command` | `/api/desktop-tools` (`name: run_command`) | 工作区受限命令执行 |
+| `pwsh` | `run_command` | `/api/desktop-tools` (`name: run_command`) | 默认关闭；仅操作员启用 trusted 档后按当前系统账户权限执行，不是工作区沙箱 |
 | `read` / `write` | `read_file` / `write_file` | `/api/desktop-tools` | 安全读写 AI 工作区内的文本、脚本、配置 |
 | 维护出图脚本 | `generate_character_image` | `/api/desktop-tools` (`name: generate_character_image`) | 自动绑定 Anima 角色 LoRA（0.85 权重）与形态 prompt 一键生成 |
+
+2026-09-12 权限调整：文件工具解析实际链接目标，拒绝指向 AI 工作区外的目录联接；通用命令的启用和撤销见[启动与排错](../../../STARTUP.md#运行配置与凭据恢复)。进程起始目录、命令白名单和取消机制均不能当作操作系统级隔离。
 
 ---
 
@@ -75,5 +77,4 @@
 * 摸头 / 摸手互动每次累加 **+5 💖**；
 * 满分（100 分）解锁原作者专属告白动作（萌萌Q、喝茶邀请、我爱你）；
 * 好感度徽章在顶部药丸实时显示当前等级与点数。
-
 

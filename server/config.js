@@ -133,6 +133,8 @@ function loadGatewayConfig(rootDir, env) {
     // 桌面打包版可落在安装目录之外；浏览器不直接提供此路径，由服务端按
     // env.AI_WORKSPACE_ROOT 或 appRoot 兄弟目录解析。
     AI_WORKSPACE_ROOT:workspaceRoot,
+    // Operator environment only: request bodies and saved app settings cannot enable commands.
+    DESKTOP_TRUSTED_COMMANDS:env.AICS_DESKTOP_COMMANDS === 'trusted',
     RUNTIME:runtime,
     RUNTIME_ROOT:runtime.root,
     PORT:boundedInteger(env.PORT, 3000, 1, 65535),

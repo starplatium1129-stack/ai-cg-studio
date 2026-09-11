@@ -16,6 +16,7 @@ import { ARTWORK_HISTORY_KV_KEY, ARTWORK_PROJECTS_KV_KEY, ARTWORK_TRASH_KV_KEY }
 const io = vi.hoisted(() => ({ put: vi.fn(), get: vi.fn(), remove: vi.fn(), upload: vi.fn(), fetchJob: vi.fn(), kvGet: vi.fn(), kvSet: vi.fn(), kvSetMany: vi.fn(), kv: new Map<string, unknown>() }))
 vi.mock('@/composables/useImageStore', () => ({ imgPut: io.put, imgGet: io.get, imgDelete: io.remove }))
 vi.mock('@/composables/useKVStore', () => ({ kvGet: io.kvGet, kvSet: io.kvSet, kvSetMany: io.kvSetMany }))
+vi.mock('@/storage/artworkMutation', () => ({ withArtworkMutation: (work: () => Promise<unknown>) => work() }))
 vi.mock('@/utils/imageThumb', () => ({ blobThumbDataUrl: vi.fn(), thumbKey: (id: string) => id }))
 vi.mock('@/api/videoApi', () => ({ uploadVideoImage: io.upload, fetchVideoJob: io.fetchJob }))
 vi.mock('@/utils/characterReferenceData', () => ({ getCharacterReferences: () => null }))

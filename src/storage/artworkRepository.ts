@@ -1,4 +1,5 @@
 import { kvGet, kvSet, kvSetMany } from '../composables/useKVStore.ts'
+import { withArtworkMutation } from './artworkMutation.ts'
 import {
   imgDeleteMany,
   imgGetRecord,
@@ -147,8 +148,13 @@ export function createArtworkRepository(dependencies: ArtworkRepositoryDependenc
     deleteMany: dependencies.images?.deleteMany ?? (ids => imgDeleteMany(ids)),
   }
 
-  // All UI callers share one instance; serialize deletes so each snapshot sees the prior commit.
+  // Adapters own their storage isolation; the browser library also serializes across tabs.
   let mutationTail: Promise<void> = Promise.resolve()
+  function enqueue<T>(work: () => Promise<T>): Promise<T> {
+    const operation = mutationTail.then(() => dependencies.kv ? work() : withArtworkMutation(work))
+    mutationTail = operation.then(() => undefined, () => undefined)
+    return operation
+  }
 
   /** History, project references and trash form one recoverable operation. */
   async function commitRelatedRecords(entries: Array<{ key: string; value: unknown }>, operation: string): Promise<void> {
@@ -262,9 +268,7 @@ export function createArtworkRepository(dependencies: ArtworkRepositoryDependenc
   }
 
   function deleteArtwork(id: string | number): Promise<ArtworkDeleteResult> {
-    const operation = mutationTail.then(() => deleteArtworkNow(id))
-    mutationTail = operation.then(() => undefined, () => undefined)
-    return operation
+    return enqueue(() => deleteArtworkNow(id))
   }
 
   // ── 软删回收站（2026-08-30 UX 审计 P0-8：作品硬删不可恢复）─────────────
@@ -403,21 +407,15 @@ export function createArtworkRepository(dependencies: ArtworkRepositoryDependenc
   }
 
   function softDeleteArtwork(id: string | number): Promise<{ deleted: boolean }> {
-    const operation = mutationTail.then(() => softDeleteArtworkNow(id))
-    mutationTail = operation.then(() => undefined, () => undefined)
-    return operation
+    return enqueue(() => softDeleteArtworkNow(id))
   }
 
   function restoreArtwork(id: string | number): Promise<{ restored: boolean }> {
-    const operation = mutationTail.then(() => restoreArtworkNow(id))
-    mutationTail = operation.then(() => undefined, () => undefined)
-    return operation
+    return enqueue(() => restoreArtworkNow(id))
   }
 
   function purgeExpiredTrash(): Promise<{ purged: number }> {
-    const operation = mutationTail.then(() => purgeExpiredTrashNow())
-    mutationTail = operation.then(() => undefined, () => undefined)
-    return operation
+    return enqueue(() => purgeExpiredTrashNow())
   }
 
   /** 列出回收站全部软删条目（2026-08-31 回收站视图用，含删除时间与首图 id）。 */
@@ -464,33 +462,27 @@ export function createArtworkRepository(dependencies: ArtworkRepositoryDependenc
   }
 
   function patchArtwork(id: string | number, patch: Record<string, unknown>): Promise<{ updated: boolean }> {
-    const operation = mutationTail.then(() => patchArtworkNow(id, patch))
-    mutationTail = operation.then(() => undefined, () => undefined)
-    return operation
+    return enqueue(() => patchArtworkNow(id, patch))
   }
 
   function patchArtworks(patches: Array<{ id: string | number; patch: Record<string, unknown> }>): Promise<void> {
-    const operation = mutationTail.then(async () => {
+    return enqueue(async () => {
       const history = arrayValue(await kv.get(ARTWORK_HISTORY_KEY)) ?? []
       const byId = new Map(patches.map(item => [comparableId(item.id), item.patch]))
       if ([...byId.keys()].some(id => !history.some(item => recordId(item) === id))) throw new Error('部分作品已不在作品册')
       const next = history.map(item => { const patch = byId.get(recordId(item)); return patch ? { ...record(item), ...patch } : item })
       await kv.set(ARTWORK_HISTORY_KEY, next)
     })
-    mutationTail = operation.then(() => undefined, () => undefined)
-    return operation
   }
 
   function appendArtwork<T extends { id: string | number }>(entry: T): Promise<T[]> {
-    const operation = mutationTail.then(async () => {
+    return enqueue(async () => {
       const history = arrayValue(await kv.get(ARTWORK_HISTORY_KEY)) ?? []
       if (history.some(item => recordId(item) === comparableId(entry.id))) throw new Error('作品编号已存在')
       const next = [...history, entry]
       await kv.set(ARTWORK_HISTORY_KEY, next)
       return next as T[]
     })
-    mutationTail = operation.then(() => undefined, () => undefined)
-    return operation
   }
 
   return { deleteArtwork, patchArtwork, patchArtworks, appendArtwork, softDeleteArtwork, restoreArtwork, purgeExpiredTrash, listTrash: listTrashNow }

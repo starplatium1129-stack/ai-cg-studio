@@ -183,7 +183,8 @@ function responseHeaders(req, res, next) {
   res.setHeader('X-Content-Type-Options', 'nosniff');
   res.setHeader('X-Frame-Options', 'DENY');
   res.setHeader('Referrer-Policy', 'no-referrer');
-  res.setHeader('Permissions-Policy', 'camera=(), microphone=(), geolocation=()');
+  var voicePage = ['/chat', '/companion', '/companion-chat'].indexOf(normalizeRequestPath(req.path)) !== -1;
+  res.setHeader('Permissions-Policy', 'camera=(), microphone=' + (voicePage ? '(self)' : '()') + ', geolocation=()');
   res.setHeader('Content-Security-Policy', buildContentSecurityPolicy(req.path));
   next();
 }

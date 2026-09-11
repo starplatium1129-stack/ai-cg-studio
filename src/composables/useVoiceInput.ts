@@ -70,6 +70,7 @@ export function useVoiceInput(options: UseVoiceInputOptions): UseVoiceInput {
   let disposed = false
   let canceled = false
   let startToken = 0
+  let recognitionController: AbortController | null = null
   const pendingSegments: Float32Array[] = []
 
   function setState(next: VoiceInputState, detail?: string): void {
@@ -106,26 +107,33 @@ export function useVoiceInput(options: UseVoiceInputOptions): UseVoiceInput {
 
   /** 识别一段语音（自动模式下串行调用，识别期间新段入队等待）。 */
   function recognizeSegment(segment: Float32Array, source: VoiceTextSource): void {
+    const token = startToken
+    const current = () => !disposed && !canceled && token === startToken
+    const controller = new AbortController()
+    recognitionController = controller
     const wav = encodeWav16k(segment, TARGET_RATE)
     setState('recognizing')
-    void recognizeWithAsr(options.config(), wav)
+    if (!current()) return
+    void recognizeWithAsr(options.config(), wav, controller.signal)
       .then(result => {
-        if (disposed || canceled) return
+        if (!current()) return
         setState(mode === 'auto' ? 'capturing' : 'idle')
-        if (result.text) options.onText?.(result.text, source)
-        if (mode === 'auto') drainAutoQueue()
+        if (current() && result.text) options.onText?.(result.text, source)
+        if (current() && mode === 'auto') drainAutoQueue(token)
       })
       .catch(error => {
-        if (disposed || canceled) return
+        if (!current()) return
         const message = error instanceof Error ? error.message : '语音识别失败'
         setState(mode === 'auto' ? 'capturing' : 'idle')
-        options.onError?.(message)
-        if (mode === 'auto') drainAutoQueue()
+        if (current()) options.onError?.(message)
+        if (current() && mode === 'auto') drainAutoQueue(token)
       })
+      .finally(() => { if (recognitionController === controller) recognitionController = null })
   }
 
   /** 自动模式：按序处理积压段，全部处理后若仍在采集则恢复监听。 */
-  function drainAutoQueue(): void {
+  function drainAutoQueue(token = startToken): void {
+    if (disposed || canceled || token !== startToken) return
     recognizing = false
     if (disposed || !capturing) return
     const next = pendingSegments.shift()
@@ -162,12 +170,22 @@ export function useVoiceInput(options: UseVoiceInputOptions): UseVoiceInput {
     if (state.value === 'capturing' || state.value === 'acquiring' || state.value === 'recognizing') return
     const token = ++startToken
     canceled = false
+    recognizing = false
+    pendingSegments.length = 0
     mode = nextMode
     setState('acquiring')
     errorMessage.value = ''
     vad = createVadSegmenter({ sampleRate: TARGET_RATE })
 
     try {
+      const policyDocument = typeof document === 'undefined' ? undefined : document as Document & {
+        permissionsPolicy?: { allowsFeature(name: string): boolean }
+        featurePolicy?: { allowsFeature(name: string): boolean }
+      }
+      const policy = policyDocument?.permissionsPolicy ?? policyDocument?.featurePolicy
+      if (policy?.allowsFeature('microphone') === false) {
+        throw new Error('当前页面的麦克风策略禁止采集，请重新加载语音页面；浏览器授权无法覆盖此限制')
+      }
       const acquiredStream = await navigator.mediaDevices.getUserMedia({
         audio: {
           channelCount: 1,
@@ -222,7 +240,7 @@ export function useVoiceInput(options: UseVoiceInputOptions): UseVoiceInput {
     }
 
     processor.onaudioprocess = (event: AudioProcessingEvent): void => {
-      if (!capturing || !vad) return
+      if (!capturing || !vad || disposed || token !== startToken) return
       const channel = event.inputBuffer.getChannelData(0)
       vad.push(resampleTo16k(channel, context?.sampleRate ?? TARGET_RATE))
       if (mode === 'auto' && !recognizing) {
@@ -264,6 +282,8 @@ export function useVoiceInput(options: UseVoiceInputOptions): UseVoiceInput {
     capturing = false
     recognizing = false
     canceled = true
+    recognitionController?.abort()
+    recognitionController = null
     pendingSegments.length = 0
     cleanupTracks()
     teardownGraph()

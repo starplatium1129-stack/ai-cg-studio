@@ -1,4 +1,5 @@
 import { kvInit, kvGet, kvSet } from '@/composables/useKVStore'
+import { withArtworkMutation } from '@/storage/artworkMutation'
 import { parseArtworkRecords } from '@/types/artwork'
 import { ARTWORK_HISTORY_KV_KEY, ARTWORK_PROJECTS_KV_KEY } from '@/utils/storageKeys'
 import type { useGalleryWorkspace } from './useGalleryWorkspace'
@@ -19,6 +20,7 @@ export async function loadGalleryStorageAction({ galleryLoading, galleryError, h
         galleryError.value = '';
         try {
             await kvInit();
+            const { historyRaw, projectRaw } = await withArtworkMutation(async () => {
             let historyRaw: unknown = await kvGet(HISTORY_KEY);
             let projectRaw: unknown = await kvGet(PROJECT_KEY);
             if (!historyRaw) {
@@ -56,6 +58,8 @@ export async function loadGalleryStorageAction({ galleryLoading, galleryError, h
                     localStorage.removeItem(LEGACY_PROJECT_KEY);
                 }
             }
+            return { historyRaw, projectRaw };
+            });
             if (!isCurrent()) return;
             history.value = parseArtworkRecords(historyRaw);
             projects.value = Array.isArray(projectRaw)

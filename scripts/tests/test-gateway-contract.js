@@ -1,6 +1,51 @@
 'use strict';
 const { test } = require('node:test');
 
+test('远程同一身份不能借原生 SD 写接口绕过应用分级和方法限制', async () => {
+  const assert = require('node:assert/strict');
+  const stack = await require('./gateway-test-stack').start();
+  const previous = process.env.AICS_ADULT_REMOTE;
+  process.env.AICS_ADULT_REMOTE = '0';
+  const remote = { 'x-token': stack.config.TOKEN, 'x-forwarded-for': '198.51.100.8' };
+  async function request(route, method, headers, body = {}) {
+    const response = await fetch(stack.baseUrl + route, {
+      method, headers: { ...headers, 'content-type': 'application/json' },
+      ...(method === 'GET' || method === 'HEAD' ? {} : { body: JSON.stringify(body) }),
+    });
+    return { status: response.status, headers: response.headers, body: method === 'HEAD' ? null : await response.json() };
+  }
+  try {
+    const application = await request('/api/generation/jobs', 'POST', remote, { prompt: 'nsfw', width: 832, height: 1216, adultEnabled: true });
+    assert.equal(application.status, 403);
+    assert.equal(application.body.code, 'ADULT_REMOTE_NOT_ALLOWED');
+    for (const route of ['/sdapi/v1/txt2img', '/sdapi/v1/options', '/sdapi/v1/interrupt']) {
+      const denied = await request(route, 'POST', remote, { prompt: 'fixture' });
+      assert.equal(denied.status, 403, route);
+      assert.equal(denied.body.code, 'SD_NATIVE_LOCAL_ONLY');
+    }
+    assert.equal(stack.upstreams.sd.mock.state.calls.filter(call => call.method === 'POST').length, 0);
+    assert.equal((await request('/sdapi/v1/options', 'GET', remote)).status, 200);
+    assert.equal((await request('/sdapi/v1/samplers', 'POST', remote)).status, 405);
+    assert.equal((await request('/sdapi/v1/options', 'DELETE', {})).status, 405);
+    assert.equal((await request('/sdapi/v1/txt2img', 'POST', { 'x-forwarded-for': '198.51.100.8' })).status, 401);
+    const local = await request('/sdapi/v1/txt2img', 'POST', {}, { prompt: 'ordinary fixture' });
+    assert.equal(local.status, 200);
+    assert.equal(local.body.images.length, 1);
+    assert.equal(stack.upstreams.sd.mock.state.calls.filter(call => call.method === 'POST' && call.path === '/sdapi/v1/txt2img').length, 1);
+    const burst = await Promise.all(Array.from({ length: 24 }, () => request('/api/generation/jobs', 'POST', remote, { prompt: 'ordinary fixture' })));
+    const throttled = burst.find(response => response.status === 429 && response.body.code === 'RATE_LIMITED');
+    assert.ok(throttled, 'application generation still enforces its rate limit');
+    const admitted = burst.filter(response => response.status !== 429 || response.body.code !== 'RATE_LIMITED').length;
+    assert.ok(admitted >= 8 && admitted <= 13, 'generation bucket should admit about 12 requests, admitted ' + admitted);
+    assert.ok(Number(throttled.headers.get('retry-after')) > 0);
+    assert.ok(Number(throttled.body.retryAfterSeconds) > 0);
+  } finally {
+    if (previous === undefined) delete process.env.AICS_ADULT_REMOTE;
+    else process.env.AICS_ADULT_REMOTE = previous;
+    await stack.close();
+  }
+});
+
 test('SD 代理：超过 15 秒的生成正常返回，复用连接不累积超时监听器', { timeout:25000 }, async () => {
   const assert = require('node:assert/strict');
   const http = require('node:http');
@@ -41,7 +86,7 @@ test('SD 代理：超过 15 秒的生成正常返回，复用连接不累积超�
   } finally { agent.destroy(); await stack.close(); }
 });
 
-test('gateway WebSocket：活动隧道 Host 可升级，错误 Host、未鉴权与外站来源不可升级', async () => {
+test('gateway WebSocket：仅本机可升级，持令牌的远程连接也不能获得原生双向通道', async () => {
   const assert = require('node:assert/strict');
   const http = require('node:http');
   const fs = require('node:fs');
@@ -89,7 +134,8 @@ test('gateway WebSocket：活动隧道 Host 可升级，错误 Host、未鉴权�
       await new Promise((resolve) => setTimeout(resolve, 50));
     }
     assert.ok(ready, 'fixture tunnel must become active via its normal log registration');
-    assert.equal(await upgrade(headers), 101, 'authenticated tunnel WebSocket must reach the same upstream as HTTP');
+    assert.equal(await upgrade(headers), 403, 'a token does not authorize a native bidirectional channel');
+    assert.equal(await upgrade({ Host:'127.0.0.1:' + stack.address.port }), 101, 'local compatibility upgrade remains available');
     assert.notEqual(await upgrade({ ...headers, Host:'foreign.example' }), 101);
     assert.notEqual(await upgrade({ ...headers, Cookie:'' }), 101);
     assert.notEqual(await upgrade({ Host:'127.0.0.1:' + stack.address.port, Origin:'https://external.example' }), 101);
@@ -358,26 +404,12 @@ async function main() {
       assert.ok(probe.json, statusSiblings[s] + ' must return JSON');
     }
 
-    // ---- S-5: GPU 路由限流（token bucket）----
-    // 队列的 maxPending 只挡"堆积"，挡不住"持续以队列消化速度提交" ——
-    // 那会把 GPU 永久占满，而本机用户只看到"一直在排队"。
-    // 断言路由的真实响应：隧道形状会拿到 429 + Retry-After，本机直连不受限。
-    // 并发突发请求才能测 token bucket。顺序请求会在每次 SD 代理失败的间隙里
-    // 慢慢补回令牌，最后测到的是"请求足够慢就不该限"而不是限流本身。
+    // 原生写端点的远程能力检查先于限流；没有令牌桶空隙可以绕过应用门控。
     var burst = await Promise.all(Array.from({ length:24 }, function () {
       return postJson('/sdapi/v1/txt2img', { prompt:'probe' }, TUNNELED);
     }));
-    var throttled = burst.find(function (shot) { return shot.status === 429; }) || null;
-    var allowedBeforeLimit = burst.filter(function (shot) { return shot.status !== 429; }).length;
-    assert.ok(throttled, 'tunneled txt2img must eventually hit the rate limit');
-    // 断言具体位置而不只是"最终会挡"：桶容量是 server.js 里的 capacity:12，
-    // 留一格余量给补充速率。放行数量若漂到区间外，说明桶被改过而测试没跟上。
-    assert.ok(allowedBeforeLimit >= 8 && allowedBeforeLimit <= 13,
-      'txt2img bucket should admit ~12 before throttling, admitted ' + allowedBeforeLimit);
-    assert.ok(Number(throttled.headers['retry-after']) > 0,
-      'rate-limited response must carry Retry-After, got ' + throttled.headers['retry-after']);
-    assert.ok(throttled.json && Number(throttled.json.retryAfterSeconds) > 0,
-      'rate-limited body must state the retry delay');
+    assert.ok(burst.every(function (shot) { return shot.status === 403 && shot.json.code === 'SD_NATIVE_LOCAL_ONLY'; }),
+      'every remote native write must be denied, including the first request');
 
     // 本机直连是电脑主人，不该被自己的限流挡住。
     // SD 未启动时代理回 502，这里只断言"不是 429"。

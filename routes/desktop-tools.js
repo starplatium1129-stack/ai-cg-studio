@@ -6,10 +6,9 @@
  * 安全边界（与 toolRunner.ts 一致）：
  * - localOnly：仅本机可调（localOnly 网关级）。
  * - 所有路径解析后必须落在 AI 工作区（AI_WORKSPACE_ROOT）内（Windows 大小写不敏感）。
- * - 命令以参数数组 execFile 执行，不经过 shell —— 没有 `;`/`|`/`&&` 注入面。
- * - 命令名白名单（python/pwsh/node/git 等解释器）或工作区内脚本的相对路径，
- *   禁止任意系统可执行文件（2026-08-16 审计：此前无白名单，模型工具调用
- *   可在本机执行任意命令；配合 chat 的 companionTools 仅本机放行，双保险）。
+ * - 文件工具核对链接的实际目标；通用命令默认关闭。
+ * - 命令只在操作员显式启用 trusted 档时可用，具有当前系统账户权限，非工作区沙箱。
+ * - 参数数组执行、白名单、取消与输出限制仍适用于受信任命令。
  * - 读 1MB / 写 512KB / 命令 120s 超时 + 64KB 输出上限。
  */
 
@@ -20,6 +19,10 @@ var runToolProcess = require('../server/tool-process').runToolProcess;
 var crypto = require('crypto');
 var envelope = require('../server/http-envelope');
 var validationCore = require('../server/validation-core');
+var workspacePaths = require('../server/workspace-path');
+var isPathInsideWorkspace = workspacePaths.isPathInsideWorkspace;
+var resolveWorkspacePath = workspacePaths.resolveWorkspacePath;
+var resolveToolCommand = require('../server/tool-command').resolveToolCommand;
 
 var MAX_READ_BYTES = 1024 * 1024;
 var MAX_WRITE_BYTES = 512 * 1024;
@@ -77,6 +80,7 @@ function assertSafeCommand(root, command) {
   var hasPathSeparator = /[/\\]/.test(value);
   if (!hasPathSeparator) {
     var base = value.replace(/\.exe$/i, '').toLowerCase();
+    if (/^(npm|npx)\.cmd$/i.test(base)) base = base.slice(0, -4);
     if (ALLOWED_COMMANDS.has(base)) return value;
     throw new Error('命令不在允许列表（python/pwsh/node/npm/npx/git/conda）或缺少工作区内脚本相对路径');
   }
@@ -90,7 +94,7 @@ function assertSafeCommand(root, command) {
   if (!isPathInsideWorkspace(root, resolved)) {
     throw new Error('脚本路径超出 AI 工作区范围');
   }
-  return value;
+  return resolveWorkspacePath(root, value);
 }
 
 function sniffImageMime(buffer) {
@@ -102,32 +106,6 @@ function sniffImageMime(buffer) {
     if (match) return candidate.mime;
   }
   return null;
-}
-
-function isPathInsideWorkspace(workspaceRoot, candidate) {
-  var root = path.resolve(workspaceRoot);
-  var resolved = path.resolve(candidate);
-  var rootKey = root.toLowerCase();
-  var resolvedKey = resolved.toLowerCase();
-  if (resolvedKey === rootKey) return true;
-  return resolvedKey.startsWith(rootKey + path.sep.toLowerCase());
-}
-
-function resolveWorkspacePath(workspaceRoot, relative) {
-  var root = path.resolve(workspaceRoot);
-  var clean = String(relative || '').trim().replace(/\\/g, '/');
-  if (!clean || clean === '.') return root;
-  if (clean.startsWith('/') || /^[a-zA-Z]:/.test(clean)) {
-    throw new Error('只接受工作区内的相对路径');
-  }
-  if (clean.split('/').some(function (part) { return part === '..'; })) {
-    throw new Error('路径不能包含 ..');
-  }
-  var resolved = path.resolve(root, clean);
-  if (!isPathInsideWorkspace(root, resolved)) {
-    throw new Error('路径超出 AI 工作区范围');
-  }
-  return resolved;
 }
 
 function formatEntryName(entry) {
@@ -170,7 +148,7 @@ function runTool(workspaceRoot, name, args, context) {
                 var extra = '';
                 if (!entry.isDirectory()) {
                   try {
-                    var stat = fs.statSync(path.join(dir, entry.name));
+                    var stat = fs.lstatSync(path.join(dir, entry.name));
                     extra = ' (' + stat.size + ' B)';
                   } catch (e) { /* 忽略瞬时不可读 */ }
                 }
@@ -205,9 +183,14 @@ function runTool(workspaceRoot, name, args, context) {
         return fs.promises.mkdir(path.dirname(writeFile), { recursive: true })
           .then(function () {
             checkCancelled();
+            resolveWorkspacePath(root, String(args.path || ''));
             var temporary = writeFile + '.' + process.pid + '-' + crypto.randomBytes(4).toString('hex') + '.tool.tmp';
-            return fs.promises.writeFile(temporary, content, 'utf8')
-              .then(function () { checkCancelled(); return fs.promises.rename(temporary, writeFile); })
+            return fs.promises.writeFile(temporary, content, { encoding: 'utf8', flag: 'wx' })
+              .then(function () {
+                checkCancelled();
+                resolveWorkspacePath(root, String(args.path || ''));
+                return fs.promises.rename(temporary, writeFile);
+              })
               .finally(function () { return fs.promises.rm(temporary, { force: true }); });
           })
           .then(function () {
@@ -215,15 +198,19 @@ function runTool(workspaceRoot, name, args, context) {
           });
       }
       case 'run_command': {
+        if (context.trustedCommands !== true) {
+          throw Object.assign(new Error('通用命令默认关闭：此能力可访问当前系统账户的文件，并非仅限工作区。仅操作员可通过 AICS_DESKTOP_COMMANDS=trusted 启用后重启网关'), { code: 'TRUSTED_EXECUTION_REQUIRED' });
+        }
         var command = String(args.command || '').trim();
         var rawArgs = Array.isArray(args.args) ? args.args.map(String) : [];
         if (!command) throw new Error('缺少命令');
         // 2026-08-16 审计：命令校验收紧——白名单解释器或工作区内相对脚本。
-        assertSafeCommand(root, command);
+        command = assertSafeCommand(root, command);
         if (command.length > 256) throw new Error('命令名过长');
         if (rawArgs.length > 16) throw new Error('参数过多');
         if (rawArgs.some(function (arg) { return arg.length > 256; })) throw new Error('参数过长');
-        return runToolProcess(command, rawArgs, {
+        var executable = resolveToolCommand(command, rawArgs);
+        return runToolProcess(executable.command, executable.args, {
             cwd: root,
             timeout: COMMAND_TIMEOUT_MS,
             maxBuffer: MAX_COMMAND_OUTPUT,
@@ -251,7 +238,7 @@ function runTool(workspaceRoot, name, args, context) {
       }
       case 'get_workspace_info': {
         var exists = fs.existsSync(root);
-        return { ok: true, output: JSON.stringify({ workspaceRoot: root, exists: exists, os: process.platform }) };
+        return { ok: true, output: JSON.stringify({ workspaceRoot: root, exists: exists, os: process.platform, commandMode: context.trustedCommands === true ? 'trusted-system-account' : 'disabled' }) };
       }
       case 'capture_screen': {
         if (process.platform !== 'win32') {
@@ -324,13 +311,14 @@ function runTool(workspaceRoot, name, args, context) {
         }
 
         promptTokens.push(desc);
-        var outDir = path.join(root, 'generated-images');
+        var outDir = resolveWorkspacePath(root, 'generated-images');
         if (!fs.existsSync(outDir)) {
           fs.mkdirSync(outDir, { recursive: true });
         }
         var timestamp = Date.now();
-        var fileName = 'companion_' + targetChar + '_' + timestamp + '.png';
-        var metaFile = 'companion_' + targetChar + '_' + timestamp + '.json';
+        var fileCharacter = encodeURIComponent(targetChar).replace(/\./g, '%2E').slice(0, 100);
+        var fileName = 'companion_' + fileCharacter + '_' + timestamp + '.png';
+        var metaFile = 'companion_' + fileCharacter + '_' + timestamp + '.json';
         var charName = targetChar === 'natsume' ? '四季夏目' : targetChar === 'nene' ? '绫地宁宁' : targetChar;
 
         var fullImagePath = path.join(outDir, fileName);
@@ -369,6 +357,7 @@ function createDesktopToolsRouter(options) {
   options = options || {};
   var router = express.Router();
   var security = options.security || require('../server/security');
+  var config = options.config || require('../server/config').loadGatewayConfig(path.join(__dirname, '..'), process.env);
 
   router.use('/api/desktop-tools', express.json({ limit: '768kb' }));
   router.use('/api/desktop-tools', security.localOnly);
@@ -383,14 +372,14 @@ function createDesktopToolsRouter(options) {
       envelope.fail(res, 400, '缺少工具名', { output: '缺少工具名' });
       return;
     }
-    var workspaceRoot = process.env.AI_WORKSPACE_ROOT || path.join(__dirname, '..', 'AI');
+    var workspaceRoot = config.AI_WORKSPACE_ROOT;
     // 成人授权取请求体顶层字段（严格 === true），与模型可控的 args 隔离
     var controller = new AbortController();
     var cancel = function () { if (!res.writableEnded) controller.abort(); };
     req.once('aborted', cancel);
     res.once('close', cancel);
     if (req.aborted || res.destroyed) controller.abort();
-    var context = { adultEnabled: payload.adultEnabled === true, signal: controller.signal };
+    var context = { adultEnabled: payload.adultEnabled === true, signal: controller.signal, trustedCommands: config.DESKTOP_TRUSTED_COMMANDS === true };
     runTool(workspaceRoot, name, args, context).then(function (result) {
       if (!res.destroyed) res.json(result);
     }).catch(function (error) {

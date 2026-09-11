@@ -1,10 +1,12 @@
 const LIVE2D_PATHS = new Set(['/chat', '/companion'])
 
-function isLive2dPath(path: string): boolean {
-  return LIVE2D_PATHS.has(path.split(/[?#]/, 1)[0].replace(/\/+$/, '') || '/')
+function documentPolicy(path: string): string {
+  const normalized = path.split(/[?#]/, 1)[0].replace(/\/+$/, '') || '/'
+  if (LIVE2D_PATHS.has(normalized)) return 'live2d-voice'
+  return normalized === '/companion-chat' ? 'voice' : 'standard'
 }
 
-/** CSP belongs to the loaded document, never to sessionStorage or the SPA URL. */
+/** CSP and microphone policy belong to the document, not sessionStorage or the SPA URL. */
 export function needsDocumentReload(fromPath: string, toPath: string): boolean {
-  return isLive2dPath(fromPath) !== isLive2dPath(toPath)
+  return documentPolicy(fromPath) !== documentPolicy(toPath)
 }

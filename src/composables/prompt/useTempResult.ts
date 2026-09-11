@@ -1,4 +1,4 @@
-import { computed, ref, watch, type ComputedRef, type Ref } from 'vue'
+import { computed, onScopeDispose, ref, watch, type ComputedRef, type Ref } from 'vue'
 import type { usePromptBuilderStore, HistoryEntry } from '@/stores/promptBuilderStore'
 import type { DrawEngine } from '@/storage/settingsRepository'
 import type { AnimaResult, AnimaResultContext } from '@/types/anima'
@@ -52,7 +52,17 @@ export function useTempResult(deps: TempResultDeps) {
   /** 舞台当前结果对应的作品册条目 id（null=尚未入册；原 P1-14 inpaint 锚点）。 */
   const displayedResultHistoryId = ref<number | null>(null)
   const savingResult = ref(false)
-  watch(deps.displayResultUrl, () => { displayedResultHistoryId.value = null }, { flush: 'sync' })
+  let resultRevision = 0
+  let disposed = false
+  watch(deps.displayResultUrl, () => {
+    resultRevision += 1
+    displayedResultHistoryId.value = null
+  }, { flush: 'sync' })
+  onScopeDispose(() => { disposed = true; resultRevision += 1 }, true)
+  function ownsResult(url: string) {
+    const revision = resultRevision
+    return () => !disposed && revision === resultRevision && deps.displayResultUrl.value === url
+  }
   const storedResultUrl = ref('')
   const resultTemporary = computed(() => Boolean(deps.displayResultUrl.value && storedResultUrl.value === deps.displayResultUrl.value))
 
@@ -61,11 +71,12 @@ export function useTempResult(deps: TempResultDeps) {
     deps.displayResultUrl.value ? displayedResultHistoryId.value !== null : null)
 
   /** 替换式写入：先读旧记录，新记录落稳后回收旧 blob（不炸主链路）。 */
-  async function captureTemp(partial: Omit<TempResultRecord, 'imageId' | 'savedAt'>, blob: Blob, url = deps.displayResultUrl.value) {
+  async function captureTemp(partial: Omit<TempResultRecord, 'imageId' | 'savedAt'>, blob: Blob, url = deps.displayResultUrl.value, current = ownsResult(url)) {
+    if (!current()) return
     const mutation = ++tempMutation
     try {
       const imageId = await imgPut(blob)
-      if (mutation !== tempMutation) { void imgDelete(imageId).catch(() => {}); return }
+      if (mutation !== tempMutation || !current()) { void imgDelete(imageId).catch(() => {}); return }
       const previous = readTempResult()
       if (!writeTempResult({ ...partial, imageId, savedAt: Date.now() })) {
         void imgDelete(imageId).catch(() => {})
@@ -76,7 +87,7 @@ export function useTempResult(deps: TempResultDeps) {
       if (previous && previous.imageId !== imageId) void imgDelete(previous.imageId).catch(() => {})
     } catch (error) {
       console.warn('[temp-result] capture failed', error)
-      pb.flash('临时成片保存失败：请在离开前存入作品册或下载原图')
+      if (current()) pb.flash('临时成片保存失败：请在离开前存入作品册或下载原图')
     }
   }
 
@@ -98,9 +109,10 @@ export function useTempResult(deps: TempResultDeps) {
 
   /** Anima/Krea 直出成功：按偏好入册或落临时缓冲（原 onAnimaResult 内联块下沉）。 */
   async function handleAnimaResult(result: AnimaResult, inpaintSourceHistoryId: number | null) {
+    const current = ownsResult(result.url)
     const frozen = deps.animaState.value.resultContext ?? null
     if (!deps.autoSaveToGallery.value) {
-      displayedResultHistoryId.value = null
+      if (current()) displayedResultHistoryId.value = null
       await captureTemp({
         engine: result.metadata.engine,
         prompt: result.metadata.prompt,
@@ -109,7 +121,7 @@ export function useTempResult(deps: TempResultDeps) {
         size: `${result.metadata.width}x${result.metadata.height}`,
         animaMetadata: result.metadata,
         context: frozen,
-      }, result.blob)
+      }, result.blob, result.url, current)
       return
     }
     try {
@@ -133,13 +145,14 @@ export function useTempResult(deps: TempResultDeps) {
         parentId: isInpaint ? (inpaintSourceHistoryId ?? undefined) : undefined,
       })
       if (!saved) throw new Error('作品册写入失败')
-      if (saved) {
+      if (current()) {
         displayedResultHistoryId.value = saved.id
         releaseTemp()
+        pb.flash('已自动存入作品册')
       }
-      pb.flash('已自动存入作品册')
     } catch (e) {
       console.warn('anima direct autosave failed', e)
+      if (!current()) return
       pb.flash('自动入册失败：成片已保留在临时缓冲，可手动点「存入作品册」')
       await captureTemp({
         engine: result.metadata.engine,
@@ -149,14 +162,17 @@ export function useTempResult(deps: TempResultDeps) {
         size: `${result.metadata.width}x${result.metadata.height}`,
         animaMetadata: result.metadata,
         context: frozen,
-      }, result.blob)
+      }, result.blob, result.url, current)
     }
   }
 
   /** SD 直出成功：按偏好入册或落临时缓冲（原 callGenerate 尾段下沉）。 */
   async function handleSdResult(job: Omit<SDQueueJob, 'id'>, url: string) {
+    const current = ownsResult(url)
+    const seed = sd.resultSeed.value
+    const context = deps.resultContext.value
     if (!deps.autoSaveToGallery.value) {
-      displayedResultHistoryId.value = null
+      if (current()) displayedResultHistoryId.value = null
       try {
         const blob = await (await fetch(url, { cache: 'no-store' })).blob()
         if (blob.size) {
@@ -164,11 +180,11 @@ export function useTempResult(deps: TempResultDeps) {
             engine: 'sd',
             prompt: job.prompt,
             negative: job.negative,
-            seed: sd.resultSeed.value,
+            seed,
             size: job.size,
             animaMetadata: null,
-            context: deps.resultContext.value,
-          }, blob, url)
+            context,
+          }, blob, url, current)
         }
       } catch (error) {
         console.warn('[temp-result] sd capture failed', error)
@@ -178,19 +194,20 @@ export function useTempResult(deps: TempResultDeps) {
     try {
       const saved = await deps.commitJobResult(job, url)
       if (!saved) throw new Error('作品册写入失败')
-      if (saved) {
+      if (current()) {
         displayedResultHistoryId.value = saved.id
         releaseTemp()
+        pb.flash('已自动存入作品册')
       }
-      pb.flash('已自动存入作品册')
     } catch (e) {
       console.warn('direct autosave failed', e)
+      if (!current()) return
       pb.flash('自动入册失败，可手动点「存入作品册」')
       try {
         const blob = await (await fetch(url)).blob()
         await captureTemp({ engine: 'sd', prompt: job.prompt, negative: job.negative,
-          seed: sd.resultSeed.value, size: job.size, context: deps.resultContext.value }, blob, url)
-      } catch { pb.flash('临时保存也未成功，请下载当前原图') }
+          seed, size: job.size, context }, blob, url, current)
+      } catch { if (current()) pb.flash('临时保存也未成功，请下载当前原图') }
     }
   }
 
@@ -201,6 +218,7 @@ export function useTempResult(deps: TempResultDeps) {
     try {
       const url = deps.displayResultUrl.value
       if (!url) { pb.flash('暂无可保存的成片'); return }
+      const current = ownsResult(url)
       const frozen = currentContext()
       const snapshot = JSON.parse(JSON.stringify({
         context: frozen, seed: deps.displayResultSeed.value ?? undefined,
@@ -237,7 +255,7 @@ export function useTempResult(deps: TempResultDeps) {
       })
       if (entry) {
         // A completed save belongs to the clicked image, not a newer result on the canvas.
-        if (deps.displayResultUrl.value === url) {
+        if (current()) {
           displayedResultHistoryId.value = entry.id
           releaseTemp()
         }
@@ -297,6 +315,7 @@ export function useTempResult(deps: TempResultDeps) {
 
   /** 用户显式「清除」舞台结果：临时缓冲一并丢弃（显式丢弃优于一切恢复）。 */
   function discardTemp() {
+    resultRevision += 1
     releaseTemp()
   }
 

@@ -9,12 +9,11 @@
  * 纯逻辑（过滤/记录构造）见 desktopImportCore.ts，可直接单元测试。
  */
 
-import { imgPut } from '../composables/useImageStore'
-import { kvGet, kvSet } from '../composables/useKVStore'
+import { imgPut, imgDelete } from '../composables/useImageStore'
+import { kvSet } from '../composables/useKVStore'
+import { artworkRepository } from '../storage/artworkRepository'
 import { blobThumbDataUrl, thumbKey } from './imageThumb'
-import { parseArtworkRecords } from '../types/artwork'
 import {
-  HISTORY_STORAGE_KEY,
   buildImportedRecord,
   filterImageFiles,
   type ImportResult,
@@ -43,19 +42,20 @@ export async function importLocalImages(files: readonly ImportSourceFile[]): Pro
   let imported = 0
   let skipped = 0
   for (const file of candidates) {
+    let imageId: string | null = null
     try {
-      const imageId = await imgPut(file.blob)
-      void blobThumbDataUrl(file.blob).then(dataUrl => {
-        if (dataUrl) return kvSet(thumbKey(imageId), dataUrl).catch(() => {})
-        return undefined
-      })
+      imageId = await imgPut(file.blob)
       const measured = await measureBlob(file.blob)
       const record = buildImportedRecord(file, imageId, measured)
-      const existing = parseArtworkRecords(await kvGet(HISTORY_STORAGE_KEY).catch(() => null))
-      existing.push(record)
-      await kvSet(HISTORY_STORAGE_KEY, existing)
+      await artworkRepository.appendArtwork(record)
+      const thumbnailId = imageId
+      void blobThumbDataUrl(file.blob).then(dataUrl => {
+        if (dataUrl) return kvSet(thumbKey(thumbnailId), dataUrl).catch(() => {})
+        return undefined
+      }).catch(() => {})
       imported += 1
     } catch {
+      if (imageId) await imgDelete(imageId).catch(() => {})
       skipped += 1
     }
   }

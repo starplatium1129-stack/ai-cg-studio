@@ -20,6 +20,7 @@
 ## 按需查阅
 
 - [办公机代码收尾与验证](archive/audits/office-code-2026-09-11.md)：真实工具取消、首次入册、按需加载、脱敏诊断、桌宠演出与浏览器安全策略复验。
+- [独立审计问题修复与办公机验收](archive/audits/office-audit-fixes-2026-09-12.md)：跨窗口保存、异步结果归属、SD 权限、文件工具与 Windows 命令、语音策略及主力机验收边界。
 
 - [内容门禁修复与回归](archive/audits/content-gate-repair-2026-09-10.md)：服装引用覆盖、环境词分层、单句结构误报的修复与本次真实验证边界。
 

@@ -15,6 +15,8 @@ describe('document CSP boundaries', () => {
   it('keeps same-policy navigation inside the SPA', () => {
     expect(needsDocumentReload('/chat', '/companion')).toBe(false)
     expect(needsDocumentReload('/', '/gallery')).toBe(false)
-    expect(needsDocumentReload('/companion-chat', '/control')).toBe(false)
+    expect(needsDocumentReload('/companion-chat', '/control')).toBe(true)
+    expect(needsDocumentReload('/gallery', '/companion-chat/')).toBe(true)
+    expect(needsDocumentReload('/companion-chat', '/companion-chat?mode=voice')).toBe(false)
   })
 })

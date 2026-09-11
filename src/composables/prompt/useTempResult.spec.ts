@@ -1,16 +1,25 @@
 import { computed, effectScope, ref } from 'vue'
-import { afterEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { useTempResult, type TempResultDeps } from './useTempResult'
-import { clearTempResult } from '@/utils/tempResult'
+import { clearTempResult, readTempResult, writeTempResult, type TempResultRecord } from '@/utils/tempResult'
+import { imgDelete, imgPut } from '@/composables/useImageStore'
+import type { AnimaResult } from '@/types/anima'
+import type { SDQueueJob } from '@/composables/generation/useSDQueue'
 
 vi.mock('@/composables/useImageStore', () => ({ imgDelete: vi.fn().mockResolvedValue(undefined), imgGet: vi.fn(), imgPut: vi.fn() }))
 vi.mock('@/utils/tempResult', () => ({ clearTempResult: vi.fn(), readTempResult: vi.fn(() => null), writeTempResult: vi.fn(() => true) }))
 const scopes: ReturnType<typeof effectScope>[] = []
 function deferred<T>() {
   let resolve!: (value: T) => void
-  const promise = new Promise<T>(done => { resolve = done })
-  return { resolve, promise }
+  let reject!: (reason: unknown) => void
+  const promise = new Promise<T>((done, fail) => { resolve = done; reject = fail })
+  return { resolve, reject, promise }
 }
+beforeEach(() => {
+  vi.mocked(readTempResult).mockReturnValue(null)
+  vi.mocked(writeTempResult).mockReturnValue(true)
+  vi.mocked(imgPut).mockResolvedValue('temporary-image')
+})
 function setup() {
   const url = ref('blob:original')
   const seed = ref(41)
@@ -63,4 +72,94 @@ describe('manual archive ownership', () => {
     await tools.saveCurrentResult()
     expect(commit).toHaveBeenCalledTimes(2)
   })
+})
+
+function setupAutomatic(engine: 'anima' | 'krea2' | 'sd') {
+  const url = ref('')
+  const autoSave = ref(true)
+  const commit = vi.fn().mockResolvedValue({ id: 102 })
+  const context = ref({ char: 'nene', sceneId: 'sc001' })
+  const scope = effectScope(); scopes.push(scope)
+  let temp: TempResultRecord | null = null
+  vi.mocked(readTempResult).mockImplementation(() => temp)
+  vi.mocked(writeTempResult).mockImplementation(value => { temp = value; return true })
+  vi.mocked(clearTempResult).mockImplementation(() => { temp = null })
+  const tools = scope.run(() => useTempResult({
+    pb: { commitHistoryEntry: commit, flash: vi.fn() },
+    sd: { resultSeed: ref(41), resultPrompt: ref('fixture') },
+    drawEngine: ref(engine), animaState: ref({ resultContext: context.value }), resultContext: context,
+    displayResultUrl: computed(() => url.value), autoSaveToGallery: autoSave,
+    historyGenerationFields: () => ({}), commitJobResult: commit,
+  } as unknown as TempResultDeps))!
+  function deliver(id: string) {
+    url.value = 'blob:' + id
+    if (engine === 'sd') return tools.handleSdResult({ prompt: id, negative: '', size: '832x1216' } as Omit<SDQueueJob, 'id'>, url.value)
+    return tools.handleAnimaResult({
+      url: url.value, blob: new Blob([id]),
+      metadata: { engine, prompt: id, negative: '', seed: 41, width: 832, height: 1216 },
+    } as AnimaResult, null)
+  }
+  return { tools, autoSave, commit, deliver, scope, temp: () => temp }
+}
+
+describe.each(['anima', 'krea2', 'sd'] as const)('%s automatic archive ownership', engine => {
+  for (const outcome of ['success', 'failure'] as const) {
+    it(`old ${outcome} cannot mark, overwrite or remove the new temporary image`, async () => {
+      vi.stubGlobal('fetch', vi.fn(async () => new Response(new Blob(['pixels']))))
+      const pending = deferred<{ id: number }>()
+      const run = setupAutomatic(engine)
+      run.commit.mockReturnValueOnce(pending.promise)
+      const old = run.deliver('old')
+      run.autoSave.value = false
+      await run.deliver('new')
+      const temporary = run.temp()
+      expect(temporary).not.toBeNull()
+      if (outcome === 'success') pending.resolve({ id: 101 })
+      else pending.reject(new Error('old save failed'))
+      await old
+      expect(run.tools.resultArchived.value).toBe(false)
+      expect(run.tools.resultTemporary.value).toBe(true)
+      expect(run.temp()).toEqual(temporary)
+      expect(imgDelete).not.toHaveBeenCalled()
+      expect(clearTempResult).not.toHaveBeenCalled()
+    })
+  }
+  it('out-of-order successful saves preserve both commits but only mark the latest result', async () => {
+    const first = deferred<{ id: number }>()
+    const second = deferred<{ id: number }>()
+    const run = setupAutomatic(engine)
+    run.commit.mockReturnValueOnce(first.promise).mockReturnValueOnce(second.promise)
+    const old = run.deliver('old')
+    const newer = run.deliver('new')
+    second.resolve({ id: 102 }); await newer
+    first.resolve({ id: 101 }); await old
+    expect(run.commit).toHaveBeenCalledTimes(2)
+    expect(run.tools.displayedResultHistoryId.value).toBe(102)
+    expect(clearTempResult).toHaveBeenCalledTimes(1)
+  })
+  it('discard and scope disposal invalidate an outstanding completion', async () => {
+    const pending = deferred<{ id: number }>()
+    const run = setupAutomatic(engine)
+    run.commit.mockReturnValueOnce(pending.promise)
+    const saving = run.deliver('old')
+    run.tools.discardTemp()
+    run.scope.stop()
+    vi.mocked(clearTempResult).mockClear()
+    pending.resolve({ id: 101 }); await saving
+    expect(run.tools.resultArchived.value).toBe(false)
+    expect(clearTempResult).not.toHaveBeenCalled()
+  })
+})
+
+it('a late temporary blob cannot replace the newer temporary pointer', async () => {
+  const firstImage = deferred<string>()
+  const run = setupAutomatic('anima')
+  run.autoSave.value = false
+  vi.mocked(imgPut).mockReturnValueOnce(firstImage.promise).mockResolvedValueOnce('new-image')
+  const first = run.deliver('old')
+  await run.deliver('new')
+  firstImage.resolve('old-image'); await first
+  expect(run.temp()?.imageId).toBe('new-image')
+  expect(imgDelete).toHaveBeenCalledWith('old-image')
+  expect(imgDelete).not.toHaveBeenCalledWith('new-image')
 })

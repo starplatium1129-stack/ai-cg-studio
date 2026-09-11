@@ -6,6 +6,7 @@ import { normalizeBackup, type BackupFile } from '@/utils/backupCore'
 
 vi.mock('@/composables/useImageStore', () => ({ imgPutRecord: vi.fn(), imgDeleteMany: vi.fn() }))
 vi.mock('@/composables/useKVStore', () => ({ kvGet: vi.fn(), kvSetMany: vi.fn() }))
+vi.mock('./artworkMutation', () => ({ withArtworkMutation: (work: () => Promise<unknown>) => work() }))
 const backup = (): BackupFile => normalizeBackup({
   data: { history: [{ id: 'incoming', image_id: 'shared' }], projects: [{ id: 'project', imageId: 'shared' }], settings: { aics_theme: 'light' } },
   images: [{ id: 'shared', dataUrl: 'data:image/png;base64,YQ==' }],

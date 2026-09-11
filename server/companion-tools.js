@@ -57,7 +57,7 @@ var TOOL_DEFINITIONS = [
     type:'function',
     function:{
       name:'run_command',
-      description:'在 AI 工作区目录下执行一条本地命令（参数数组形式，无 shell 解释，120 秒超时）。用于运行 python 脚本、git 状态检查等操作。',
+      description:'仅在操作员启用 trusted 命令档后执行本地命令。进程以 AI 工作区为起点，但具有当前系统账户权限，并非文件沙箱；参数数组传递，120 秒超时。未启用时应如实告知，不可通过文件工具绕过。',
       parameters:{
         type:'object',
         properties:{

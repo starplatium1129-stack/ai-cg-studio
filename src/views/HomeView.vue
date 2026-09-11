@@ -202,6 +202,7 @@ import AnimatedSelection from '@/components/visual/AnimatedSelection.vue'
 import ArchiveStatePanel from '@/components/visual/ArchiveStatePanel.vue'
 import ArchiveIcon, { type ArchiveIconName } from '@/components/visual/ArchiveIcon.vue'
 import { kvInit, kvGet, kvSet } from '@/composables/useKVStore'
+import { withArtworkMutation } from '@/storage/artworkMutation'
 import { imgGet } from '@/composables/useImageStore'
 import { readRecent } from '@/utils/sceneUX'
 import { useScrollReveal } from '@/composables/useScrollReveal'
@@ -334,12 +335,17 @@ async function loadSceneHighlights() {
 
 async function loadRecentWorks() {
   try {
-    let history = parseArtworkRecords(await kvGet(ARTWORK_HISTORY_KV_KEY))
-    if (!history.length) {
-      let old: ArtworkRecord[] = []
-      try { old = parseArtworkRecords(JSON.parse(localStorage.getItem(ARTWORK_HISTORY_KV_KEY) || '[]')) } catch {}
-      if (old.length) { history = old; await kvSet(ARTWORK_HISTORY_KV_KEY, old); localStorage.removeItem(ARTWORK_HISTORY_KV_KEY) }
-    }
+    const history = await withArtworkMutation(async () => {
+      const current = parseArtworkRecords(await kvGet(ARTWORK_HISTORY_KV_KEY))
+      if (current.length) return current
+      let legacy: ArtworkRecord[] = []
+      try { legacy = parseArtworkRecords(JSON.parse(localStorage.getItem(ARTWORK_HISTORY_KV_KEY) || '[]')) } catch {}
+      if (legacy.length) {
+        await kvSet(ARTWORK_HISTORY_KV_KEY, legacy)
+        localStorage.removeItem(ARTWORK_HISTORY_KV_KEY)
+      }
+      return legacy
+    })
     // 历史按生成顺序 append，直接 slice 拿到的是最旧的三幅
     recentWorks.value = history.slice().sort((a, b) => artworkTimestamp(b) - artworkTimestamp(a)).slice(0, 3)
 
