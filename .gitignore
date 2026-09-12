@@ -60,8 +60,11 @@ assets/character-references/
 # 场景审计一次性导出（scripts/maintenance 审计脚本产物，不入库）
 /_audit_scenes.jsonl
 
-# 本地设计指导 skills（emilkowalski/skills，不进仓库）
-.agents/
+# AI agent skills：`.agents/skills/` 中的项目级 skills 进入版本控制；
+# 个人/第三方临时安装统一放到下面这些本地目录，避免和项目规范混在一起。
+.agents/local/
+.agents/vendor/
+.agents/.cache/
 skills-lock.json
 
 # 临时 UI 截图（Gemini 视觉复核用，不入库）
@@ -98,7 +101,6 @@ pnpm-workspace.yaml
 /data/popular-characters.json
 /data/scene-blueprints.json
 
-# scripts/archive：一次性历史脚本（占 scripts 目录 44
 # scripts/archive：一次性历史脚本（占 scripts 目录 44%，2026-08-29 审计出库）。
 # 不再跟踪；需要时从 git 历史（origin 保留完整历史）取回。
 scripts/archive/
