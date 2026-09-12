@@ -17,6 +17,8 @@
 
 协作执行规则单独见 [AGENTS.md](../AGENTS.md)。
 
+图像提示词维护见 [skill 入口](../.agents/skills/studio-prompt-craft/SKILL.md)；按任务选择 [Anima](../.agents/skills/studio-prompt-craft/references/anima.md)、[Krea](../.agents/skills/studio-prompt-craft/references/krea.md) 或 [数据写入与验收](../.agents/skills/studio-prompt-craft/references/delivery.md)，不默认全部读取。
+
 ## 当前审计与待办
 
 - [场景滚动与角色档案补全](archive/audits/scene-scroll-character-profiles-2026-09-12.md)：专家模式完整列表滚动、旧字段恢复显示与六位角色资料来源。

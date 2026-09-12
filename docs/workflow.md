@@ -25,7 +25,7 @@
 | 检查维护脚本孤儿 | `npm run wf -- audit:orphans --check`（已纳入 check 与 CI，候选须人工复核） |
 | 开发前端 / 启动网关 | `npm run wf -- dev:web` / `npm run wf -- dev:server`（分别在两个终端运行） |
 | 按当前改动验证 | `npm run wf -- gate:quick` |
-| 提交前全量验证 | `npm run wf -- gate:full` |
+| 跨域/构建链等全量验证 | `npm run wf -- gate:full` |
 | 检查本机桌面打包能力 | `npm run wf -- desktop:doctor --json`（只检测，不安装） |
 | 检查安装包网关资源完整性 | `npm run wf -- desktop:verify-gateway`（需要已暂存资源；隔离目录真实启动，打包前自动执行） |
 | 生成本机测试安装包 | `npm run wf -- desktop:package-local`（跳过压缩，不安装） |
@@ -87,12 +87,25 @@
 
 ## 门禁与构建
 
+按影响面选验证，不按“改了代码”或“准备提交”一律升级：
+
+| 本次改动 | 验证边界 |
+| --- | --- |
+| 文档、AGENTS、skill | 结构、链接、规则一致性及典型请求走查；不构建、不出图 |
+| 局部颜色、间距等样式 | 相关样式/对比度检查和受影响组件的双主题视觉检查；不默认跑 TypeScript、后端契约或全站回归 |
+| UI 行为或局部业务逻辑 | 定向行为测试，或显式选择 `gate:quick ui/server/data`；补受影响的浏览器流程 |
+| 依赖、配置、工作流、跨域重构、未知影响面，或用户明确要求 | `gate:full`，再按风险补浏览器/设备验收 |
+
+构建用于验证产物或准备同步，不能代替视觉/设备验收。同一内容的检查不因提交而重跑；后续修复只重跑受影响范围。已核对隔离与权限边界的测试可直接执行和修复，无需逐步请求批准。
+
+`gate:quick` 自动分类是保守兜底，测试文件/脚本路径会触发 full；已明确影响范围时可使用显式面积或定向入口。工具帮助中的“提交前”描述不表示所有提交都必须运行全量。本节规定选择原则，不改变脚本的实际分类行为。
+
 | 入口 | 实际范围 |
 | --- | --- |
 | gate:quick ui/server/data/all | 按变更面积分层；默认检测 Git 改动；脚本、依赖、配置及未知代码路径升级 full；纯文档跳过 |
 | check:quick | npm run check 的全部已注册并行检查 |
 | check:full | npm run validate：check + frontend + unit + contract；包含 check 内的 typecheck:app，不包含 build |
-| gate:full | typecheck + check + frontend + unit + contract + build，提交前完整入口 |
+| gate:full | typecheck + check + frontend + unit + contract + build，全量入口 |
 | build:web / build:runtime | 前端与预算/预压；服务 TypeScript 编译 |
 | check:style-debt | 样式字面值、颜色、动画和双主题全局/角色令牌对比度；动态组件另做视觉验收 |
 | check:monolith / check:pinned-scenes / check:rewrite | 体量、定稿与改写完整性；rewrite 交付需传 --delivery |
