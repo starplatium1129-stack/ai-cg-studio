@@ -19,6 +19,7 @@
 
 ## 按需查阅
 
+- [项目独立深度审查报告](archive/audits/project-independent-review-2026-09-11.md)：基于当前代码与实际行为的架构、门禁、安全、提示词与测试全景证据审查。
 - [办公机代码收尾与验证](archive/audits/office-code-2026-09-11.md)：真实工具取消、首次入册、按需加载、脱敏诊断、桌宠演出与浏览器安全策略复验。
 - [独立审计问题修复与办公机验收](archive/audits/office-audit-fixes-2026-09-12.md)：跨窗口保存、异步结果归属、SD 权限、文件工具与 Windows 命令、语音策略及主力机验收边界。
 - [工作台包体优化与办公机验收](archive/audits/workbench-bundle-2026-09-12.md)：真实按需加载、路由与依赖体积、312 项浏览器回归、性能样本及剩余预算边界。

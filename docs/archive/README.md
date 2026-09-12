@@ -9,6 +9,7 @@
 
 ## 审计快照
 
+- [项目独立深度审查报告（2026-09-11）](audits/project-independent-review-2026-09-11.md)
 - [办公机代码收尾与验证（2026-09-11）](audits/office-code-2026-09-11.md)
 
 - [全项目场景审计：目标与批次](audits/all-scene-audit-2026-09-08.md)
