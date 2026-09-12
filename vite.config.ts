@@ -89,6 +89,21 @@ export default defineConfig(async ({ mode }) => {
           if (id.includes('node_modules/@vueuse/')) {
             return 'motion'
           }
+          // 共享基础模块单独成块：client/storageKeys/characters 等被入口链与
+          // 多个异步块共同引用，不固定时会被 rollup 吸进 live2d 手工块；
+          // vite/preload-helper 是所有动态导入 chunk 的公共助手，同样必须
+          // 固定——否则入口和所有路由闭包会静态背上整个 live2d 依赖（73KB）。
+          if (id.includes('src/api/client') ||
+              id.includes('src/api/mediaStatusApi') ||
+              id.includes('src/utils/storageKeys') ||
+              id.includes('src/utils/localDiagnostics') ||
+              id.includes('src/utils/sdStatus') ||
+              id.includes('src/config/characters') ||
+              id.includes('companionAffection') ||
+              id.includes('useCompanionAffection') ||
+              id.includes('vite/preload-helper')) {
+            return 'shared'
+          }
           // 提示词策略与热门内容单独成块：改一个词条不应让全量 vendor 缓存失效
           if (id.includes('src/utils/promptPolicy') ||
               id.includes('src/utils/promptCompiler') ||
