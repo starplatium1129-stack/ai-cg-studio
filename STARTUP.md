@@ -8,7 +8,7 @@
 2. 执行 `npm run build` 生成网页，再执行 `npm start` 编译服务端 TypeScript 并启动网关。默认访问 `http://127.0.0.1:3000`。
 3. 开发网页时另外执行 `npm run wf -- dev:web`，访问 `http://localhost:5173`；保留网关进程，它提供 `/api`、`/data` 与素材。页面能打开但素材一直加载时，先检查网关是否在线。
 4. 数据聚合产物由现有构建流程补齐，不把生成的 `services/*.js` 或聚合 JSON 手工复制回 Git。源码分片修改后的构建入口见 [统一工作流](docs/workflow.md)。
-5. 在这台机器上执行 `npm run wf -- gate:full` 验证代码、数据契约和构建。缺参考素材的办公机才使用 `AICS_REFERENCE_AUDIT_MODE=structure`；它只验证索引结构，不能算作图片交付。
+5. 在这台机器上执行 `npm run wf -- gate:full` 验证代码、数据契约和构建。参考媒体不入 Git：未配置素材根（`AI_WORKSPACE_ROOT` 或 `AICS_CHARACTER_REF_ROOT`）的机器上，`npm run check` 与 `gate:full` 的 `content-contracts`、`ref-urls` 两步会因参考图缺失而失败——这是预期防线，先按下文恢复素材再跑完整门禁，不要改写索引迁就缺图。只做索引结构核对的办公机可设 `AICS_REFERENCE_AUDIT_MODE=structure`；它只验证索引结构，不能算作图片交付。
 
 ## 本机 AI 服务与模型
 
