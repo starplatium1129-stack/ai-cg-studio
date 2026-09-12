@@ -39,7 +39,8 @@ function update() {
   el.style.transform = destination
   if (initialized && previous.width && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
     const origin = 'translate(' + (previous.left - host.left + parent.scrollLeft - parent.clientLeft) + 'px,' + (previous.top - host.top + parent.scrollTop - parent.clientTop) + 'px) scale(' + previous.width / next.width + ',' + previous.height / next.height + ')'
-    animation = el.animate([{ transform: origin }, { transform: destination }], { duration: 420, easing: 'cubic-bezier(.22,1,.36,1)' })
+    const duration = parseFloat(getComputedStyle(el).getPropertyValue('--motion-control')) || 200
+    animation = el.animate([{ transform: origin }, { transform: destination }], { duration, easing: 'cubic-bezier(.22,1,.36,1)' })
   }
   initialized = true
 }
@@ -60,5 +61,5 @@ watch(() => props.target, schedule)
 onUnmounted(() => { document.fonts?.removeEventListener('loadingdone', schedule); media?.removeEventListener('change', schedule); resize?.disconnect(); mutations?.disconnect(); animation?.cancel(); cancelAnimationFrame(frame); parent?.removeEventListener('scroll', schedule) })
 </script>
 <style scoped>
-.animated-selection { position: absolute; inset: 0 auto auto 0; pointer-events: none; opacity: 0; transform-origin: 0 0; border-radius: var(--r-md); background: var(--bg-elevated); border: 1px solid var(--border-soft); box-shadow: inset 0 1px 0 var(--glass-highlight), var(--shadow-sm); }
+.animated-selection { position: absolute; inset: 0 auto auto 0; pointer-events: none; opacity: 0; transform-origin: 0 0; border-radius: var(--r-md); background: var(--bg-elevated); border: 1px solid var(--border-soft); box-shadow: none; }
 </style>

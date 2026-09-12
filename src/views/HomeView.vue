@@ -26,6 +26,49 @@
       </div>
     </section>
 
+    <!-- 最近创作 -->
+    <section class="container home-section home-resume" v-if="recentWorks.length">
+      <div class="home-section-head">
+        <h2>最近创作</h2>
+        <RouterLink to="/gallery" class="link">打开我的作品 →</RouterLink>
+      </div>
+      <div class="recent-grid stagger-container">
+        <RouterLink
+          v-for="h in recentWorks"
+          :key="h.id"
+          class="recent-card"
+          :to="`/prompt-builder?regen=${encodeURIComponent(h.id)}`"
+        >
+          <div class="recent-cover" :data-image-id="h.image_id">
+            <img v-if="coverUrl(h)" :src="coverUrl(h)" alt="" class="recent-cover-img" loading="lazy" decoding="async" />
+            <ArchiveIcon v-else name="image" class="placeholder" />
+          </div>
+          <div class="recent-body">
+            <div class="recent-title">{{ h.sceneTitle || h.scene || '未命名' }}</div>
+            <div class="recent-meta">{{ charName(h.character) }} · {{ fmtDate(h.timestamp) }}</div>
+          </div>
+        </RouterLink>
+      </div>
+    </section>
+    <!-- 最近用过的场景 -->
+    <section class="container home-section" v-if="recentScenes.length" data-reveal>
+      <div class="home-section-head">
+        <h2>最近用过的场景</h2>
+        <RouterLink to="/scene-explorer" class="link">继续找灵感 →</RouterLink>
+      </div>
+      <div class="recent-scenes-row">
+        <!-- 同上：进场景，不自动开跑 -->
+        <RouterLink
+          v-for="s in recentScenes"
+          :key="s.id"
+          class="sc-link"
+          :to="`/prompt-builder?scene=${encodeURIComponent(s.id)}&step=4`"
+        >
+          <SceneCard :scene="s" mode="strip" :clickable="false" />
+        </RouterLink>
+      </div>
+    </section>
+
     <HomeCreationGuide />
     <HomeArtJournal :scenes="featuredScenes" />
 
@@ -133,34 +176,10 @@
       </div>
     </section>
 
-    <!-- 最近用过的场景 -->
-    <section class="container home-section" v-if="recentScenes.length" data-reveal>
-      <div class="home-section-head">
-        <h2>最近用过的场景</h2>
-        <RouterLink to="/scene-explorer" class="link">继续找灵感 →</RouterLink>
-      </div>
-      <div class="recent-scenes-row">
-        <!-- 同上：进场景，不自动开跑 -->
-        <RouterLink
-          v-for="s in recentScenes"
-          :key="s.id"
-          class="sc-link"
-          :to="`/prompt-builder?scene=${encodeURIComponent(s.id)}&step=4`"
-        >
-          <SceneCard :scene="s" mode="strip" :clickable="false" />
-        </RouterLink>
-      </div>
-    </section>
-
-    <!-- 最近创作 -->
-    <section class="container home-section" data-reveal>
-      <div class="home-section-head">
-        <h2>最近创作</h2>
-        <RouterLink to="/gallery" class="link">打开我的作品 →</RouterLink>
-      </div>
-      <div class="recent-grid stagger-container" ref="recentWorksEl">
+    <section class="container home-section" v-if="!recentWorks.length" data-reveal>
+      <div class="home-section-head"><h2>最近创作</h2><RouterLink to="/gallery" class="link">打开我的作品 →</RouterLink></div>
+      <div class="recent-grid">
         <ArchiveStatePanel
-          v-if="!recentWorks.length"
           class="recent-empty-state"
           compact
           kind="empty"
@@ -169,23 +188,6 @@
         >
           <RouterLink to="/prompt-builder" class="btn btn-primary"><ArchiveIcon name="spark" /> 开始绘制</RouterLink>
         </ArchiveStatePanel>
-        <template v-else>
-          <RouterLink
-            v-for="h in recentWorks"
-            :key="h.id"
-            class="recent-card"
-            :to="`/prompt-builder?regen=${encodeURIComponent(h.id)}`"
-          >
-            <div class="recent-cover" :data-image-id="h.image_id">
-              <img v-if="coverUrl(h)" :src="coverUrl(h)" alt="" class="recent-cover-img" loading="lazy" decoding="async" />
-              <ArchiveIcon v-else name="image" class="placeholder" />
-            </div>
-            <div class="recent-body">
-              <div class="recent-title">{{ h.sceneTitle || h.scene || '未命名' }}</div>
-              <div class="recent-meta">{{ charName(h.character) }} · {{ fmtDate(h.timestamp) }}</div>
-            </div>
-          </RouterLink>
-        </template>
       </div>
     </section>
   </article>

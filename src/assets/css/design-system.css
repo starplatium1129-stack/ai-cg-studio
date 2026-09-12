@@ -1259,7 +1259,7 @@ tr:hover td { background: var(--bg-hover); }
   .pulse, .spin, .skeleton-shimmer,
   .route-atmosphere *,
   .nav-links > a::after,
-  [data-reveal], .animate-in, [class*="stagger-in"] {
+  [data-reveal], .animate-in, [class*="stagger-in"], .stagger-item, .stagger-container > * {
     animation:none !important;
   }
   .layer-pop-enter-active > :first-child,
@@ -1524,24 +1524,22 @@ body:has(.pb) .route-atmosphere .route-index {
 .animate-in { animation: fade-in .28s var(--ease-out) both; }
 
 @keyframes stagger-in {
-  from { opacity: 0; transform: translateY(12px) scale(0.985); }
+  from { opacity: 0; transform: translateY(4px); }
   to   { opacity: 1; transform: none; }
 }
 .stagger-item {
-  animation: stagger-in 0.35s var(--ease-out) both;
+  animation: stagger-in var(--motion-control) var(--ease-out) both;
 }
 /* 容器内的直接子项自动级联入场：列表只需挂 stagger-container 类 */
 .stagger-container > * {
-  animation: stagger-in 0.35s var(--ease-out) both;
+  animation: stagger-in var(--motion-control) var(--ease-out) both;
 }
-.stagger-container > *:nth-child(1) { animation-delay: 0.03s; }
-.stagger-container > *:nth-child(2) { animation-delay: 0.07s; }
-.stagger-container > *:nth-child(3) { animation-delay: 0.11s; }
-.stagger-container > *:nth-child(4) { animation-delay: 0.15s; }
-.stagger-container > *:nth-child(5) { animation-delay: 0.19s; }
-.stagger-container > *:nth-child(6) { animation-delay: 0.23s; }
-/* 2026-08-22 动效审计 LOW：第 7 项起波次封顶（原 delay 归零反而先于第 6 项入场，画廊 60 张/页波次断裂） */
-.stagger-container > *:nth-child(n+7) { animation-delay: 0.24s; }
+.stagger-container > *:nth-child(2) { animation-delay: 20ms; }
+.stagger-container > *:nth-child(3) { animation-delay: 40ms; }
+/* 首屏轻微错峰，后续卡片同时落位，避免筛选时等待长波次。 */
+.stagger-container > *:nth-child(n+4) { animation-delay: 60ms; }
+/* 高频筛选直接呈现结果，保留首页与静态目录的轻入场。 */
+:is(.scene-grid, .showcase-grid, .gallery-wall).stagger-container > * { animation: none; }
 
 /* ── Archive 质感扩展：硬质面板、刻度、微型坐标与网格底纹 ── */
 .archive-plate {

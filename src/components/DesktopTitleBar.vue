@@ -73,7 +73,7 @@ onUnmounted(() => {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 38px;
+  height: var(--desktop-chrome-height, 38px);
   padding: 0 0 0 14px;
   background: var(--bg-surface);
   box-shadow: inset 0 -1px 0 var(--border-soft);
@@ -163,8 +163,10 @@ onUnmounted(() => {
 
 <style>
 html.aics-desktop-shell {
+  --desktop-chrome-height: 38px;
   height: 100%;
 }
+html.aics-desktop-shell .page-root { min-height: calc(100dvh - var(--desktop-chrome-height)); }
 html.aics-desktop-shell body {
   height: 100%;
   overflow-y: auto;

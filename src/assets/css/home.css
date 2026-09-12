@@ -1,16 +1,16 @@
 /* Character opening: artwork and an opaque reading plane share one stage. */
 .home-page { padding-bottom: var(--s-8); }
 .home-opening { padding-top: var(--s-6); }
-.home-hero { position: relative; isolation: isolate; display: grid; grid-template-columns: 1fr 1.25fr; min-height: 620px; overflow: hidden; border-radius: var(--r-stage); background: var(--bg-deep); border: 1px solid var(--border-soft); }
+.home-hero { position: relative; isolation: isolate; display: grid; grid-template-columns: 1fr 1.25fr; min-height: clamp(440px, 66dvh, 620px); overflow: hidden; border-radius: var(--r-stage); background: var(--bg-deep); border: 1px solid var(--border-soft); }
 /* 首页角色视觉取 design-system 的全局角色令牌（--nene-violet / --natsume-amber）。
    2026-09-07 起全项目已统一到这一组值：director/tokens.css、
    characterParticleTheme.ts、config/characters.ts 与此处同源，改色需四处同步。
    accent-hover 必须与 accent 同色系（提亮变体），不可拿文字色顶替。 */
 .home-hero[data-muse="nene"] { --accent: var(--nene-violet); --accent-hover: color-mix(in srgb, var(--nene-violet) 78%, #fff); }
 .home-hero[data-muse="natsume"] { --accent: var(--natsume-amber); --accent-hover: color-mix(in srgb, var(--natsume-amber) 78%, #fff); }
-.hero-copy { position: relative; z-index: var(--z-raised); min-width: 0; padding: var(--s-8) 0 var(--s-7) var(--s-7); align-self: center; }
+.hero-copy { position: relative; z-index: var(--z-raised); min-width: 0; padding: var(--s-6) 0 var(--s-7) var(--s-7); align-self: center; }
 .hero-register { color: var(--text-secondary); font-size: var(--fs-label); letter-spacing: .12em; }
-.hero-title { margin: var(--s-6) 0 var(--s-5); font: 500 clamp(2.4rem, 3.6vw, 3.5rem)/1.3 var(--font-serif); letter-spacing: -.04em; color: var(--text-primary); }
+.hero-title { margin: var(--s-4) 0 var(--s-4); font: 500 clamp(2.4rem, 3.6vw, 3.5rem)/1.3 var(--font-serif); letter-spacing: -.04em; color: var(--text-primary); }
 .hero-title-accent { color: var(--accent); }
 .hero-sub { color: var(--text-secondary); font-size: var(--fs-body); line-height: var(--lh-loose); margin-bottom: var(--s-6); }
 .ctas { display: flex; flex-wrap: wrap; gap: var(--s-3); }
@@ -25,7 +25,7 @@
 .orbit-label span { display: block; color: var(--accent); font-size: var(--fs-label-xs); letter-spacing: .14em; margin-bottom: var(--s-2); }
 .orbit-label strong { color: var(--text-primary); font: 400 var(--fs-title-xs)/var(--lh-loose) var(--font-serif); }
 .hero-jp { position: absolute; bottom: var(--s-4); left: var(--s-7); color: var(--text-muted); font: 400 var(--fs-label-xs)/var(--lh-label) var(--font-serif); letter-spacing: .14em; }
-.hero-muses { position: relative; isolation: isolate; display: flex; width: fit-content; flex-wrap: wrap; gap: var(--s-2); margin-top: var(--s-7); }
+.hero-muses { position: relative; isolation: isolate; display: flex; width: fit-content; flex-wrap: wrap; gap: var(--s-2); margin-top: var(--s-4); }
 .hero-muses button { position: relative; z-index: var(--z-raised); display: inline-flex; align-items: center; gap: var(--s-2); min-height: 44px; padding: var(--s-2) var(--s-3); border: 1px solid transparent; border-radius: var(--r-pill); color: var(--text-muted); background: transparent; font: 500 var(--fs-label)/var(--lh-label) var(--font-sans); cursor: pointer; transition: transform var(--motion-hover); }
 .hero-muses button[aria-pressed="true"] { background: transparent; color: var(--text-primary); border-color: transparent; }
 .home-hero .hero-muses .animated-selection { background: color-mix(in srgb, var(--accent) 12%, var(--bg-surface)); border-color: color-mix(in srgb, var(--accent) 32%, var(--border-soft)); }
@@ -77,7 +77,7 @@
 .recent-cover .placeholder { color: var(--text-muted); width: 32px; height: 32px; }
 .recent-body { padding: var(--s-4); }
 .recent-title { font-size: var(--fs-body-sm); font-weight: 600; }
-.recent-meta { margin-top: var(--s-1); font-size: var(--fs-label-xs); color: var(--text-muted); }
+.recent-meta { margin-top: var(--s-1); font-size: var(--fs-label-sm); color: var(--text-secondary); }
 .recent-scenes-row > * { flex: 0 0 min(300px, 82vw); }
 .recent-grid .recent-empty-state { grid-column: 1 / -1; margin: 0; max-width: none; width: 100%; }
 .tool-card:focus-visible, .pop-card-mini:focus-visible, .sc-link:focus-visible, .recent-card:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }

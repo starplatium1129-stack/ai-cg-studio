@@ -9,22 +9,22 @@
   /* 锚点跳转时标题上方的额外留白 */
   --drawing-anchor-offset: 20px;
   max-width: 1680px;
-  padding: var(--s-6) var(--s-5);
+  padding: var(--s-4) var(--s-5);
 }
 body:has(.pb.journal-workspace) .route-atmosphere-field,
 body:has(.pb.journal-workspace) .sakura-fall { display: none; }
 .pb.journal-workspace > .nav-back { display: none; }
-.pb.journal-workspace .workspace-archive-bar { min-height: 0; padding: var(--s-2) var(--s-4); margin-bottom: var(--s-4); background: transparent; border-color: var(--border-soft); box-shadow: none; }
+.pb.journal-workspace .workspace-archive-bar { min-height: 0; padding: 0 0 var(--s-2); margin-bottom: var(--s-3); background: transparent; border: 0; box-shadow: none; }
 /* 2026-09-07: .workspace-radar / .workspace-line 的 DOM 已随归档栏精简移除，
    只保留仍在渲染的 .workspace-code（工作台不展示归档编号）。 */
 .pb.journal-workspace .workspace-code { display: none; }
 .pb.journal-workspace .workspace-copy { flex: 1; display: flex; flex-direction: row; gap: var(--s-3); align-items: center; min-width: 0; }
-.pb.journal-workspace .workspace-copy strong { color: var(--text-muted); font-size: var(--fs-mono-xs); }
+.pb.journal-workspace .workspace-copy strong { display: none; }
 .pb.journal-workspace .pb-topline { align-items: flex-start; gap: var(--s-5); margin-bottom: var(--s-4); }
-.pb.journal-workspace .pb-header { min-width: 180px; max-width: 420px; }
+.pb.journal-workspace .pb-header { min-width: 180px; max-width: 420px; flex-shrink: 0; }
 .pb.journal-workspace .pb-title { font-size: var(--fs-title); font-weight: 600; }
 .pb.journal-workspace .pb-kicker { display: none; }
-.pb.journal-workspace .pb-sub { margin-top: var(--s-2); line-height: var(--lh-body); }
+.pb.journal-workspace .pb-sub { margin-top: var(--s-2); font-size: var(--fs-label); line-height: var(--lh-body); color: var(--text-secondary); }
 .pb.journal-workspace .pb-top-actions { gap: var(--s-2); }
 .pb.journal-workspace .focus-mode-btn, .pb.journal-workspace .utility-trigger,
 .pb.journal-workspace .api-status .badge { background: var(--bg-surface); box-shadow: none; backdrop-filter: none; border-color: var(--border-soft); }
@@ -38,7 +38,7 @@ body:has(.pb.journal-workspace) .sakura-fall { display: none; }
 .pb.journal-workspace .panel, .pb.journal-workspace .result-frame { border-color: var(--border-soft); border-radius: var(--r-xl); box-shadow: none; background: var(--bg-surface); }
 .pb.journal-workspace .panel::before, .pb.journal-workspace .panel::after { display: none; }
 .pb.journal-workspace .panel-title { letter-spacing: .02em; font-weight: 600; }
-.pb.journal-workspace .stage-placeholder { min-height: clamp(420px, 55vh, 680px); max-height: none; border-color: var(--border-soft); border-radius: var(--r-xl); background: radial-gradient(ellipse at 85% 100%, var(--character-soft), transparent 60%), var(--bg-deep); box-shadow: none; transition: none; }
+.pb.journal-workspace .stage-placeholder { min-height: clamp(280px, calc(100dvh - 390px - var(--desktop-chrome-height, 0px)), 580px); max-height: none; border-color: var(--border-soft); border-radius: var(--r-xl); background: radial-gradient(ellipse at 85% 100%, var(--character-soft), transparent 60%), var(--bg-deep); box-shadow: none; transition: none; }
 .pb.journal-workspace .stage-placeholder::before { background: none; }
 .pb.journal-workspace .stage-chrome { background: transparent; box-shadow: none; border: 0; backdrop-filter: none; }
 .pb.journal-workspace .stage-muse { animation: none; filter: none; }
@@ -46,7 +46,7 @@ body:has(.pb.journal-workspace) .sakura-fall { display: none; }
 .pb.journal-workspace .stage-placeholder-title { font-size: var(--fs-title-sm); line-height: var(--lh-label); }
 .pb.journal-workspace .stage-placeholder-copy { max-width: 380px; color: var(--text-secondary); }
 .pb.journal-workspace .stage-quick-actions { gap: var(--s-2); }
-.pb.journal-workspace .stage-quick-actions .btn { font-size: var(--fs-label-sm); }
+.pb.journal-workspace .stage-quick-actions .btn { font-size: var(--fs-label); }
 .pb.journal-workspace .stage-quick-actions .btn-ghost { background: var(--bg-surface); }
 .pb.journal-workspace .result-image-wrap { border-color: var(--border-soft); border-radius: var(--r-xl); box-shadow: none; }
 .pb.journal-workspace .gen-bar { top: var(--drawing-sticky-top); padding: var(--s-3) var(--s-4); background: var(--bg-surface); border-color: var(--border-soft); border-radius: var(--r-lg); box-shadow: none; backdrop-filter: none; transition: none; }
@@ -77,7 +77,7 @@ body:has(.pb.journal-workspace) .sakura-fall { display: none; }
 @media (max-width: 600px) {
   .pb.journal-workspace { padding: var(--s-4); }
   .pb.journal-workspace .workspace-copy strong, .pb.journal-workspace .workspace-state { display: none; }
-  .pb.journal-workspace .api-status { flex-wrap: wrap; min-width: 0; }
+  .pb.journal-workspace .api-status { width: 100%; flex-wrap: wrap; min-width: 0; justify-content: space-between; }
   .pb.journal-workspace .api-status .badge { max-width: 100%; white-space: normal; text-align: left; }
   .pb.journal-workspace .stage-placeholder { min-height: 360px; }
   .pb.journal-workspace .stage-quick-actions { flex-direction: column; }

@@ -13,7 +13,7 @@
   >
 
     <DrawingTaskObserver :sd="sd" :anima="animaSession" />
-    <WorkspaceArchiveBar v-if="pb.directorMode !== 'pro'"
+    <WorkspaceArchiveBar v-if="pb.directorMode !== 'pro' && (pb.isPopular || pb.activeScene)"
       chapter="01"
       title="绘遇工作台"
       :subtitle="pb.isPopular ? popularCharacter?.displayName || '热门角色' : (pb.activeScene?.title || (pb.directorMode === 'basic' ? '场景模式' : '专家模式'))"
@@ -46,21 +46,21 @@
           <span class="focus-mode-label">{{ pb.focusMode ? '退出专注' : '专注成片' }}</span>
         </button>
         <RandomInspirationButton />
-        <div class="api-status">
-          <button class="badge" :class="engineOnline ? 'badge-online' : 'badge-offline'" type="button"
-            :title="engineOnline ? '点击重新检测' : `${engineStatusText}；点击重新检测`"
-            @click="recheckEngineConnection">
-            <ArchiveIcon :name="engineOnline ? 'success' : 'warning'" />
-            <span>{{ engineOnline ? `${drawEngineLabel} 已连接` : (pb.directorMode === 'pro' ? `${drawEngineLabel} 未连接` : engineStatusText) }}</span>
-          </button>
-          <RouterLink v-if="!engineOnline" class="api-recovery-link" to="/control">控制面板</RouterLink>
-        </div>
-
         <PromptDataTools
           :blueprint-data="currentBlueprintData"
           @flash="pb.flash"
           @load-blueprint="handleLoadBlueprint"
         />
+        <div class="api-status">
+          <button class="badge" :class="engineOnline ? 'badge-online' : 'badge-offline'" type="button"
+            :title="engineOnline ? '点击重新检测' : `${engineStatusText}；点击重新检测`"
+            @click="recheckEngineConnection">
+            <ArchiveIcon :name="engineOnline ? 'success' : 'warning'" />
+            <span>{{ drawEngineLabel }} {{ engineOnline ? '已连接' : '未连接' }}</span>
+          </button>
+          <RouterLink v-if="!engineOnline" class="api-recovery-link" to="/control">控制面板</RouterLink>
+        </div>
+
       </div>
     </div>
 
