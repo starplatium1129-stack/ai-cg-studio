@@ -7,7 +7,7 @@ export interface SceneEditorModalDeps {
   scenes: Ref<SceneDraft[]>
   curation: Ref<CurationData>
   markDirty: (message: string) => void
-  /** 向服务端申请下一个稳定场景 ID（排除活跃+已退役）；null 时回退本地推算。 */
+  /** 向服务端申请下一个稳定场景 ID（排除活跃+已退役）；null 时禁止分配，避免重用已退役身份。 */
   nextSceneId: () => Promise<string | null>
 }
 
@@ -81,23 +81,25 @@ export function useSceneEditorModal(deps: SceneEditorModalDeps) {
     })
   }
 
-  /** 本地推算候选 ID：列表最大号 +1。仅作服务端分配不可用时的回退，
-   *  保存时服务端仍会校验唯一性并拒绝已退役身份（计划 006 D5）。 */
-  function localNextId(): string {
-    const maxId = scenes.value.reduce((m, s) => Math.max(m, parseInt(String(s.id).replace('sc', '')) || 0), 0)
-    return 'sc' + String(maxId + 1).padStart(3, '0')
-  }
-
-  async function allocateId(): Promise<string> {
+  // 服务端返回候选号而非预留号；会话预留也防止并发复制取得同号。
+  const allocatedIds = new Set<string>()
+  async function allocateId(): Promise<string | null> {
     try {
-      return (await deps.nextSceneId()) ?? localNextId()
-    } catch {
-      return localNextId()
-    }
+      const candidate = await deps.nextSceneId()
+      if (!candidate || !/^sc\d{3}$/.test(candidate)) return null
+      let number = Number(candidate.slice(2))
+      const occupied = new Set([...allocatedIds, ...scenes.value.map(scene => scene.id)])
+      while (number <= 999 && occupied.has('sc' + String(number).padStart(3, '0'))) number++
+      if (number > 999) return null
+      const id = 'sc' + String(number).padStart(3, '0')
+      allocatedIds.add(id)
+      return id
+    } catch { return null }
   }
 
   async function openAddModal() {
     const id = await allocateId()
+    if (!id) return
     editing.value = blankScene()
     editing.value.id = id
     editingId.value = ''
@@ -182,7 +184,9 @@ export function useSceneEditorModal(deps: SceneEditorModalDeps) {
     const source = scenes.value.find(s => s.id === id)
     if (!source) return
     const copy = JSON.parse(JSON.stringify(source)) as SceneDraft
-    copy.id = await allocateId()
+    const allocatedId = await allocateId()
+    if (!allocatedId) return
+    copy.id = allocatedId
     copy.title = source.title + ' · 副本'
     scenes.value.push(copy)
     markDirty('已复制场景，请编辑副本内容')

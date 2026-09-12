@@ -20,20 +20,21 @@ const store = require('./scene-store');
 
 const shardsDir = store.shardsDir;
 
-function readJsonSafe(source, fallback) {
-  try {
-    return store.readJson(source);
-  } catch (error) {
-    return fallback;
-  }
-}
-
 /** 读取已退役场景 ID 集合；文件缺失视为空（fresh clone）。 */
 function readRetiredSceneIds(dataDir) {
   const dir = dataDir || path.join(shardsDir, '..');
-  const data = readJsonSafe(path.join(dir, 'retired-scenes.json'), null);
-  const records = data && Array.isArray(data.records) ? data.records : [];
-  return new Set(records.map((record) => String(record && record.id || '')).filter(Boolean));
+  let data;
+  try {
+    data = store.readJson(path.join(dir, 'retired-scenes.json'));
+  } catch (error) {
+    if (error.code === 'ENOENT') return new Set();
+    throw new Error('retired-scenes.json 无法读取，停止场景写入: ' + error.message);
+  }
+  if (!data || !Array.isArray(data.records)
+    || data.records.some((record) => !record || typeof record.id !== 'string' || !record.id.trim())) {
+    throw new Error('retired-scenes.json 格式无效，停止场景写入');
+  }
+  return new Set(data.records.map((record) => record.id));
 }
 
 /** 写入侧分配下一个稳定 ID：跳过全部活跃与已退役 ID（不复用旧身份）。
@@ -71,6 +72,21 @@ function verifyShardIntegrity() {
   } catch (error) {
     return { ok: false, problems: ['manifest.json 无法读取: ' + error.message] };
   }
+  if (!manifest || !Array.isArray(manifest.files) || !manifest.files.length) {
+    return { ok: false, problems: ['manifest.json 必须声明非空 files 数组'] };
+  }
+  const manifestNames = new Set();
+  for (const entry of manifest.files) {
+    if (!entry || typeof entry.file !== 'string'
+      || !/^[a-zA-Z0-9_-]+\.json$/.test(entry.file) || entry.file === 'manifest.json') {
+      problems.push('manifest.json 包含无效分片文件名（必须是目录内的基础 JSON 文件名）');
+    } else if (manifestNames.has(entry.file)) {
+      problems.push('manifest.json 重复声明 ' + entry.file);
+    } else {
+      manifestNames.add(entry.file);
+    }
+  }
+  if (problems.length) return { ok: false, problems };
   const declared = new Set((manifest.files || []).map((entry) => entry.file));
   const declaredPrefixes = new Set((manifest.files || []).map((entry) => groupPrefix(entry.file)));
   const characterOf = new Map((manifest.files || []).map((entry) => [entry.file, entry.character]));
@@ -84,37 +100,35 @@ function verifyShardIntegrity() {
     } catch (error) {
       return { ok: false, problems: ['data/scenes 目录无法读取: ' + error.message] };
     }
-    // 批次形态：base.1.json 存在时按 1..N 展开；否则单文件 base.json
-    const inBatchMode = files.includes(base + '.1.json');
-    const numbers = files
-      .filter((name) => name.startsWith(base + '.') && /^\.\d+\.json$/.test(name.slice(base.length)))
+    const batchFiles = files
+      .filter((name) => name.startsWith(base + '.') && /^\.\d+\.json$/.test(name.slice(base.length)));
+    for (const name of batchFiles) {
+      const suffix = name.slice(base.length);
+      if (!/^\.[1-9]\d*\.json$/.test(suffix) || !Number.isSafeInteger(Number(suffix.slice(1, -5)))) {
+        problems.push(name + ': 非规范批次编号（须从 .1 开始且无前导零）');
+      }
+    }
+    const numbers = batchFiles
       .map((name) => Number(name.slice(base.length + 1, -5)))
       .sort((a, b) => a - b);
-    if (inBatchMode) {
-      if (!numbers.length) problems.push(base + ': 声明为批次形态但没有批次文件');
+    // 任意批次文件都必须校验；缺少 .1 时读取器会退回单文件，仍有截断风险。
+    if (numbers.length) {
       if (files.includes(entry.file)) problems.push(base + ': 单文件与批次文件并存（展开时单文件会被忽略，需先重切）');
-      for (let i = 1; i <= (numbers.length ? numbers[numbers.length - 1] : 0); i++) {
-        if (!numbers.includes(i)) {
-          // 缺号本身可容忍（清空批次可保留空文件），缺号之后还有数据才是读取截断风险
-          const beyond = numbers.filter((n) => n > i);
-          if (beyond.length) {
-            problems.push(base + ': 批次缺号 .' + i + ' 且其后仍有分片 '
-              + beyond.map((n) => '.' + n).join(',') + '（读取会截断，属孤立分片）');
-          }
+      let expected = 1;
+      for (const number of numbers) {
+        if (number > expected) {
+          problems.push(base + ': 批次缺号 .' + expected + ' 且其后仍有分片 .'
+            + number + '（读取会截断，属孤立分片）');
         }
+        expected = number + 1;
       }
     } else if (!files.includes(entry.file)) {
       problems.push('manifest 声明的 ' + entry.file + ' 不存在');
     }
-    // 目录里属于该组但展开逻辑读不到的文件（孤立分片）
-    for (const name of files) {
-      if (!name.startsWith(base + '.') || !/\.\d+\.json$/.test(name)) continue;
-      if (!numbers.includes(Number(name.slice(base.length + 1, -5)))) {
-        problems.push(name + ': 孤立分片（超出连续批次范围，读取时会被忽略）');
-      }
-    }
     // 内容层：JSON 可读、ID 唯一、char 归属与 manifest 一致
-    for (const file of store.expandShardFiles(entry)) {
+    const groupFiles = files.filter((name) => name === entry.file
+      || (name.startsWith(base + '.') && /^\.\d+\.json$/.test(name.slice(base.length))));
+    for (const file of groupFiles) {
       let scenes;
       try {
         scenes = store.readJson(path.join(shardsDir, file));
@@ -182,6 +196,8 @@ function groupFileOrder(entry, workingFiles) {
  * @returns {{ addedIds:string[], updatedIds:string[], removedIds:string[], touchedFiles:string[] }}
  */
 function applySceneChanges(incoming, previous, options) {
+  const integrity = verifyShardIntegrity();
+  if (!integrity.ok) throw new Error('场景分片完整性检查失败: ' + integrity.problems.join('; '));
   const options_ = options || {};
   const retiredIds = options_.retiredIds || new Set();
   /** fileName → 场景数组（工作副本，最后统一落盘） */
@@ -221,6 +237,12 @@ function applySceneChanges(incoming, previous, options) {
         const renamed = base + '.1.json';
         working.set(renamed, lastScenes);
         working.delete(entry.file);
+        entryOf.set(renamed, entry);
+        entryOf.delete(entry.file);
+        for (const existing of lastScenes) {
+          const location = idMap.get(String(existing.id));
+          if (location && location.file === entry.file) location.file = renamed;
+        }
         touched.add(renamed);
         touched.add(entry.file);
       }

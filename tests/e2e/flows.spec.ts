@@ -717,7 +717,7 @@ test('flow 5 · 场景保存：编辑 → 脏态 → POST 全量场景 + 标签 
     await route.fulfill({
       status: 200,
       contentType: 'application/json',
-      body: JSON.stringify({ ok: true, count: saved.scenes.length, backup: '2026-07-28-content' }),
+      body: JSON.stringify({ ok: true, count: saved.scenes.length, backup: '2026-07-28-content', version: 43, snapshot: saved }),
     });
   });
 

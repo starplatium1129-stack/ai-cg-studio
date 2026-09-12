@@ -31,6 +31,8 @@
 
 ## 提示词
 
+- [成年角色非露骨 CG 稳定性研究](prompts/adult-nonexplicit-cg-reliability-2026-09-13.md)：时装与含蓄关系、中性编译核查及失败分类，不含露骨生成优化配方。
+- [Anima 与 Krea 2 叙事 CG 提示词研究](prompts/anima-krea2-narrative-cg-research-2026-09-12.md)：人物环境融合、模型证据与本地编译风险；附未执行实验计划。
 - [绫季绘境 · 明日方舟角色原画师调研 · 2026-08-31](prompts/arknights-artists-research-2026-08-31.html)
 - [Krea 2 提示词工程全面调研报告（社区 × 官方）](prompts/krea2-prompt-research-2026-08-30.md)
 - [提示词 Skill 调研与修订依据](prompts/prompt-skill-research-2026-09-09.md)

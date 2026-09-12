@@ -238,6 +238,14 @@ export interface CurationData {
   [key: string]: unknown
 }
 
+/** 与维护版本一同读取或保存的编辑快照。 */
+export interface SceneMaintenanceSnapshot {
+  scenes: SceneDraft[]
+  tags: TagRecord[]
+  curation: CurationData
+  blueprints: import('../utils/popularContent').SceneBlueprint[]
+}
+
 /** POST /api/maintenance/scenes */
 export interface SceneSaveResult {
   ok: true
@@ -246,6 +254,7 @@ export interface SceneSaveResult {
   backup: string
   /** 保存后服务端内容版本；作为下一次保存的读取基线。 */
   version: number
+  snapshot: SceneMaintenanceSnapshot
   added?: string[]
   updated?: string[]
   removed?: string[]
@@ -261,11 +270,12 @@ export interface SceneConflictSummary {
   changedIds?: string[]
 }
 
-/** GET /api/maintenance/scenes-state：内容版本 + 写入侧分配的下一个稳定场景 ID。 */
+/** GET /api/maintenance/scenes-state：快照及维护版本；ID 是未预留的下界候选，null 表示容量用尽。 */
 export interface ScenesStateResult {
   ok: true
-  version: number | null
-  nextSceneId: string
+  version: number
+  nextSceneId: string | null
+  snapshot: SceneMaintenanceSnapshot
   sceneCount: number
   retiredCount: number
 }

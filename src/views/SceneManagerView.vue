@@ -19,6 +19,7 @@
         </div>
       </div>
       <div class="sm-head-actions">
+        <button class="btn btn-ghost" type="button" :disabled="loading || saving || desktopPackaged || toolRunning" @click="loadFromStore(true)">重新读取</button>
         <button class="btn btn-ghost" type="button" @click="exportJSON" :disabled="!scenes.length"><ArchiveIcon name="download" /> 导出 JSON</button>
         <button class="btn btn-primary" type="button" :disabled="!dirty || saving || desktopPackaged" :title="desktopPackaged ? '桌面应用模式不支持保存场景内容' : ''" @click="saveToProject">
           {{ saving ? '正在保存…' : (desktopPackaged ? '桌面模式不可保存' : '保存到项目') }}

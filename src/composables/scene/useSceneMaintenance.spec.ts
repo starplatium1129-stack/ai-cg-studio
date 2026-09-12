@@ -35,10 +35,11 @@ describe('maintenance save snapshots', () => {
     const { deps, tools } = setup()
     const pending = tools.saveToProject()
     deps.scenes.value[0].title = 'new unsaved edit'
-    resolve({ count: 1, backup: 'test', version: 43 } as Awaited<ReturnType<typeof maintenanceApi.saveScenes>>)
+    resolve({ ok: true, count: 1, backup: 'test', version: 43, snapshot: { scenes: [{ id: 'test', title: 'normalized' }], tags: [], curation: {}, blueprints: [] } } as unknown as Awaited<ReturnType<typeof maintenanceApi.saveScenes>>)
     await pending
     expect(deps.dirty.value).toBe(true)
-    expect(deps.maintenanceHint.value).toContain('再次保存')
+    expect(deps.maintenanceHint.value).toContain('合并')
+    expect(deps.adoptSceneStateVersion).not.toHaveBeenCalled()
     expect(vi.mocked(maintenanceApi.saveScenes).mock.calls[0][0].scenes[0].title).toBe('original')
     expect(vi.mocked(maintenanceApi.saveScenes).mock.calls[0][0].baseVersion).toBe(42)
   })
@@ -50,16 +51,17 @@ describe('maintenance save snapshots', () => {
     const pending = tools.saveToProject()
     await tools.runTool('classify')
     expect(maintenanceApi.run).not.toHaveBeenCalled()
-    resolve({ count: 1, backup: 'test', version: 43 } as Awaited<ReturnType<typeof maintenanceApi.saveScenes>>)
+    resolve({ ok: true, count: 1, backup: 'test', version: 43, snapshot: { scenes: [{ id: 'test', title: 'normalized' }], tags: [], curation: {}, blueprints: [] } } as unknown as Awaited<ReturnType<typeof maintenanceApi.saveScenes>>)
     await pending
     expect(deps.dirty.value).toBe(false)
   })
   it('sends the loaded baseline version and adopts the server receipt on success', async () => {
-    vi.mocked(maintenanceApi.saveScenes).mockResolvedValueOnce({ count: 1, backup: 'b1', version: 43 } as Awaited<ReturnType<typeof maintenanceApi.saveScenes>>)
+    vi.mocked(maintenanceApi.saveScenes).mockResolvedValueOnce({ ok: true, count: 1, backup: 'b1', version: 43, snapshot: { scenes: [{ id: 'test', title: 'normalized' }], tags: [], curation: {}, blueprints: [] } } as unknown as Awaited<ReturnType<typeof maintenanceApi.saveScenes>>)
     const { deps, tools } = setup()
     await tools.saveToProject()
     expect(vi.mocked(maintenanceApi.saveScenes).mock.calls[0][0].baseVersion).toBe(42)
     expect(deps.adoptSceneStateVersion).toHaveBeenCalledWith(43)
+    expect(deps.scenes.value[0].title).toBe('normalized')
   })
   it('renders a 409 stale-snapshot conflict as an actionable hint without adopting a version', async () => {
     vi.mocked(maintenanceApi.saveScenes).mockRejectedValueOnce(new ApiClientError('场景库在本次编辑期间已被更新', {

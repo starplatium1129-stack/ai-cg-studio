@@ -79,7 +79,7 @@ export function useSceneMaintenance(deps: SceneMaintenanceDeps) {
     return '保存已拒绝：场景库在本次编辑期间被更新'
       + (typeof conflict.baseVersion === 'number' && typeof conflict.currentVersion === 'number'
         ? `（读取基线 ${conflict.baseVersion}，当前 ${conflict.currentVersion}）` : '')
-      + '。请先点「重新读取」再保存，避免覆盖他人改动' + detail
+      + '。请先导出本地草稿，再点「重新读取」并合并改动' + detail
   }
 
   async function saveToProject() {
@@ -105,11 +105,17 @@ export function useSceneMaintenance(deps: SceneMaintenanceDeps) {
         baseVersion: deps.baseVersion() ?? undefined,
       })
       savingPhase.value = '正在更新版本…'
-      // 采纳服务端回执版本：下次保存的读取基线（含维护脚本可能做的规范化）
-      deps.adoptSceneStateVersion(data.version)
-      dirty.value = serialize() !== snapshot
+      const editedDuringSave = serialize() !== snapshot
+      if (!editedDuringSave) {
+        scenes.value = data.snapshot.scenes
+        tags.value = data.snapshot.tags
+        curation.value = data.snapshot.curation
+        blueprints.value = data.snapshot.blueprints
+        deps.adoptSceneStateVersion(data.version)
+      }
+      dirty.value = editedDuringSave
       maintenanceHint.value = data.count + ' 个场景已同步；备份编号 ' + data.backup
-        + (dirty.value ? '；保存期间有新修改，请再次保存' : '')
+        + (editedDuringSave ? '；保存期间有新修改，已保留草稿。请先导出，再重新读取并合并后保存' : '')
       // 作废共享缓存：其他页面正拿着写回前的旧副本
       deps.invalidateSceneCache()
     } catch (e) {

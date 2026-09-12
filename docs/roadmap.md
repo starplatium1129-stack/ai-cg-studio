@@ -14,7 +14,7 @@
 
 ## 后续工作流与内容数据治理
 
-详见 [专项计划 006](../plans/006-workflow-and-content-governance.md)，与 005 衔接，不重复建设用户作品存储或任务系统。除注明外待实施：
+详见 [专项计划 006](../plans/006-workflow-and-content-governance.md)，与 005 衔接，不重复建设用户作品存储或任务系统。D5 第一批经[保存链复审修复](archive/audits/scene-save-review-2026-09-13.md)；除注明外待实施：
 
 1. **优先**：明确人物、服装、场景和资产的字段归属、稳定 ID 与源／产物边界；同时整理工作流的机器条件、副作用和命名。
    场景添加按 006 的 D5 细化：统一 ID 分配、变更集与版本冲突检测、稳定分片和清单完整性；区分项目自带内容维护与安装版用户自建内容。
@@ -23,6 +23,14 @@
    **资产分发同列优先项**：按 006 的 R1 规划“随包基础图片＋独立高清资源”，确保离线首次进入不空白；先验证回退与下载／离线导入，再减少安装包资源。当前不删除图片或配置外部托管。
 3. **再后**：审核状态与来源证据、维护中断及回滚演练；保持定稿保护与真实出图要求。
 4. **按测量结果决定**：资产存储治理、目录加载／搜索性能、现有编辑工具效率和版本兼容性，不默认增加新编辑器或迁移静态内容数据库。
+
+## 叙事 CG 提示词对照验收
+
+补充 [手机竖屏壁纸](guides/prompts/mobile-wallpaper-prompt-standard.md)，以 iPhone 17 Pro（1206×2622）为主并兼容通用长屏，锁屏／主屏分别验收。另有 [成年角色非露骨 CG 研究](research/prompts/adult-nonexplicit-cg-reliability-2026-09-13.md)，仅覆盖明确成年、非露骨创作和中性一致性排查；不包含露骨内容优化或分级边界修改。两者均待实际候选与设备验证。
+
+同等关注 [单人物立绘与特写壁纸](guides/prompts/character-wallpaper-prompt-standard.md)，面向 4K / 16:9 桌面；以人物轮廓、表情、衣装、留白和裁切为独立目标，不强制环境叙事。实验计划分 narrative／wallpaper 两组记录，先分别小样筛查，不自动扩批。
+
+[写作规范](guides/prompts/narrative-cg-prompt-standard.md)与[研究](research/prompts/anima-krea2-narrative-cg-research-2026-09-12.md)已形成，创作建议尚未证明本地画质增益。主力机按[未执行实验计划](research/prompts/anima-krea2-narrative-eval-plan.json)先做单 checkpoint 小样，再比较多场景与 seeds；保留全部输出和硬条件失败。重点核查 Anima 描述筛选／默认尾句、Krea 实际增强链路及字段到最终请求的保真。本轮不改生产场景、定稿或模型参数。
 
 ## 后续工具接线
 

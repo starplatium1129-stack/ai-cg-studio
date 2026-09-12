@@ -76,6 +76,62 @@ test('allocateSceneId 越过 sc999 抛容量错误而非静默突破格式', () 
   assert.throws(() => sceneWrite.allocateSceneId(ids, new Set()), /sc999.*容量上限/);
 });
 
+test('readRetiredSceneIds 仅缺失可为空，损坏清单必须阻止分配', () => {
+  resetFixture();
+  assert.deepEqual([...sceneWrite.readRetiredSceneIds(dataDir)], []);
+  for (const content of ['{', '{}', '{"records":{}}', '{"records":[null]}']) {
+    fs.writeFileSync(path.join(dataDir, 'retired-scenes.json'), content);
+    assert.throws(() => sceneWrite.readRetiredSceneIds(dataDir), /retired-scenes/);
+  }
+});
+
+test('verifyShardIntegrity 单文件存在也必须识别缺失首批的孤立分片', () => {
+  resetFixture();
+  fs.writeFileSync(path.join(shardsDir, 'shared.2.json'), '[]\n');
+  const result = sceneWrite.verifyShardIntegrity();
+  assert.equal(result.ok, false);
+  assert.ok(result.problems.some((p) => p.includes('shared') && p.includes('缺号 .1')));
+});
+
+test('verifyShardIntegrity 拒绝非规范批号与无效 manifest 路径、重复声明', () => {
+  for (const suffix of ['0', '01']) {
+    resetFixture();
+    fs.writeFileSync(path.join(shardsDir, 'nene-core.' + suffix + '.json'), '[]\n');
+    assert.equal(sceneWrite.verifyShardIntegrity().ok, false, suffix);
+  }
+  for (const file of ['../outside.json', 'nested/file.json', 'nested\\file.json', 'shared.json']) {
+    resetFixture();
+    const manifest = JSON.parse(fs.readFileSync(path.join(shardsDir, 'manifest.json'), 'utf8'));
+    manifest.files.push({ file });
+    fs.writeFileSync(path.join(shardsDir, 'manifest.json'), JSON.stringify(manifest));
+    assert.equal(sceneWrite.verifyShardIntegrity().ok, false, file);
+  }
+});
+
+test('applySceneChanges 共享入口拒绝截断数据，且不写入任何文件', () => {
+  resetFixture();
+  fs.renameSync(path.join(shardsDir, 'nene-core.2.json'), path.join(shardsDir, 'nene-core.3.json'));
+  const previous = loadPrevious(); // 现有读取器会截断在 .1。
+  const before = Object.fromEntries(fs.readdirSync(shardsDir)
+    .map((file) => [file, fs.readFileSync(path.join(shardsDir, file), 'utf8')]));
+  assert.throws(() => sceneWrite.applySceneChanges(previous.scenes, previous), /分片完整性/);
+  assert.deepEqual(Object.fromEntries(fs.readdirSync(shardsDir)
+    .map((file) => [file, fs.readFileSync(path.join(shardsDir, file), 'utf8')])), before);
+});
+
+test('applySceneChanges 单文件升批后仍可修改、迁移和下架旧场景', () => {
+  for (const operation of ['edit', 'move', 'remove']) {
+    resetFixture();
+    const previous = loadPrevious();
+    const incoming = [scene('sc021', 'triad'), scene('sc022', 'triad'), scene('sc023', 'triad'),
+      ...previous.scenes.filter((s) => s.id !== 'sc020')];
+    if (operation !== 'remove') incoming.push(scene('sc020', operation === 'move' ? 'nene' : 'triad', { title: '更新' }));
+    sceneWrite.applySceneChanges(incoming, previous);
+    assert.deepEqual(loadPrevious().scenes, store.sortScenes(incoming));
+    assert.equal(sceneWrite.verifyShardIntegrity().ok, true);
+  }
+});
+
 test('verifyShardIntegrity 健康夹具无告警', () => {
   resetFixture();
   const result = sceneWrite.verifyShardIntegrity();

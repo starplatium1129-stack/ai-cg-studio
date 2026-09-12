@@ -82,11 +82,23 @@ function isSceneSave(value: ApiResponseObject): boolean {
   return value.ok === true
     && typeof value.count === 'number'
     && typeof value.backup === 'string'
+    && Number.isSafeInteger(value.version)
+    && isSceneSnapshot(value.snapshot)
+}
+
+function isSceneSnapshot(value: unknown): boolean {
+  if (!value || typeof value !== 'object') return false
+  const snapshot = value as Record<string, unknown>
+  return Array.isArray(snapshot.scenes) && Array.isArray(snapshot.tags)
+    && Array.isArray(snapshot.blueprints) && !!snapshot.curation
+    && typeof snapshot.curation === 'object' && !Array.isArray(snapshot.curation)
 }
 
 function isScenesState(value: ApiResponseObject): boolean {
   return value.ok === true
-    && typeof value.nextSceneId === 'string'
+    && (typeof value.nextSceneId === 'string' || value.nextSceneId === null)
+    && Number.isSafeInteger(value.version)
+    && isSceneSnapshot(value.snapshot)
     && typeof value.sceneCount === 'number'
     && typeof value.retiredCount === 'number'
 }

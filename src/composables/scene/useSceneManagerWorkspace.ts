@@ -61,7 +61,7 @@ export function useSceneManagerWorkspace() {
     // 样张与首页主视觉上传（预览、JPEG 归一化、上传/恢复生命周期）
     const showcase = useSceneShowcaseUpload({
         scenes,
-        blueprints: computed(() => sceneStore.sceneBlueprints),
+        blueprints,
         errorMessage,
     });
     const { showcaseFileEl, heroFileEl, imageSearch, imagePage, imageTypeFilter, selectedImageId, selectedImageTitle, showcaseFeedback, showcaseError, showcaseVersion, uploadBusy, selectedHeroId, selectedHeroTitle, homeHeroes, allShowcaseItems, filteredImageScenes, imageTotalPages, pagedImageScenes, showcaseUrl, heroUrl, previewImage, onShowcaseMissing, pickShowcase, previewHero, pickHero, loadHomeHeroes, resetHero, onShowcasePicked, onHeroPicked } = showcase;
@@ -285,12 +285,29 @@ export function useSceneManagerWorkspace() {
     });
     onBeforeUnmount(() => { window.removeEventListener('beforeunload', onBeforeUnload); });
     /**
-     * 场景管理会写回 data/，所以用 reload() 强制绕过缓存拿落盘结果。
-     * 以前用 `?v=' + Date.now()`，等于每次进页面都全量重传 230KB 且永不复用。
+     * 可写编辑器通过同一响应读取内容与版本；打包桌面仅加载只读展示数据。
      */
     async function loadFromStore(force = false) {
+        if (saving.value) return;
+        if (dirty.value && !(await confirmAction('重新读取会丢弃本地未保存修改。请先导出需要保留的草稿，确认继续？'))) return;
         loading.value = true;
+        sceneStateVersion.value = null;
         try {
+            const packaged = window.companionDesktop ? await window.companionDesktop.isPackaged() : false;
+            if (!packaged) {
+                // 共享角色元数据仍供标签与详情使用；可写内容只采用下面的原子快照。
+                await (force ? sceneStore.reload() : sceneStore.load());
+                const state = await maintenanceApi.getScenesState();
+                scenes.value = state.snapshot.scenes;
+                blueprints.value = state.snapshot.blueprints;
+                tags.value = state.snapshot.tags;
+                curation.value = state.snapshot.curation;
+                sceneStateVersion.value = state.version;
+                dirty.value = false;
+                loadError.value = '';
+                maintenanceHint.value = '已读取最新场景快照';
+                return;
+            }
             await (force ? sceneStore.reload() : sceneStore.load());
             if (sceneStore.error)
                 throw new Error(sceneStore.error);
@@ -302,8 +319,8 @@ export function useSceneManagerWorkspace() {
             tags.value = JSON.parse(JSON.stringify(sceneStore.tags)) as TagRecord[];
             curation.value = JSON.parse(JSON.stringify(sceneStore.curation)) as CurationData;
             loadError.value = '';
-            // 基线 = 本次草稿所基于的落盘内容版本（保存时防旧快照覆盖，计划 006 D5）
-            await refreshSceneState();
+            // 打包桌面不建立可写基线。
+            dirty.value = false;
         }
         catch (err) {
             loadError.value = errorMessage(err, '场景数据加载失败');
@@ -314,23 +331,15 @@ export function useSceneManagerWorkspace() {
     }
     /** 写入侧状态：保存基线版本 + 下一个稳定场景 ID（排除活跃+已退役）。 */
     const sceneStateVersion = ref<number | null>(null);
-    async function refreshSceneState() {
-        try {
-            const state = await maintenanceApi.getScenesState();
-            sceneStateVersion.value = state.version ?? null;
-        }
-        catch {
-            // 桌面打包模式（只读）或服务端不可用：保持 null，保存链路有 409 兜底提示
-            sceneStateVersion.value = null;
-        }
-    }
-    /** 服务端分配下一个稳定场景 ID；失败返回 null（编辑器回退本地推算）。 */
+    /** 服务端分配下一个稳定场景 ID；失败返回 null，禁止猜测退役 ID。 */
     async function allocateNextSceneId(): Promise<string | null> {
         try {
             const state = await maintenanceApi.getScenesState();
+            if (!state.nextSceneId) maintenanceHint.value = '场景 ID 已用尽，无法新增或复制';
             return state.nextSceneId;
         }
         catch {
+            maintenanceHint.value = '无法读取场景 ID 状态，请恢复服务后再新增或复制';
             return null;
         }
     }

@@ -16,7 +16,7 @@
 
 代码入口：`src/utils/popularContent.ts`、`src/composables/prompt/usePopularPromptAssembly.ts`、`src/utils/promptCompiler.ts`、`src/utils/promptPolicy.ts`；独立场景检查复用 `scripts/lib/scene-render-contract.js`。
 
-分级沿用项目字段及 `adultEnabled = isLocalStudioHost()` 边界；远程、未知或未授权状态 fail-closed。不要为完成场景数量自动增添成人内容，不把分级标记当作人物成年依据。该 skill 提供全年龄创作与中性的分级/一致性审查，不提供露骨性描写的扩写配方。
+分级沿用项目字段及 `adultEnabled = isLocalStudioHost()` 边界；远程、未知或未授权状态 fail-closed。不要为完成场景数量自动增添成人内容，不把分级标记当作人物成年依据。该 skill 提供全年龄、明确成年角色的非露骨创作与中性的分级/一致性审查，不提供露骨性描写的扩写配方。
 
 ## 验证与交付
 

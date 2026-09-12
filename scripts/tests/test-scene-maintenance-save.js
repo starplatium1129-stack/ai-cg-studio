@@ -118,6 +118,8 @@ test('scenes-state 返回内容版本与写入侧下一个稳定 ID', async () =
     assert.equal(state.body.nextSceneId, 'sc307');
     assert.equal(state.body.sceneCount, 302);
     assert.equal(state.body.retiredCount, 4);
+    assert.deepEqual(state.body.snapshot.scenes, loadScenesFromShards());
+    assert.ok(Array.isArray(state.body.snapshot.blueprints));
   } finally {
     await stopApp();
   }
@@ -188,6 +190,7 @@ test('正确基线保存走增量落盘：无关分片字节不变', async () =>
     assert.ok(aggregate.some((scene) => scene.id === 'sc307'), '聚合产物必须包含新增场景');
     assert.equal(typeof result.body.version, 'number');
     assert.notEqual(result.body.version, baseVersion, '内容变化后版本必须推进');
+    assert.deepEqual(result.body.snapshot.scenes, loadScenesFromShards(), '回执必须包含规范化后的实际快照');
   } finally {
     await stopApp();
   }
@@ -254,4 +257,86 @@ test('夹具数据在保存链的维护校验后仍然完整', async () => {
     child.on('close', (code) => resolve({ status: code, output: out }));
   });
   assert.equal(status, 0, output.slice(-2000));
+});
+
+test('源分片未聚合的修改也使旧基线失效，读取快照来自源文件', async () => {
+  seedFixture();
+  await startApp(false);
+  try {
+    const baseVersion = await currentBaseVersion();
+    const scenes = loadScenesFromShards();
+    const file = path.join(shardsDir, 'nene-core.1.json');
+    const source = JSON.parse(fs.readFileSync(file, 'utf8'));
+    source[0].story += '（仅源文件更新）';
+    fs.writeFileSync(file, JSON.stringify(source, null, 2) + '\n');
+    const state = await get('/api/maintenance/scenes-state');
+    assert.notEqual(state.body.version, baseVersion);
+    assert.deepEqual(state.body.snapshot.scenes, loadScenesFromShards());
+    const rejected = await post('/api/maintenance/scenes', { scenes, baseVersion });
+    assert.equal(rejected.status, 409);
+    assert.ok(fs.readFileSync(file, 'utf8').includes('仅源文件更新'));
+  } finally { await stopApp(); }
+});
+
+test('聚合写入后失败会撤销新批次并恢复全部浏览器产物', async () => {
+  seedFixture();
+  // 缩小仅夹具的批次容量，确保新增场景产生一个此前不存在的分片。
+  const manifestPath = path.join(shardsDir, 'manifest.json');
+  const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
+  manifest.files.forEach(entry => { entry.batchSize = 1; });
+  fs.writeFileSync(manifestPath, JSON.stringify(manifest));
+  await startApp(false);
+  const writeAggregate = store.writeAggregate;
+  try {
+    const baseVersion = await currentBaseVersion();
+    const before = shardBytes();
+    const productPaths = require('../lib/data-version').VERSIONED_FILES.map(name => path.join(dataDir, name));
+    const products = productPaths.map(file => fs.readFileSync(file));
+    const scenes = loadScenesFromShards();
+    scenes.push(cloneScene(scenes[0], 'sc307'));
+    store.writeAggregate = incoming => {
+      writeAggregate(incoming);
+      throw new Error('injected failure after aggregate write');
+    };
+    const failed = await post('/api/maintenance/scenes', { scenes, baseVersion });
+    assert.equal(failed.status, 400);
+    assert.equal(failed.body.dataIntegrity, 'restored');
+    assert.deepEqual(shardBytes(), before, '新增批次必须删除，已有分片必须恢复');
+    productPaths.forEach((file, index) => assert.deepEqual(fs.readFileSync(file), products[index], file));
+    assert.equal(await currentBaseVersion(), baseVersion);
+  } finally { store.writeAggregate = writeAggregate; await stopApp(); }
+});
+
+test('相同基线的两个并发保存仅有一个成功，状态读取与保存串行', async () => {
+  seedFixture();
+  await startApp(false);
+  try {
+    const baseVersion = await currentBaseVersion();
+    const first = loadScenesFromShards();
+    const second = loadScenesFromShards();
+    first.find(scene => scene.id === 'sc002').story += '（第一份）';
+    second.find(scene => scene.id === 'sc002').story += '（第二份）';
+    const results = await Promise.all([
+      post('/api/maintenance/scenes', { scenes: first, baseVersion }),
+      post('/api/maintenance/scenes', { scenes: second, baseVersion }),
+    ]);
+    assert.deepEqual(results.map(result => result.status).sort(), [200, 409]);
+    const state = await get('/api/maintenance/scenes-state');
+    const saved = results.find(result => result.status === 200).body;
+    assert.equal(state.body.version, saved.version);
+    assert.deepEqual(state.body.snapshot, saved.snapshot);
+  } finally { await stopApp(); }
+});
+
+test('ID 用尽仍可读取现有内容与编辑基线', async () => {
+  seedFixture();
+  fs.writeFileSync(path.join(dataDir, 'retired-scenes.json'), JSON.stringify({ records: [{ id: 'sc999' }] }));
+  await startApp(false);
+  try {
+    const state = await get('/api/maintenance/scenes-state');
+    assert.equal(state.status, 200);
+    assert.equal(state.body.nextSceneId, null);
+    assert.ok(Number.isSafeInteger(state.body.version));
+    assert.deepEqual(state.body.snapshot.scenes, loadScenesFromShards());
+  } finally { await stopApp(); }
 });

@@ -1,6 +1,6 @@
 # Krea 2 底模词条写法指南
 
-> 2026-08-14 首发 · **2026-08-30 修订**：Krea 2 是 Krea 自研 12B DiT + Qwen3-VL 编码器（非 SD3.5 系）；官方现口径为**纯自然语言推荐**，标签仅可作辅助；本地 Turbo（CFG≈0）负面基本失效。权威基座与最新结论以 `docs/research/prompts/krea2-prompt-research-2026-08-30.md` 为准，本文档冲突处从新报告。
+> 2026-08-14 首发、2026-08-30 修订的历史指南。当前执行以 [studio-prompt-craft](../../../.agents/skills/studio-prompt-craft/SKILL.md) 和 [叙事 CG 规范](narrative-cg-prompt-standard.md) 为准；模型版本、固定长度、CFG 与本地／托管能力的后续核查见 [研究报告](../../research/prompts/anima-krea2-narrative-cg-research-2026-09-12.md)。下文旧结论不直接升级为生产规则。
 
 ## Krea 2 与 Anima 的本质差异
 

@@ -43,6 +43,9 @@
 
 ## 提示词
 
+- [手机竖屏人物壁纸规范](prompts/mobile-wallpaper-prompt-standard.md)：iPhone 17 Pro 与通用长屏；裁切、锁屏／主屏遮挡及双引擎候选。
+- [单人物立绘与特写壁纸提示词规范](prompts/character-wallpaper-prompt-standard.md)：与叙事 CG 并列；人物表现、4K 横幅留白及裁切验收。
+- [人物与环境融合的叙事 CG 提示词规范](prompts/narrative-cg-prompt-standard.md)：双引擎写法、原创案例和主力机对照验收。
 - [Krea 2 底模词条写法指南](prompts/krea2-prompt-writing-guide.md)
 - [AI-CG-Studio 旗舰底模提示词与出图参数全景指南](prompts/model-prompting-and-parameters-guide.md)
 - [Prompt 规范 · 绫季绘境](prompts/prompt-spec.html)
