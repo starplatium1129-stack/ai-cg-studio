@@ -15,6 +15,10 @@ export interface SceneMaintenanceDeps {
   dirty: Ref<boolean>
   /** 宿主持有的维护提示通道（保存进度/备份编号/桌面只读提示共用）。 */
   maintenanceHint: Ref<string>
+  /** 页面加载/上次保存时锁定的内容基线版本；null 时保存会被服务端 409 拒绝。 */
+  baseVersion: () => number | null
+  /** 保存成功后采纳服务端回执版本，作为下一次保存的基线。 */
+  adoptSceneStateVersion: (version: number) => void
   /** 保存成功后作废共享缓存（其他页面正拿着写回前的旧副本）。 */
   invalidateSceneCache: () => void
 }
@@ -62,6 +66,22 @@ export function useSceneMaintenance(deps: SceneMaintenanceDeps) {
     return recovery && !message.includes(recovery) ? `${message}；${recovery}` : message
   }
 
+  /** 旧快照冲突（409）转成可操作提示：先「重新读取」再决定如何合并。 */
+  function conflictMessage(error: unknown): string | null {
+    if (!(error instanceof ApiClientError) || !error.responseBody) return null
+    const conflict = (error.responseBody as { conflict?: { serverOnlyIds?: string[]; changedIds?: string[]; clientNewIds?: string[]; baseVersion?: number; currentVersion?: number | null } }).conflict
+    if (!conflict) return null
+    const parts: string[] = []
+    if (conflict.serverOnlyIds?.length) parts.push('服务器多出 ' + conflict.serverOnlyIds.join(', '))
+    if (conflict.changedIds?.length) parts.push('同 ID 内容有差异 ' + conflict.changedIds.join(', '))
+    if (conflict.clientNewIds?.length) parts.push('本次新增 ' + conflict.clientNewIds.join(', '))
+    const detail = parts.length ? '；差异：' + parts.join('；') : ''
+    return '保存已拒绝：场景库在本次编辑期间被更新'
+      + (typeof conflict.baseVersion === 'number' && typeof conflict.currentVersion === 'number'
+        ? `（读取基线 ${conflict.baseVersion}，当前 ${conflict.currentVersion}）` : '')
+      + '。请先点「重新读取」再保存，避免覆盖他人改动' + detail
+  }
+
   async function saveToProject() {
     if (!dirty.value || saving.value || toolRunning.value || desktopPackaged.value) return
     saving.value = true
@@ -72,6 +92,7 @@ export function useSceneMaintenance(deps: SceneMaintenanceDeps) {
     phaseTimers.push(setTimeout(() => { if (saving.value) savingPhase.value = '正在校验场景…' }, 750))
     phaseTimers.push(setTimeout(() => { if (saving.value) savingPhase.value = '正在更新版本…' }, 1150))
     try {
+      // 脏检查快照只含内容；baseVersion 在保存后必然变化，不能参与比较
       const serialize = () => JSON.stringify({
         scenes: scenes.value,
         tags: tags.value,
@@ -79,15 +100,20 @@ export function useSceneMaintenance(deps: SceneMaintenanceDeps) {
         blueprints: blueprints.value,
       })
       const snapshot = serialize()
-      const data = await maintenanceApi.saveScenes(JSON.parse(snapshot))
+      const data = await maintenanceApi.saveScenes({
+        ...JSON.parse(snapshot),
+        baseVersion: deps.baseVersion() ?? undefined,
+      })
       savingPhase.value = '正在更新版本…'
+      // 采纳服务端回执版本：下次保存的读取基线（含维护脚本可能做的规范化）
+      deps.adoptSceneStateVersion(data.version)
       dirty.value = serialize() !== snapshot
       maintenanceHint.value = data.count + ' 个场景已同步；备份编号 ' + data.backup
         + (dirty.value ? '；保存期间有新修改，请再次保存' : '')
       // 作废共享缓存：其他页面正拿着写回前的旧副本
       deps.invalidateSceneCache()
     } catch (e) {
-      maintenanceHint.value = '保存未完成：' + maintenanceErrorMessage(e, '请重试')
+      maintenanceHint.value = '保存未完成：' + (conflictMessage(e) ?? maintenanceErrorMessage(e, '请重试'))
     } finally {
       phaseTimers.forEach(clearTimeout)
       saving.value = false

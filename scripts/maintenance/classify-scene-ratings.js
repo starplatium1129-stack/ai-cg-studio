@@ -5,7 +5,9 @@
  */
 const fs = require('fs');
 const path = require('path');
-const { loadSceneShards, writeSceneSet } = require('../lib/scene-store');
+const { loadSceneShards, writeAggregate } = require('../lib/scene-store');
+// 计划 006 D5：写入走增量路径，改动只落受影响分片；全量重切仍归 split-scenes。
+const sceneWrite = require('../lib/scene-write');
 const { ratingFor } = require('../lib/prompt-policy');
 const write = process.argv.includes('--write');
 
@@ -128,7 +130,9 @@ function normalizeUsage(scene, rating) {
  */
 const MANUAL_RATINGS = require('../lib/manual-scene-ratings.js');
 
-const scenes = loadSceneShards().scenes;
+// 原地改评级前先深拷贝：增量写入靠「入参与磁盘快照的值差异」判断改动范围
+const previous = loadSceneShards();
+const scenes = JSON.parse(JSON.stringify(previous.scenes));
 const ids = new Set(scenes.map((scene) => scene.id));
 for (const addition of additions) if (!ids.has(addition.id)) scenes.push(addition);
 
@@ -150,6 +154,9 @@ for (const scene of scenes) {
   totals[rating] += 1;
 }
 
-if (write) writeSceneSet(scenes);
+if (write) {
+  sceneWrite.applySceneChanges(scenes, previous, { retiredIds: sceneWrite.readRetiredSceneIds() });
+  writeAggregate(scenes);
+}
 console.log('ratings: All=' + totals.All + ' R15=' + totals.R15 + ' R18=' + totals.R18 + ' changed=' + changed + (write ? ' written' : ''));
 if (!write && changed) process.exitCode = 1;

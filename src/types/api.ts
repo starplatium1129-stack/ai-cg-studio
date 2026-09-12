@@ -244,13 +244,37 @@ export interface SceneSaveResult {
   count: number
   tagCount?: number
   backup: string
+  /** 保存后服务端内容版本；作为下一次保存的读取基线。 */
+  version: number
+  added?: string[]
+  updated?: string[]
+  removed?: string[]
   message?: string
+}
+
+/** 旧快照冲突（409）的可解释差异：服务器多出的 ID / 同 ID 内容差异 / 本次新增。 */
+export interface SceneConflictSummary {
+  baseVersion?: number
+  currentVersion?: number | null
+  serverOnlyIds?: string[]
+  clientNewIds?: string[]
+  changedIds?: string[]
+}
+
+/** GET /api/maintenance/scenes-state：内容版本 + 写入侧分配的下一个稳定场景 ID。 */
+export interface ScenesStateResult {
+  ok: true
+  version: number | null
+  nextSceneId: string
+  sceneCount: number
+  retiredCount: number
 }
 
 export interface MaintenanceFailure extends ApiFailure {
   rolledBack?: boolean
   dataIntegrity?: 'restored' | 'INCONSISTENT'
   recovery?: string
+  conflict?: SceneConflictSummary
 }
 
 /** POST /api/maintenance/run */

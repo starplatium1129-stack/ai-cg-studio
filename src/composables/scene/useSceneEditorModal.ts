@@ -7,6 +7,8 @@ export interface SceneEditorModalDeps {
   scenes: Ref<SceneDraft[]>
   curation: Ref<CurationData>
   markDirty: (message: string) => void
+  /** 向服务端申请下一个稳定场景 ID（排除活跃+已退役）；null 时回退本地推算。 */
+  nextSceneId: () => Promise<string | null>
 }
 
 /** 策展层级 → curation.json 里对应的数组字段 */
@@ -79,10 +81,25 @@ export function useSceneEditorModal(deps: SceneEditorModalDeps) {
     })
   }
 
-  function openAddModal() {
+  /** 本地推算候选 ID：列表最大号 +1。仅作服务端分配不可用时的回退，
+   *  保存时服务端仍会校验唯一性并拒绝已退役身份（计划 006 D5）。 */
+  function localNextId(): string {
     const maxId = scenes.value.reduce((m, s) => Math.max(m, parseInt(String(s.id).replace('sc', '')) || 0), 0)
+    return 'sc' + String(maxId + 1).padStart(3, '0')
+  }
+
+  async function allocateId(): Promise<string> {
+    try {
+      return (await deps.nextSceneId()) ?? localNextId()
+    } catch {
+      return localNextId()
+    }
+  }
+
+  async function openAddModal() {
+    const id = await allocateId()
     editing.value = blankScene()
-    editing.value.id = 'sc' + String(maxId + 1).padStart(3, '0')
+    editing.value.id = id
     editingId.value = ''
     curationTierValue.value = 'normal'
     curationReason.value = ''
@@ -161,12 +178,11 @@ export function useSceneEditorModal(deps: SceneEditorModalDeps) {
     markDirty('有场景等待下架')
   }
 
-  function duplicateScene(id: string) {
+  async function duplicateScene(id: string) {
     const source = scenes.value.find(s => s.id === id)
     if (!source) return
-    const maxId = scenes.value.reduce((m, s) => Math.max(m, parseInt(String(s.id).replace('sc', '')) || 0), 0)
     const copy = JSON.parse(JSON.stringify(source)) as SceneDraft
-    copy.id = 'sc' + String(maxId + 1).padStart(3, '0')
+    copy.id = await allocateId()
     copy.title = source.title + ' · 副本'
     scenes.value.push(copy)
     markDirty('已复制场景，请编辑副本内容')

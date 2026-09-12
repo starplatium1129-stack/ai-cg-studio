@@ -253,14 +253,17 @@ module.exports = {
   browserShardPath,
   corePath,
   indexPath,
+  shardsDir,
   batchSizeFor,
   expandShardFiles,
   jsonText,
   loadSceneShards,
   readJson,
   sortScenes,
+  targetFile,
   writeAggregate,
   writeSceneSet,
   writeSceneShards,
+  writeTextAtomic,
   aggregateIsCurrent
 };

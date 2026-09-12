@@ -6,6 +6,7 @@ import { useSceneTagManager } from '@/composables/scene/useSceneTagManager';
 import { confirmAction } from '@/composables/useConfirm';
 import { copyWithFeedback } from '@/composables/useCopyFeedback';
 import { useFocusTrap } from '@/composables/useFocusTrap';
+import { maintenanceApi } from '@/api/maintenanceApi';
 import { useSceneStore } from '@/stores/sceneStore';
 import type { CurationData,SceneDraft,TagRecord,} from '@/types/api';
 import { nextCopyId } from '@/utils/copyId';
@@ -65,7 +66,7 @@ export function useSceneManagerWorkspace() {
     });
     const { showcaseFileEl, heroFileEl, imageSearch, imagePage, imageTypeFilter, selectedImageId, selectedImageTitle, showcaseFeedback, showcaseError, showcaseVersion, uploadBusy, selectedHeroId, selectedHeroTitle, homeHeroes, allShowcaseItems, filteredImageScenes, imageTotalPages, pagedImageScenes, showcaseUrl, heroUrl, previewImage, onShowcaseMissing, pickShowcase, previewHero, pickHero, loadHomeHeroes, resetHero, onShowcasePicked, onHeroPicked } = showcase;
     // ── 场景编辑弹层 + CRUD + 策展（已下沉 useSceneEditorModal）───────────────
-    const { editing, editingId, curationTierValue, curationReason, tagsInput, usageInput, triedSave, formHint, curationTier, updateCharacterDefaults, onCurationTierChange, openAddModal, openEditModal, closeModal, saveScene, deleteScene, duplicateScene, copyJson } = useSceneEditorModal({ scenes, curation, markDirty });
+    const { editing, editingId, curationTierValue, curationReason, tagsInput, usageInput, triedSave, formHint, curationTier, updateCharacterDefaults, onCurationTierChange, openAddModal, openEditModal, closeModal, saveScene, deleteScene, duplicateScene, copyJson } = useSceneEditorModal({ scenes, curation, markDirty, nextSceneId: allocateNextSceneId });
     const recordCounts = computed<Record<string, number>>(() => ({ scenes: scenes.value.length, blueprints: blueprints.value.length, tags: tags.value.length }));
     const characterNames = computed(() => new Map(sceneStore.popularCharacters.map(character => [character.id, character.displayName])));
     const sceneRecords = computed(() => scenes.value.map(scene => sceneMaintenanceRecord(scene, charLabel(scene.char), curationTier(scene.id))));
@@ -87,6 +88,8 @@ export function useSceneManagerWorkspace() {
         blueprints,
         dirty,
         maintenanceHint,
+        baseVersion: () => sceneStateVersion.value,
+        adoptSceneStateVersion: (version) => { sceneStateVersion.value = version; },
         invalidateSceneCache: () => { sceneStore.loaded = false; },
     });
     function blankBlueprint(): SceneBlueprint {
@@ -299,12 +302,36 @@ export function useSceneManagerWorkspace() {
             tags.value = JSON.parse(JSON.stringify(sceneStore.tags)) as TagRecord[];
             curation.value = JSON.parse(JSON.stringify(sceneStore.curation)) as CurationData;
             loadError.value = '';
+            // 基线 = 本次草稿所基于的落盘内容版本（保存时防旧快照覆盖，计划 006 D5）
+            await refreshSceneState();
         }
         catch (err) {
             loadError.value = errorMessage(err, '场景数据加载失败');
         }
         finally {
             loading.value = false;
+        }
+    }
+    /** 写入侧状态：保存基线版本 + 下一个稳定场景 ID（排除活跃+已退役）。 */
+    const sceneStateVersion = ref<number | null>(null);
+    async function refreshSceneState() {
+        try {
+            const state = await maintenanceApi.getScenesState();
+            sceneStateVersion.value = state.version ?? null;
+        }
+        catch {
+            // 桌面打包模式（只读）或服务端不可用：保持 null，保存链路有 409 兜底提示
+            sceneStateVersion.value = null;
+        }
+    }
+    /** 服务端分配下一个稳定场景 ID；失败返回 null（编辑器回退本地推算）。 */
+    async function allocateNextSceneId(): Promise<string | null> {
+        try {
+            const state = await maintenanceApi.getScenesState();
+            return state.nextSceneId;
+        }
+        catch {
+            return null;
         }
     }
     onMounted(async () => {

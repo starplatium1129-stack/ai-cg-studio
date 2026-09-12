@@ -1,7 +1,9 @@
 const { renderedScene } = require('../lib/scene-render-contract');
 const fs = require('fs');
 const path = require('path');
-const { loadSceneShards, writeSceneSet } = require('../lib/scene-store');
+const { loadSceneShards, writeAggregate } = require('../lib/scene-store');
+// 计划 006 D5：写入走增量路径，改动只落受影响分片；全量重切仍归 split-scenes。
+const sceneWrite = require('../lib/scene-write');
 const {
   adultSafetyIssues,
   framingConflicts,
@@ -181,7 +183,8 @@ function optimize(scene) {
   return { ...scene, tags, prompt, negative };
 }
 
-const scenes = loadSceneShards().scenes;
+const previous = loadSceneShards();
+const scenes = previous.scenes;
 const optimized = scenes.map(optimize);
 const issues = [];
 const ids = new Set();
@@ -208,6 +211,9 @@ for (const scene of check ? scenes : optimized) {
 const changed = optimized.reduce((count, scene, index) => count + (JSON.stringify(scene) !== JSON.stringify(scenes[index]) ? 1 : 0), 0);
 console.log(`scenes=${optimized.length} changed=${changed} issues=${issues.length}`);
 issues.forEach((issue) => console.error(issue));
-if (write) writeSceneSet(optimized);
+if (write) {
+  sceneWrite.applySceneChanges(optimized, previous, { retiredIds: sceneWrite.readRetiredSceneIds() });
+  writeAggregate(optimized);
+}
 // 可机械改写不等于有缺陷；提示词改写须独立真实渲染，不能由门禁强迫执行。
 if (issues.length) process.exitCode = 1;

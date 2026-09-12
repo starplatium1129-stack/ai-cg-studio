@@ -9,6 +9,7 @@ import type {
   MaintenanceRunResult,
   SceneDraft,
   SceneSaveResult,
+  ScenesStateResult,
   ShowcaseSaveResult,
   TagRecord,
 } from '../types/api.ts'
@@ -32,6 +33,11 @@ export interface SaveScenesPayload {
   curation: CurationData
   /** 可选：热门角色蓝图（scene-blueprints.json），传入时随场景一起保存并跑内容契约校验。 */
   blueprints?: SceneBlueprint[]
+  /**
+   * 读取基线版本（页面加载/上次保存时的内容版本）。服务端据此拒绝用旧快照
+   * 覆盖已被其他会话/构建更新的数据（计划 006 D5），缺失时保存返回 409。
+   */
+  baseVersion?: number
 }
 
 export interface SaveShowcasePayload {
@@ -55,6 +61,7 @@ export interface BackupListResult {
 export interface MaintenanceApi {
   buildWeb(options?: MaintenanceCallOptions): Promise<MaintenanceBuildWebResult>
   saveScenes(payload: SaveScenesPayload, options?: MaintenanceCallOptions): Promise<SceneSaveResult>
+  getScenesState(options?: MaintenanceCallOptions): Promise<ScenesStateResult>
   run(task: string, options?: MaintenanceCallOptions): Promise<MaintenanceRunResult>
   saveShowcase(payload: SaveShowcasePayload, options?: MaintenanceCallOptions): Promise<ShowcaseSaveResult>
   getHomeHero(options?: MaintenanceCallOptions): Promise<HomeHeroManifestResult>
@@ -75,6 +82,13 @@ function isSceneSave(value: ApiResponseObject): boolean {
   return value.ok === true
     && typeof value.count === 'number'
     && typeof value.backup === 'string'
+}
+
+function isScenesState(value: ApiResponseObject): boolean {
+  return value.ok === true
+    && typeof value.nextSceneId === 'string'
+    && typeof value.sceneCount === 'number'
+    && typeof value.retiredCount === 'number'
 }
 
 function isRunResult(value: ApiResponseObject): boolean {
@@ -120,6 +134,15 @@ export function createMaintenanceApi(client: ApiClient = apiClient): Maintenance
         signal: options.signal,
         timeoutMs: MAINTENANCE_API_TIMEOUTS.scenes,
         validate: isSceneSave,
+      })
+    },
+
+    getScenesState(options: MaintenanceCallOptions = {}) {
+      return client.request<ScenesStateResult>('/api/maintenance/scenes-state', {
+        cache: 'no-store',
+        signal: options.signal,
+        timeoutMs: MAINTENANCE_API_TIMEOUTS.query,
+        validate: isScenesState,
       })
     },
 
