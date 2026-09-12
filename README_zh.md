@@ -1,6 +1,6 @@
 # 绘遇 · HUIYU
 
-[下载 Windows 桌面版 1.6.1](https://github.com/starplatium1129-stack/huiyu/releases/tag/v1.6.1) · [查看更新说明](docs/releases/v1.6.1.md)
+[下载 Windows 桌面版 1.7.0](https://github.com/starplatium1129-stack/huiyu/releases/tag/v1.7.0) · [查看更新说明](docs/releases/v1.7.0.md)
 
 > 从故事出发，把想画的瞬间整理成可以直接生成的 Galgame 风格 CG、4 视角角色参考档案与 AI 叙事短片。
 

@@ -15,6 +15,7 @@ var DEFAULT_TOKEN = 'gateway-fixture-token-0123456789abcdef012345';
 function closeServer(server) {
   return new Promise(function (resolve) {
     if (!server || !server.listening) return resolve();
+    if (typeof server.closeAllConnections === 'function') server.closeAllConnections();
     server.close(function () { resolve(); });
   });
 }

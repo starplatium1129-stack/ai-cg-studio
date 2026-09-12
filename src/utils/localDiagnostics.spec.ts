@@ -16,11 +16,11 @@ describe('local diagnostic metadata', () => {
       token: { suffix: 'private-suffix' }, scripts: { voiceStart: 'private-path', voiceStartExists: true },
       operation: { id: 'private-operation', status: 'failed', error: 'private-chat', startedAt: 1, finishedAt: 2 },
       imageData: 'private-pixels', logs: ['private-log'],
-    } as unknown as ControlDiagnostics, '1.6.1', 123)
+    } as unknown as ControlDiagnostics, '1.7.0', 123)
     const json = JSON.stringify(report)
     expect(json).not.toContain('private-')
     expect(json).not.toContain('password')
-    expect(report).toMatchObject({ appVersion: '1.6.1', dataVersion: 123, environment: { operation: { status: 'failed' } } })
+    expect(report).toMatchObject({ appVersion: '1.7.0', dataVersion: 123, environment: { operation: { status: 'failed' } } })
     const events = report.diagnostics.entries
     expect(events[1]).toMatchObject({ endpoint: '/api/anima/jobs/:resource', outcome: 'failed', status: 503, activeTaskIds: [events[0].id] })
     expect(events[2].id).toBe(events[0].id)

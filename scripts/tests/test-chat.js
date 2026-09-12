@@ -24,6 +24,7 @@ function listen(server) {
 function close(server) {
   return new Promise(function (resolve) {
     if (!server || !server.listening) return resolve();
+    if (typeof server.closeAllConnections === 'function') server.closeAllConnections();
     server.close(function () { resolve(); });
   });
 }

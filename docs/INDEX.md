@@ -43,7 +43,7 @@
 - [视频素材与作品导出审计](archive/audits/video-gallery-recovery-2026-09-10.md)：旧帧串用、重复生成、草稿就绪、下载格式与失败恢复。
 - [剩余功能升级与全站回归](archive/audits/remaining-features-upgrade-2026-09-10.md)：备份保护、分镜 AI/重试/停止、保存快照与全站验收范围。
 - [角色记忆、桌宠与打包专项](archive/audits/companion-knowledge-build-2026-09-10.md)：知识/记忆、提醒/好感度、参考卡、小窗布局与本机打包能力。
-- [版本更新](releases/v1.6.1.md)：安装启动修复；[1.6.0](releases/v1.6.0.md) 与 [1.5.10](releases/v1.5.10.md) 保留为历史版本。
+- [版本更新](releases/v1.7.0.md)：Live2D 性能节拍、工作台懒加载、存储事务加固与海量场景对齐；[1.6.1](releases/v1.6.1.md)、[1.6.0](releases/v1.6.0.md) 与 [1.5.10](releases/v1.5.10.md) 保留为历史版本。
 - [暂缓提案](../plans/README.md)：未启动的专项提案。
 - [浏览器阅读入口](index.html)与[上手教程](getting-started.html)：面向使用者的静态手册。
 
