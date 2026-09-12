@@ -78,6 +78,7 @@
         class="live2d-wardrobe"
         :class="{ open: wardrobeOpen }"
         @click.stop
+        @keydown.esc.stop.prevent="closeWardrobe"
       >
         <div
           v-if="activeId === 'natsume'"
@@ -94,6 +95,7 @@
         </div>
         <button
           v-else
+          ref="wardrobeTriggerRef"
           class="wardrobe-trigger"
           type="button"
           :aria-expanded="wardrobeOpen"
@@ -111,7 +113,7 @@
           v-if="activeId !== 'natsume' && wardrobeOpen"
           :id="`${activeId}-wardrobe-menu`"
           class="wardrobe-menu"
-          role="radiogroup"
+          role="group"
           aria-label="宁宁服装"
         >
           <span class="wardrobe-menu-title">选择服装</span>
@@ -120,8 +122,7 @@
             :key="option.id"
             class="wardrobe-option"
             type="button"
-            role="radio"
-            :aria-checked="outfit === option.id"
+            :aria-pressed="outfit === option.id"
             :class="{ active: outfit === option.id }"
             :disabled="outfitBusy"
             @click="handleOutfitChange(option.id)"
@@ -192,6 +193,11 @@ const avatarDetail = ref('')
 const avatarRetryable = ref(false)
 const outfitBusy = ref(false)
 const wardrobeOpen = ref(false)
+const wardrobeTriggerRef = ref<HTMLButtonElement>()
+function closeWardrobe() {
+  wardrobeOpen.value = false
+  wardrobeTriggerRef.value?.focus()
+}
 const live2dInitialized = ref(false)
 // 换装选择按角色记忆（宁宁/夏目共用 storage 单字段，值空间分离）
 const outfitByChar = ref<Record<string, string>>({
@@ -348,7 +354,7 @@ async function handleOutfitChange(next: string) {
     if (await live2d.setOutfit(next)) {
       outfitByChar.value = { ...outfitByChar.value, [props.activeId]: next }
       emit('outfitChanged', next)
-      wardrobeOpen.value = false
+      closeWardrobe()
     }
   } finally {
     outfitBusy.value = false

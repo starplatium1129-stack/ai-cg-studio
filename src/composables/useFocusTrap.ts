@@ -56,7 +56,7 @@ export function useFocusTrap(
   }
 
   function onKeydown(event: KeyboardEvent) {
-    if (!attached.value || !isOpen() || trapStack.at(-1) !== owner || confirmation.value.visible || event.defaultPrevented) return
+    if (!attached.value || !isOpen() || trapStack.at(-1) !== owner || confirmation.value.visible || event.defaultPrevented || event.isComposing || event.keyCode === 229) return
 
     if (event.key === 'Escape' && onEscape) {
       event.preventDefault()

@@ -426,6 +426,8 @@ export function useSceneExplorerWorkspace() {
         character: string;
         query: string;
     }) {
+        resetFilters();
+        fTier.value = 'all';
         searchQuery.value = rail.query;
         activeTheme.value = 'all';
         if (rail.character === 'nene' || rail.character === 'natsume')

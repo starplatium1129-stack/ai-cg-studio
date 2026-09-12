@@ -5,6 +5,21 @@ import { useFocusTrap } from './useFocusTrap'
 
 afterEach(() => { vi.restoreAllMocks(); document.body.innerHTML = ''; document.body.classList.remove('overlay-open') })
 
+it('does not close a dialog when Escape belongs to an input method composition', async () => {
+  const close = vi.fn()
+  const owner = mount(defineComponent({ setup() {
+    const root = ref<HTMLElement | null>(null)
+    useFocusTrap(root, () => true, { onEscape: close })
+    return () => h('section', { ref: root })
+  } }), { attachTo: document.body })
+  await nextTick()
+  document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', isComposing: true, cancelable: true }))
+  expect(close).not.toHaveBeenCalled()
+  document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', cancelable: true }))
+  expect(close).toHaveBeenCalledOnce()
+  owner.unmount()
+})
+
 it('a cached inactive page releases its trap and reacquires it when restored', async () => {
   const active = ref(true), close = vi.fn()
   const Page = defineComponent({ setup() {

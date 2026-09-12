@@ -2,7 +2,7 @@
   <article class="page showcase-page">
     <header class="showcase-heading">
       <div><div class="page-kicker">CG COLLECTION / 参考画册</div><h1>把心动，一页页收藏。</h1><p>翻阅场景样张，找到想画的下一幕。自己的创作收在「我的作品」。</p>
-        <div class="hero-actions"><button class="btn btn-ghost" type="button" :disabled="!entries.length" @click="openRandom"><ArchiveIcon name="refresh" /> 随机邂逅一张</button><RouterLink to="/scene-explorer" class="btn btn-ghost">按场景寻找灵感</RouterLink><button class="btn btn-ghost" type="button" :disabled="manifestLoading" @click="loadManifest"><ArchiveIcon name="refresh" /> {{ manifestLoading ? '正在读取…' : '刷新画册' }}</button></div>
+        <div class="hero-actions"><button class="btn btn-ghost" type="button" :disabled="manifestLoading || !filtered.length" @click="openRandom"><ArchiveIcon name="refresh" /> 随机邂逅一张</button><RouterLink to="/scene-explorer" class="btn btn-ghost">按场景寻找灵感</RouterLink><button class="btn btn-ghost" type="button" :disabled="manifestLoading" @click="loadManifest"><ArchiveIcon name="refresh" /> {{ manifestLoading ? '正在读取…' : '刷新画册' }}</button></div>
       </div>
       <div class="collection-count"><strong>{{ stats.total }}</strong><span>幅角色与场景 CG</span></div>
     </header>
@@ -10,8 +10,8 @@
     <div class="toolbar-shell" aria-label="样张筛选" data-reveal>
       <div class="search-row">
         <div class="search-field">
-          <input v-model="searchQuery" type="search" class="scene-search" id="showcaseSearch" aria-label="搜索画册" @keydown.esc.prevent="searchQuery = ''" placeholder="搜索场景、情绪、角色或关键词…" />
-          <button v-if="searchQuery" class="scene-search-clear" type="button" aria-label="清空" @click="searchQuery=''">×</button>
+          <input ref="searchInput" v-model="searchQuery" type="search" class="scene-search" id="showcaseSearch" aria-label="搜索画册" @keydown.esc.prevent="searchQuery = ''" placeholder="搜索场景、情绪、角色或关键词…" />
+          <button v-if="searchQuery" class="scene-search-clear" type="button" aria-label="清空搜索" @click="searchQuery=''; searchInput?.focus()">×</button>
         </div>
         <div class="filter-group">
           <button v-for="opt in SCOPE_OPTS" :key="opt.v" class="filter-pill" :class="{active:scope===opt.v}" type="button" :aria-pressed="scope===opt.v" @click="scope=opt.v">{{ opt.l }}</button>
@@ -61,11 +61,11 @@
 
     <ArchiveStatePanel
       v-else-if="!filtered.length"
-      kind="filtered"
-      title="这批样张里没有你要的"
-      message="换个关键词或筛选，我再帮你找找看。"
+      :kind="entries.length ? 'filtered' : 'empty'"
+      :title="entries.length ? '这批样张里没有你要的' : '画册还没有收录样张'"
+      :message="entries.length ? '换个关键词或筛选，我再帮你找找看。' : '样张目录已读取，发布样张后可刷新画册查看。'"
     >
-      <button class="btn btn-ghost" type="button" @click="resetFilters">重置筛选</button>
+      <button v-if="hasFilters" class="btn btn-ghost" type="button" @click="resetFilters">重置筛选</button>
     </ArchiveStatePanel>
 
     <div v-else class="showcase-grid stagger-container" data-reveal data-reveal-delay="1">
@@ -189,6 +189,7 @@ const unavailable = ref(false)
 /** manifest 未返回前显示加载面板，避免闪现错误的"没有匹配样张"空状态 */
 const manifestLoading = ref(true)
 const searchQuery = ref('')
+const searchInput = ref<HTMLInputElement | null>(null)
 const scope       = ref<'all' | 'featured'>('all')
 const typeFilter  = ref<'all' | ShowcaseEntryType>('all')
 const charFilter  = ref<string>('all')
@@ -355,8 +356,8 @@ function resetFilters() { searchQuery.value = ''; scope.value = 'all'; typeFilte
 function onKey(e: KeyboardEvent) {
   if (!currentEntry.value || e.defaultPrevented || e.ctrlKey || e.metaKey || e.altKey) return
   if (e.target instanceof Element && e.target.closest('input,textarea,select,[contenteditable="true"]')) return
-  if (e.key === 'ArrowLeft') move(-1)
-  if (e.key === 'ArrowRight') move(1)
+  if (e.key === 'ArrowLeft') { e.preventDefault(); move(-1) }
+  if (e.key === 'ArrowRight') { e.preventDefault(); move(1) }
   // Escape 交给 <dialog> 原生处理（@cancel），这里不再重复
 }
 

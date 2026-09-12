@@ -73,6 +73,7 @@
 
       <!-- 移动端汉堡 -->
       <button
+        ref="menuToggleEl"
         type="button"
         class="nav-menu-toggle"
         aria-controls="primary-navigation"
@@ -86,7 +87,7 @@
 
 <script setup lang="ts">
 import BrandLogo from '@/components/BrandLogo.vue'
-import { ref, computed, onMounted, onUnmounted } from 'vue'
+import { ref, computed, onMounted, onUnmounted, nextTick } from 'vue'
 import { useRoute } from 'vue-router'
 import AppSoundToggle from './AppSoundToggle.vue'
 import AppThemeToggle from './AppThemeToggle.vue'
@@ -103,6 +104,7 @@ function openBesideTask(path: string) { return activeCount.value > 0 && needsDoc
 const menuOpen = ref(false)
 const linksEl = ref<HTMLElement | null>(null)
 const moreEl = ref<HTMLDetailsElement | null>(null)
+const menuToggleEl = ref<HTMLButtonElement | null>(null)
 
 interface NavItem {
   id: string
@@ -162,7 +164,13 @@ function closeMenu() {
   menuOpen.value = false
   if (moreEl.value) moreEl.value.open = false
 }
-function toggleMenu() { menuOpen.value = !menuOpen.value }
+async function toggleMenu() {
+  menuOpen.value = !menuOpen.value
+  if (menuOpen.value) {
+    await nextTick()
+    linksEl.value?.querySelector<HTMLAnchorElement>(':scope > a')?.focus()
+  }
+}
 
 /**
  * 唤起全局搜索。面板由 App.vue 挂在路由之外，与导航没有父子关系，
@@ -171,6 +179,7 @@ function toggleMenu() { menuOpen.value = !menuOpen.value }
 function openGuide() { closeMenu(); window.dispatchEvent(new Event('atelier:welcome')) }
 
 function openSearch() {
+  if (menuOpen.value) { closeMenu(); menuToggleEl.value?.focus() }
   openGlobalSearch('pointer')
 }
 
@@ -178,9 +187,19 @@ function onDocClick(e: MouseEvent) {
   if (moreEl.value?.open && !moreEl.value.contains(e.target as Node)) {
     moreEl.value.open = false
   }
+  if (menuOpen.value && !linksEl.value?.contains(e.target as Node) && !menuToggleEl.value?.contains(e.target as Node)) closeMenu()
 }
 function onDocKey(e: KeyboardEvent) {
-  if (e.key === 'Escape') closeMenu()
+  if (e.key !== 'Escape' || e.defaultPrevented || e.isComposing) return
+  if (moreEl.value?.open) {
+    moreEl.value.open = false
+    moreEl.value.querySelector('summary')?.focus()
+    e.preventDefault()
+  } else if (menuOpen.value) {
+    closeMenu()
+    menuToggleEl.value?.focus()
+    e.preventDefault()
+  }
 }
 
 onMounted(() => {

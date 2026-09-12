@@ -50,8 +50,8 @@
 .shot-reference-section { display: grid; gap: var(--s-2); margin-top: var(--s-4); }
 .shot-reference-header-row { display: flex; align-items: center; justify-content: space-between; gap: var(--s-2); flex-wrap: wrap; }
 .shot-reference-title-group { display: flex; align-items: center; gap: var(--s-2); flex-wrap: wrap; }
-.shot-ref-loading { color: var(--accent); font-size: var(--fs-label-xs); font-weight: 600; animation: pulse 1.5s infinite; }
-@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+.shot-ref-loading { color: var(--accent); font-size: var(--fs-label-xs); font-weight: 600;  }
+
 .shot-reference-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-3); }
 .shot-card-remove-btn { color: var(--danger-text); padding: 1px 6px; font-weight: bold; }
 .shot-reference-card { display: grid; gap: var(--s-2); padding: var(--s-3); border: 1px solid var(--border-soft); border-radius: var(--r-md); background: var(--bg-deep); }
@@ -72,6 +72,9 @@
 .shot-card-outfit-pill.pill-nsfw { border-color: color-mix(in srgb, var(--danger) 40%, var(--border-soft)); }
 .shot-card-outfit-pill.pill-nsfw.active { border-color: var(--danger); background: var(--danger); /* 审计修复：白字压 danger 底仅 3.49:1，改反色深字 5.2:1 */ color: var(--text-inverse); }
 .shot-reference-images { display: flex; flex-wrap: wrap; gap: var(--s-2); align-items: center; }
+.shot-reference-remove { display: inline-flex; padding: 0; border: 0; border-radius: var(--r-sm); background: transparent; cursor: pointer; }
+.shot-reference-remove:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.shot-reference-remove:disabled { cursor: not-allowed; }
 .shot-reference-thumb { width: 64px; height: 64px; object-fit: cover; border-radius: var(--r-sm); border: 1px solid var(--border-soft); cursor: pointer; }
 .shot-reference-hint { margin: 0; color: var(--text-muted); font-size: var(--fs-label-xs); }
 .shot-dialogue-row { display: flex; gap: var(--s-2); align-items: center; }
@@ -92,7 +95,7 @@
 .shot-issue-badge { padding: 1px var(--s-2); border-radius: var(--r-pill); background: color-mix(in srgb, var(--danger) 14%, transparent); color: var(--danger-text); font: 700 var(--fs-mono-xs) var(--font-mono); }
 .shot-row[data-issue] { outline: 1px solid color-mix(in srgb, var(--danger) 45%, transparent); outline-offset: -1px; border-radius: var(--r-lg); }
 .shot-script-overlay { position: fixed; inset: 0; z-index: var(--z-dock); display: grid; place-items: center; padding: clamp(12px, 3vw, 32px); background: color-mix(in srgb, var(--bg-deep) 55%, transparent); backdrop-filter: blur(4px); }
-.shot-script-panel { width: min(560px, 100%); display: grid; gap: var(--s-4); padding: clamp(16px, 2.4vw, 26px); border: 1px solid var(--border-soft); border-radius: var(--r-xl); background: var(--bg-surface); box-shadow: var(--shadow-md); }
+.shot-script-panel { width: min(560px, 100%); max-height: calc(100dvh - 32px); overflow-y: auto; display: grid; gap: var(--s-4); padding: clamp(16px, 2.4vw, 26px); border: 1px solid var(--border-soft); border-radius: var(--r-xl); background: var(--bg-surface); box-shadow: var(--shadow-md); }
 .shot-script-head { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--s-3); }
 .shot-script-head h2 { margin: 2px 0 4px; font-size: var(--fs-title-sm); }
 .shot-script-head p { margin: 0; color: var(--text-secondary); font-size: var(--fs-body-sm); line-height: var(--lh-body); }

@@ -84,7 +84,7 @@ function trapTab(e: KeyboardEvent) {
  * 与「破坏性操作默认聚焦取消键」的设计直接冲突（2026-08-30 UX 审计 P0-1）。
  */
 function onKeydown(e: KeyboardEvent) {
-  if (!state.value.visible) return
+  if (!state.value.visible || e.isComposing || e.keyCode === 229) return
   if (e.key === 'Escape') { e.preventDefault(); cancel() }
 }
 document.addEventListener('keydown', onKeydown)

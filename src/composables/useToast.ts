@@ -23,6 +23,7 @@ export interface ToastItem {
 const toasts = ref<ToastItem[]>([])
 let nextId = 0
 let listenersInstalled = false
+const pauseReasons = new Set<string>()
 
 /**
  * 同屏最多留几条（2026-08-30 UX 审计 P2）。
@@ -65,11 +66,14 @@ function resumeToast(t: ToastItem) {
   }
 }
 
-export function pauseAllToasts() {
+export function pauseAllToasts(reason = 'manual') {
+  pauseReasons.add(reason)
   toasts.value.forEach(pauseToast)
 }
 
-export function resumeAllToasts() {
+export function resumeAllToasts(reason = 'manual') {
+  pauseReasons.delete(reason)
+  if (pauseReasons.size || document.hidden) return
   toasts.value.forEach(resumeToast)
 }
 
@@ -77,8 +81,8 @@ function ensureListeners() {
   if (listenersInstalled || typeof document === 'undefined') return
   listenersInstalled = true
   document.addEventListener('visibilitychange', () => {
-    if (document.hidden) pauseAllToasts()
-    else resumeAllToasts()
+    if (document.hidden) pauseAllToasts('visibility')
+    else resumeAllToasts('visibility')
   })
 }
 
@@ -106,6 +110,7 @@ export function useToast() {
       action,
     }
     item.timer = setTimeout(() => dismiss(id), duration)
+    if (pauseReasons.size || document.hidden) pauseToast(item)
     toasts.value.push(item)
     trimToasts()
 

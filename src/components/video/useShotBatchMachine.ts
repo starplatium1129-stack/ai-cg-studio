@@ -255,6 +255,7 @@ export function useShotBatchMachine(deps: ShotBatchMachineDeps) {
     submitting,
     cancelling,
     concating,
+    retrying,
     batchActive,
     canSubmit,
     canConcat,

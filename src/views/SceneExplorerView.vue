@@ -42,9 +42,9 @@
       <div class="toolbar-primary">
         <label class="sr-only" for="sceneSearch">搜索场景</label>
         <div class="scene-search-wrap">
-          <input v-model="searchQuery" type="search" class="scene-search" id="sceneSearch"
+          <input ref="searchInput" v-model="searchQuery" type="search" class="scene-search" id="sceneSearch"
             placeholder="搜索场景、镜头、时段或关键词（如：雨夜、围围巾、夏目经典感）" />
-          <button v-if="searchQuery" class="scene-search-clear" type="button" aria-label="清空" @click="searchQuery = ''">×</button>
+          <button v-if="searchQuery" class="scene-search-clear" type="button" aria-label="清空搜索" @click="searchQuery = ''; searchInput?.focus()">×</button>
         </div>
         <span class="scene-count" role="status" aria-live="polite">
           已显示 <strong>{{ Math.min(visible, filtered.length) }}</strong>
@@ -55,6 +55,7 @@
           class="filter-toggle" type="button"
           :class="{ active: filtersOpen || activeFacetCount > 0 }"
           :aria-expanded="filtersOpen ? 'true' : 'false'"
+          aria-controls="sceneFacetPanel"
           @click="filtersOpen = !filtersOpen"
         >
           筛选<span v-if="activeFacetCount" class="facet-badge">{{ activeFacetCount }}</span>
@@ -64,12 +65,16 @@
       <div class="scene-personal-nav" aria-label="我的场景视图">
         <span class="scene-personal-label">我的场景</span>
         <button type="button" :class="{ active: fTier === 'personal' && !showHidden }"
+          :aria-pressed="fTier === 'personal' && !showHidden"
           @click="showPersonalScenes">常用 {{ usedCount }}</button>
         <button type="button" :class="{ active: sortBy === 'favorite' && !showHidden }"
+          :aria-pressed="sortBy === 'favorite' && !showHidden"
           @click="showFavoriteScenes">收藏 {{ favoriteCount }}</button>
         <button type="button" :class="{ active: showHidden }"
+          :aria-pressed="showHidden"
           @click="showHiddenScenes">已隐藏 {{ hiddenCount }}</button>
         <button type="button" :class="{ active: fTier === 'all' && sortBy === 'smart' && !showHidden }"
+          :aria-pressed="fTier === 'all' && sortBy === 'smart' && !showHidden"
           @click="showAllScenes">完整库 {{ availableCount }}</button>
       </div>
 
@@ -83,7 +88,7 @@
       <div v-if="intentHtml" class="search-intent" aria-live="polite" v-html="intentHtml"></div>
 
       <!-- 精细筛选默认收起 -->
-      <div v-show="filtersOpen" class="scene-facet-panel">
+      <div v-show="filtersOpen" id="sceneFacetPanel" class="scene-facet-panel">
         <div class="scene-facet-grid">
           <label class="scene-filter-field">角色<select v-model="fChar"><option value="all">全部角色</option><option value="nene">宁宁</option><option value="natsume">夏目</option><option value="triad">双人</option></select></label>
           <label class="scene-filter-field">季节<select v-model="fSeason"><option value="all">全部季节</option><option value="春">春</option><option value="夏">夏</option><option value="秋">秋</option><option value="冬">冬</option></select></label>
@@ -197,6 +202,8 @@
 </template>
 
 <script setup lang="ts">
+import { ref } from 'vue'
+const searchInput = ref<HTMLInputElement | null>(null)
 import SceneCard from '@/components/SceneCard.vue'
 import ArchiveStatePanel from '@/components/visual/ArchiveStatePanel.vue'
 import ArchiveIcon, { type ArchiveIconName } from '@/components/visual/ArchiveIcon.vue'

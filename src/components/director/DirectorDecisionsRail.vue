@@ -10,6 +10,7 @@
         <button v-for="e in EMOTION" :key="e.id"
           class="option" type="button"
           :class="{ selected: pb.selections.emotion.includes(e.id) }"
+          :aria-pressed="pb.selections.emotion.includes(e.id)"
           @click="pb.toggleEmotion(e.id)">
           <span class="opt-icon"><ArchiveIcon :name="e.iconName" /></span>
           <span class="opt-name">{{ e.name }}</span>
@@ -27,6 +28,7 @@
         <button v-for="s in SHOT" :key="s.id"
           class="option" type="button"
           :class="{ selected: pb.selections.shot === s.id }"
+          :aria-pressed="pb.selections.shot === s.id"
           @click="pb.setShot(pb.selections.shot === s.id ? null : s.id)">
           <span class="opt-icon"><ArchiveIcon :name="s.iconName" /></span>
           <span class="opt-name">{{ s.name }}</span>
@@ -44,6 +46,7 @@
         <button v-for="l in LIGHTING" :key="l.id"
           class="option" type="button"
           :class="{ selected: pb.selections.lighting === l.id }"
+          :aria-pressed="pb.selections.lighting === l.id"
           @click="pb.setLighting(pb.selections.lighting === l.id ? null : l.id)">
           <span class="opt-icon"><ArchiveIcon :name="l.iconName" /></span>
           <span class="opt-name">{{ l.name }}</span>
@@ -61,6 +64,7 @@
         <button v-for="c in COMPOSITION" :key="c.id"
           class="option" type="button"
           :class="{ selected: pb.selections.composition === c.id }"
+          :aria-pressed="pb.selections.composition === c.id"
           @click="pb.setComposition(pb.selections.composition === c.id ? null : c.id)">
           <span class="opt-icon"><ArchiveIcon :name="c.iconName" /></span>
           <span class="opt-name">{{ c.name }}</span>
@@ -78,6 +82,7 @@
         <button v-for="m in COLOR_MOODS" :key="m.id"
           class="mood-card" type="button"
           :class="{ active: pb.colorMood === m.id }"
+          :aria-pressed="pb.colorMood === m.id"
           @click="pb.setColorMood(pb.colorMood === m.id ? null : m.id)">
           <span class="mood-icon"><ArchiveIcon :name="m.iconName" /></span>
           <span class="mood-name">{{ m.name }}</span>

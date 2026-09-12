@@ -2156,7 +2156,8 @@ body:has(.chat-page) .sakura-fall {
 .chat-page .character-about .character-description { white-space: normal; }
 .chat-page .live2d-wardrobe { position: relative; }
 .chat-page .wardrobe-menu { position: absolute; z-index: var(--z-popover); bottom: calc(100% + 8px); max-height: min(340px, 45dvh); overflow-y: auto; background: var(--bg-elevated); }
-.chat-page .room-signal { max-width: 55%; padding: 0; border: 0; background: none; box-shadow: none; backdrop-filter: none; }
+.chat-page .room-signal { max-width: 55%; padding: var(--s-2); border: 1px solid var(--border-soft); border-radius: var(--r-md); background: var(--bg-surface); box-shadow: none; backdrop-filter: none; }
+.chat-page .room-signal small { color: var(--text-secondary); text-shadow: none; }
 .chat-page .room-signal::after { display: none; }
 .chat-page .portrait-stage.live2d-ready .room-signal small { display: none; }
 @media (min-width: 1000px) {

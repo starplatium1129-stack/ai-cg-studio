@@ -208,6 +208,8 @@ export function useCompanionSpeechInput(deps: CompanionSpeechInputDeps) {
   watch([speechState, speechConfig, dnd, inQuietHours, desktopWindowVisible, documentHidden, chatReady], reconcileAutoListen)
 
   watch(deps.currentCharacter, () => {
+    cancelSpeechActivity()
+    speechNotice.value = ''
     applySpeechSession()
     reconcileAutoListen()
   })

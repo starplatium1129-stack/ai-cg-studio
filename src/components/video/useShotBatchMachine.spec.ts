@@ -48,10 +48,12 @@ describe('shot batch operation recovery', () => {
     vi.mocked(api.cancelVideoBatch).mockResolvedValueOnce({ batch: batch('cancelled') } as Awaited<ReturnType<typeof api.cancelVideoBatch>>)
     const { machine } = setup()
     const pending = machine.retryAllFailed()
+    expect(machine.retrying.value).toBe(true)
     await machine.retryAllFailed()
     await machine.cancelBatch()
     resolve({ batch: batch('running') } as Awaited<ReturnType<typeof api.retryVideoShot>>)
     await pending
+    expect(machine.retrying.value).toBe(false)
     expect(api.retryVideoShot).toHaveBeenCalledTimes(1)
     expect(machine.batch.value?.status).toBe('cancelled')
   })

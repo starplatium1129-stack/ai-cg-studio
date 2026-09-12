@@ -112,7 +112,7 @@ export function useShotWorkspace(props: {
         onCardRemoved: index => { shots.value.forEach(shot => { shot.cast = removeCastSlot(shot.cast, index); }); },
     });
     // ── 批量提交状态机（提交/3s 轮询/取消/重抽/拼接）已下沉 useShotBatchMachine ──
-    const { batch, submitting, cancelling, concating, batchActive, canSubmit, canConcat, progressPercent, serverShot, submitBatch, cancelBatch, retryShotAt, retryAllFailed, concatBatch, reconnectBatch } = useShotBatchMachine({
+    const { batch, submitting, cancelling, concating, retrying, batchActive, canSubmit, canConcat, progressPercent, serverShot, submitBatch, cancelBatch, retryShotAt, retryAllFailed, concatBatch, reconnectBatch } = useShotBatchMachine({
         shots,
         identityCard,
         aspectRatio,
@@ -157,8 +157,14 @@ export function useShotWorkspace(props: {
             return '先安装 MiniMax H3 权重';
         if (shots.value.length === 0)
             return '先添加镜头';
+        if (submitting.value) return '正在提交镜头';
+        if (retrying.value) return '正在重新提交失败镜头';
+        if (cancelling.value) return '正在取消整批';
+        if (concating.value) return '正在拼接成片';
+        if (loadingRefAssets.value || firstFrameBusy.value) return '正在准备参考图与首帧';
+        if (shots.value.some(shot => shot.seedText.trim() && (!Number.isSafeInteger(Number(shot.seedText)) || Number(shot.seedText) < 0 || Number(shot.seedText) > 0x7fffffff))) return '请检查镜头 Seed：需为 0–2147483647 的整数';
         if (!canSubmit.value)
-            return `${shots.value.filter((shot) => shot.prompt.trim().length < 8).length} 个镜头描述不完整`;
+            return `${shots.value.filter(shot => shot.prompt.trim().length < 8 || shot.prompt.trim().length > 4000).length} 个镜头描述需调整（8–4000 字）`;
         return `${shots.value.length} 镜 · ${aspectRatio.value === 'landscape' ? '横屏' : aspectRatio.value === 'portrait' ? '竖屏' : '方形'} · ${qualityLabel.value}`;
     });
     const submitDescription = computed(() => {
@@ -443,6 +449,6 @@ frameInputs,
         retryShotFrame, clearFrame, onFramePicked, retryShotAt, scriptStory, scriptCount,
         scriptTotal, runAiScript, canSubmit, submitTitle, submitDescription, cancelling,
         cancelBatch, batch, retryAllFailed, canConcat, concating, concatBatch,
-        submitBatch, submitting, batchStatusLabel, progressPercent,
+        submitBatch, submitting, retrying, batchError, batchStatusLabel, progressPercent,
     };
 }

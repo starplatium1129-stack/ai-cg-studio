@@ -33,6 +33,17 @@ async function setup() {
 }
 afterEach(() => { wrapper?.unmount(); vi.clearAllMocks() })
 describe('video submission recovery', () => {
+  it('distinguishes offline draft editing from models awaiting installation', async () => {
+    const workspace = await setup()
+    expect(workspace.modeBadge('image')).toBe('可生成')
+    workspace.status.value!.online = false
+    expect(workspace.modeBadge('image')).toBe('离线 · 可编辑')
+    expect(workspace.modeReady('image')).toBe(true)
+    expect(workspace.canGenerate.value).toBe(false)
+    workspace.status.value!.models[0].available = false
+    expect(workspace.modeBadge('image')).toBe('待装权重 · 可编辑')
+    expect(workspace.modeBadge('shots')).toBe('待装权重')
+  })
   it('submits the settings captured before asynchronous frame preparation', async () => {
     let resolve!: (frames: object) => void
     mocks.frames.mockReturnValueOnce(new Promise(done => { resolve = done }))

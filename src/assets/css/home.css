@@ -28,6 +28,7 @@
 .hero-muses { position: relative; isolation: isolate; display: flex; width: fit-content; flex-wrap: wrap; gap: var(--s-2); margin-top: var(--s-7); }
 .hero-muses button { position: relative; z-index: var(--z-raised); display: inline-flex; align-items: center; gap: var(--s-2); min-height: 44px; padding: var(--s-2) var(--s-3); border: 1px solid transparent; border-radius: var(--r-pill); color: var(--text-muted); background: transparent; font: 500 var(--fs-label)/var(--lh-label) var(--font-sans); cursor: pointer; transition: transform var(--motion-hover); }
 .hero-muses button[aria-pressed="true"] { background: transparent; color: var(--text-primary); border-color: transparent; }
+.home-hero .hero-muses .animated-selection { background: color-mix(in srgb, var(--accent) 12%, var(--bg-surface)); border-color: color-mix(in srgb, var(--accent) 32%, var(--border-soft)); }
 .hero-muses button:active { transform: scale(.97); }
 .muse-marker { width: 6px; height: 6px; border-radius: 50%; }
 .muse-marker-nene { background: var(--nene-violet); }

@@ -100,6 +100,7 @@
             type="button"
             class="char-outfit-tab"
             :class="{ active: activeOutfit?.outfitId === outfit.outfitId, 'tab-nsfw': outfit.isNsfw }"
+            :aria-pressed="activeOutfit?.outfitId === outfit.outfitId"
             @click="selectedOutfitId = outfit.outfitId"
           >
             <ArchiveIcon :name="outfit.isNsfw ? 'lock' : 'wardrobe'" class="outfit-tab-icon" />
@@ -157,6 +158,7 @@
           aria-label="4 视角标准参考基准审查"
           @click.self="closeRefViewer"
           @cancel.prevent="closeRefViewer"
+          @keydown="onRefKeydown"
         >
           <div v-if="activeRefModal" class="ref-modal-layout">
             <div class="ref-modal-art">
@@ -190,13 +192,14 @@
                 </div>
               </div>
               <div class="ref-modal-actions">
-                <button class="btn btn-ghost btn-sm" type="button" :disabled="activeRefIndex <= 0" title="上一视角 (键盘 ←)" @click="moveRef(-1)">
+                <button class="btn btn-ghost btn-sm" type="button" :disabled="nextRefIndex(-1) < 0" aria-label="上一视角" title="上一视角 (键盘 ←)" @click="moveRef(-1)">
                   ← <kbd>←</kbd>
                 </button>
                 <button
                   class="btn btn-ghost btn-sm"
                   type="button"
-                  :disabled="!activeOutfit || activeRefIndex >= activeOutfit.references.length - 1"
+                  :disabled="nextRefIndex(1) < 0"
+                  aria-label="下一视角"
                   title="下一视角 (键盘 →)"
                   @click="moveRef(1)"
                 >
@@ -344,16 +347,27 @@ function closeRefViewer() {
   activeRefIndex.value = -1
 }
 
-function moveRef(delta: number) {
-  if (!activeOutfit.value?.references.length) return
+function nextRefIndex(delta: number): number {
+  if (!activeOutfit.value?.references.length) return -1
   const len = activeOutfit.value.references.length
   for (let next = activeRefIndex.value + delta; next >= 0 && next < len; next += delta) {
     const item = activeOutfit.value.references[next]
     if (item?.url && !unavailableReferences.value.has(item.url)) {
-      activeRefIndex.value = next
-      break
+      return next
     }
   }
+  return -1
+}
+function moveRef(delta: number) {
+  const next = nextRefIndex(delta)
+  if (next >= 0) activeRefIndex.value = next
+}
+function onRefKeydown(event: KeyboardEvent) {
+  if (event.defaultPrevented || event.altKey || event.ctrlKey || event.metaKey) return
+  if (event.target instanceof Element && event.target.closest('input, textarea, select, [contenteditable="true"]')) return
+  if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return
+  event.preventDefault()
+  moveRef(event.key === 'ArrowLeft' ? -1 : 1)
 }
 
 const hasIdentity = computed(() => {

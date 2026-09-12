@@ -3,11 +3,14 @@
     <!-- 只在容器上声明一次 live region。子项再挂 role="status" 会造成
          嵌套 live region，读屏可能重复播报或整条丢掉。 -->
     <div
+      ref="stackEl"
       class="toast-stack"
       aria-live="polite"
       aria-atomic="false"
-      @mouseenter="pauseAll"
-      @mouseleave="resumeAll"
+      @mouseenter="pauseAll('hover')"
+      @mouseleave="resumeAll('hover')"
+      @focusin="pauseAll('focus')"
+      @focusout="onFocusOut"
     >
       <TransitionGroup :css="false" @enter="onToastEnter" @leave="onToastLeave">
         <div
@@ -44,10 +47,17 @@
 
 <script setup lang="ts">
 import { animateMini } from 'motion'
+import { nextTick, onUnmounted, ref } from 'vue'
 import ArchiveIcon, { type ArchiveIconName } from '@/components/visual/ArchiveIcon.vue'
 import { useToast, type ToastItem, type ToastType } from '@/composables/useToast'
 
 const { toasts, dismiss, pauseAll, resumeAll } = useToast()
+const stackEl = ref<HTMLElement | null>(null)
+
+function onFocusOut(event: FocusEvent) {
+  if (!(event.currentTarget as HTMLElement).contains(event.relatedTarget as Node | null)) resumeAll('focus')
+}
+onUnmounted(() => { resumeAll('hover'); resumeAll('focus') })
 
 function runAction(t: ToastItem) {
   dismiss(t.id)
@@ -100,13 +110,14 @@ function onPointerUp(e: PointerEvent, id: number) {
   const now = performance.now()
   const deltaY = e.clientY - activeDrag.startY
   const elapsed = Math.max(1, now - activeDrag.lastTime)
-  const velocity = Math.abs(e.clientY - activeDrag.lastY) / elapsed // px/ms
+  const velocity = (e.clientY - activeDrag.lastY) / elapsed // px/ms，向上回拖不视为下滑消除
   const el = activeDrag.el
   activeDrag = null
 
   // 向下滑动超过 32px 或滑动速度超过 0.12 px/ms 则顺势消除
-  if (deltaY > 32 || velocity > 0.12) {
-    void animateMini(el, { opacity: 0, transform: `translateY(${deltaY + 24}px)` }, { duration: 0.14 }).then(() => {
+  if (deltaY > 32 || (deltaY > 0 && velocity > 0.12)) {
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    void animateMini(el, reduced ? { opacity: 0 } : { opacity: 0, transform: `translateY(${deltaY + 24}px)` }, { duration: 0.14 }).then(() => {
       dismiss(id)
     })
   } else {
@@ -154,7 +165,13 @@ function onToastLeave(el: Element, done: () => void) {
         { opacity: 0, transform: 'translateY(-8px) scale(.96)' },
         { duration: 0.16, ease: 'easeOut' },
       )
-  t.then(done)
+  t.then(() => {
+    done()
+    void nextTick(() => {
+      // Removing a focused close/action button need not emit focusout.
+      if (!stackEl.value?.contains(document.activeElement)) resumeAll('focus')
+    })
+  })
 }
 </script>
 

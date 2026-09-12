@@ -31,7 +31,7 @@ test('archive state language contract', () => {
   assert(scene.includes('v-else-if="paged.length === 0"') && scene.includes('kind="filtered"'), 'scene filter misses must be filtered');
   assert(gallery.includes('v-else-if="!visible.length"') && gallery.includes('kind="filtered"'), 'gallery filter misses must be filtered');
   assert(showcase.includes('v-else-if="manifestLoading"') && showcase.includes('kind="loading"'), 'showcase manifest loading must be loading');
-  assert(showcase.includes('v-else-if="!filtered.length"') && showcase.includes('kind="filtered"'), 'showcase filter misses must be filtered');
+  assert(showcase.includes('v-else-if="!filtered.length"') && showcase.includes(":kind=\"entries.length ? 'filtered' : 'empty'\""), 'showcase must distinguish filter misses from an empty catalog');
   assert(character.includes('v-else-if="!characters.length"') && character.includes('kind="empty"'), 'character empty data must have a real empty state');
   assert(home.includes('ArchiveStatePanel') && home.includes('compact') && home.includes('recent-empty-state'), 'home recent works must use the compact shared state');
   assert(!/recent-empty-state[\s\S]*<div class="empty-state-icon"/.test(home), 'home must not retain the bespoke empty-state icon');

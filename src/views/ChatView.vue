@@ -8,12 +8,13 @@
       <div class="chat-actions">
         <button class="btn btn-ghost" type="button" @click="clearCharacterConversation">新对话</button>
         <!-- 次要操作收进「更多」菜单：主操作只留「新对话」，破坏性操作入菜单并标危险色 -->
-        <div ref="actionsMoreRef" class="chat-actions-more">
+        <div ref="actionsMoreRef" class="chat-actions-more" @focusout="onRoomActionFocusout">
           <button class="btn btn-ghost chat-more-trigger" type="button"
             :aria-expanded="moreOpen ? 'true' : 'false'" aria-haspopup="menu"
+            @keydown.down.prevent="focusRoomAction(0)" @keydown.up.prevent="focusRoomAction(-1)"
             @click="moreOpen = !moreOpen">更多<span class="chat-more-caret" aria-hidden="true">{{ moreOpen ? '▴' : '▾' }}</span></button>
           <Transition name="layer-fade">
-            <div v-if="moreOpen" class="chat-more-menu" role="menu" aria-label="更多房间操作">
+            <div v-if="moreOpen" class="chat-more-menu" role="menu" aria-label="更多房间操作" @keydown="navigateRoomActions">
               <button class="chat-more-item is-danger" role="menuitem" type="button"
                 @click="runRoomAction(() => clearAllMemory())">清除聊天记忆</button>
               <button class="chat-more-item" role="menuitem" type="button"
@@ -212,17 +213,17 @@
           <div class="composer-row">
             <textarea class="chat-input" v-model="inputText" rows="2" maxlength="1200"
               placeholder="轻声对她说点什么吧……" aria-label="聊天输入"
-              @keydown.enter.exact.prevent="handleSend"
+              @keydown.enter.exact="submitChatOnEnter($event, handleSend)"
               @input="onInputChange"></textarea>
             <button class="btn btn-ghost stop-btn" type="button"
               v-show="busy || voiceActive"
               :title="busy ? '停止生成回复' : '停止语音播放'"
               @click="stopEverything">停止</button>
             <button class="btn btn-primary send-btn" type="button"
-              :disabled="busy || !chatReady"
+              :disabled="busy || !chatReady || !inputText.trim()"
               :title="chatReady ? '发送 (Enter 发送，Shift+Enter 换行)' : (chatProvider === 'api' ? '请先配置 API' : '请先启动 Ollama')"
               @click="handleSend">
-              <span>发送</span>
+              <span>{{ busy ? '回复中…' : '发送' }}</span>
               <kbd class="kbd-send-hint">↵</kbd>
             </button>
           </div>
@@ -261,8 +262,13 @@
               <span class="voice-divider" aria-hidden="true"></span>
               <button class="hold-talk-btn" type="button"
                 :data-state="speechState"
-                :disabled="speechBusy"
-                :title="speechError || '按住说话，松开识别'"
+                :disabled="speechState === 'recognizing'"
+                :title="speechError || '按住说话，松开识别；也可按住空格或 Enter'"
+                @keydown.space.prevent="onSpeechKeyPress"
+                @keydown.enter.prevent="onSpeechKeyPress"
+                @keyup.space.prevent="onSpeechRelease"
+                @keyup.enter.prevent="onSpeechRelease"
+                @blur="onSpeechCancel"
                 @pointerdown.prevent="onSpeechPress"
                 @pointerup="onSpeechRelease"
                 @pointercancel="onSpeechCancel"
@@ -281,6 +287,7 @@
               <span v-if="speechNotice" class="speech-notice" role="status">{{ speechNotice }}</span>
             </template>
             <button class="speech-config-btn" type="button" title="语音输入设置" aria-label="语音输入设置"
+              :aria-expanded="speechSettingsOpen"
               @click="speechSettingsOpen = !speechSettingsOpen">
               语音输入设置
             </button>
@@ -298,7 +305,7 @@
 
 <script setup lang="ts">
 import '@/assets/css/chat.css'
-import { computed, onBeforeUnmount, ref, watch } from 'vue'
+import { computed, nextTick, onBeforeUnmount, ref, watch } from 'vue'
 import { useCharacterRoomSession } from '@/composables/chat/useCharacterRoomSession'
 import ChatApiSettings from '@/components/ChatApiSettings.vue'
 import ChatCharacterStage from '@/components/ChatCharacterStage.vue'
@@ -311,6 +318,7 @@ import { useVoiceInput, type VoiceTextSource, type VoiceInputState } from '@/com
 import { isSpeechInputReady, loadSpeechInputConfig } from '@/utils/speechInputConfig'
 import { createSpeechSession } from '@/utils/speechSession'
 import type { ChatUserProfile } from '@/utils/chatUserProfile'
+import { submitChatOnEnter } from '@/utils/chatInput'
 
 const {
   chatListRef,
@@ -397,6 +405,7 @@ const moreOpen = ref(false)
 const actionsMoreRef = ref<HTMLElement | null>(null)
 function runRoomAction(action: () => void) {
   moreOpen.value = false
+  actionsMoreRef.value?.querySelector<HTMLButtonElement>('.chat-more-trigger')?.focus()
   action()
 }
 function onRoomActionPointerDown(event: PointerEvent) {
@@ -405,7 +414,26 @@ function onRoomActionPointerDown(event: PointerEvent) {
   }
 }
 function onRoomActionKeydown(event: KeyboardEvent) {
-  if (event.key === 'Escape') moreOpen.value = false
+  if (event.key !== 'Escape' || !moreOpen.value) return
+  event.preventDefault()
+  moreOpen.value = false
+  actionsMoreRef.value?.querySelector<HTMLButtonElement>('.chat-more-trigger')?.focus()
+}
+function onRoomActionFocusout(event: FocusEvent) {
+  if (event.relatedTarget instanceof Node && !actionsMoreRef.value?.contains(event.relatedTarget)) moreOpen.value = false
+}
+async function focusRoomAction(index: number) {
+  moreOpen.value = true
+  await nextTick()
+  const items = actionsMoreRef.value?.querySelectorAll<HTMLButtonElement>('[role="menuitem"]')
+  if (items?.length) items[(index + items.length) % items.length]?.focus()
+}
+function navigateRoomActions(event: KeyboardEvent) {
+  if (!['ArrowDown', 'ArrowUp', 'Home', 'End'].includes(event.key)) return
+  event.preventDefault()
+  const items = [...(actionsMoreRef.value?.querySelectorAll<HTMLButtonElement>('[role="menuitem"]') || [])]
+  const index = items.indexOf(document.activeElement as HTMLButtonElement)
+  void focusRoomAction(event.key === 'Home' ? 0 : event.key === 'End' ? -1 : index + (event.key === 'ArrowDown' ? 1 : -1))
 }
 watch(moreOpen, open => {
   if (open) {
@@ -543,24 +571,39 @@ watch([speechState, speechConfig], () => {
 })
 
 watch(currentCharacter, () => {
+  manualSpeechHeld = false
+  speechCancel()
+  speechNotice.value = ''
   applySpeechSession()
   reconcileAutoListen()
 })
 
+let manualSpeechHeld = false
 function onSpeechPress(): void {
+  if (speechBusy.value) return
+  manualSpeechHeld = true
   void speechStart('manual')
 }
 
+function onSpeechKeyPress(event: KeyboardEvent): void {
+  if (!event.repeat) onSpeechPress()
+}
+
 function onSpeechRelease(): void {
-  speechStop()
+  if (!manualSpeechHeld) return
+  manualSpeechHeld = false
+  if (speechState.value === 'acquiring') speechCancel()
+  else speechStop()
 }
 
 function onSpeechCancel(): void {
+  if (!manualSpeechHeld) return
+  manualSpeechHeld = false
   speechCancel()
 }
 
 function onSpeechLeave(event: PointerEvent): void {
-  if (speechState.value === 'capturing' && event.buttons > 0) speechCancel()
+  if (event.buttons > 0) onSpeechCancel()
 }
 
 function onSpeechSettingsSaved(): void {

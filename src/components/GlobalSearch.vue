@@ -11,11 +11,9 @@
             class="gs-input"
             placeholder="搜索场景、作品、页面… ↑↓ 选择 · Enter 打开"
             aria-label="搜索场景、作品或页面"
-            @keydown.down.prevent="move(1)"
-            @keydown.up.prevent="move(-1)"
-            @keydown.enter.prevent="run(activeIndex)"
+            @keydown="onInputKeydown"
           />
-          <kbd class="gs-esc">ESC</kbd>
+          <button type="button" class="gs-esc" aria-label="关闭搜索" title="关闭搜索（Esc）" @click="close()"><ArchiveIcon name="close" /></button>
         </div>
 
         <div ref="resultsEl" class="gs-results" role="listbox" aria-label="搜索结果">
@@ -185,6 +183,17 @@ function move(step: number) {
   })
 }
 
+function onInputKeydown(event: KeyboardEvent) {
+  if (event.isComposing || event.keyCode === 229) return
+  if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
+    event.preventDefault()
+    move(event.key === 'ArrowDown' ? 1 : -1)
+  } else if (event.key === 'Enter') {
+    event.preventDefault()
+    run(activeIndex.value)
+  }
+}
+
 function openPanel(source: 'keyboard' | 'pointer' = 'keyboard') {
   previousActiveElement = document.activeElement as HTMLElement | null
   triggerSource.value = source
@@ -204,6 +213,7 @@ function close(restoreFocus = true) {
 }
 
 function onKeydown(event: KeyboardEvent) {
+  if (event.isComposing || event.keyCode === 229 || event.defaultPrevented) return
   const target = event.target as HTMLElement | null
   const isInput = /^(INPUT|TEXTAREA|SELECT)$/.test(target?.tagName || '') || target?.isContentEditable === true
 
@@ -341,6 +351,8 @@ onUnmounted(() => {
 }
 .gs-input::placeholder { color: var(--text-muted); }
 .gs-esc {
+  display: inline-grid; place-items: center; width: 36px; height: 36px;
+  background: var(--bg-surface); cursor: pointer;
   flex: 0 0 auto;
   padding: 2px var(--s-2);
   border: 1px solid var(--border-soft); border-radius: var(--r-sm);
@@ -367,4 +379,3 @@ onUnmounted(() => {
 .gs-empty { padding: var(--s-6) var(--s-4); color: var(--text-muted); text-align: center; font-size: var(--fs-body-sm); }
 @media (prefers-reduced-motion: reduce) { .gs-panel { animation: none; } }
 </style>
-

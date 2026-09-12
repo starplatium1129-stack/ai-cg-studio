@@ -67,8 +67,12 @@ function modeReady(mode: StudioMode): boolean {
 
 
 function modeBadge(mode: StudioMode): string {
-  if (mode === 'shots' || mode === 'first-last-frame') return modeReady(mode) ? '可用' : '待装权重'
-  return '可用'
+  if (statusLoading.value) return '检测中'
+  if (!status.value) return '待检测'
+  const modelReady = mode === 'shots' ? shotsModeReady.value
+    : status.value.models.some(model => model.available && model.modes.includes(mode))
+  if (!modelReady) return modeReady(mode) ? '待装权重 · 可编辑' : '待装权重'
+  return status.value.online ? '可生成' : '离线 · 可编辑'
 }
 
 

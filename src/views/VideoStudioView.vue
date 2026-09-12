@@ -46,7 +46,6 @@
     <div v-if="t8State" class="video-t8-bar" :data-state="t8State.available ? 'fast' : 'slow'" role="status">
       <span class="video-t8-dot"></span>
       {{ t8State.reason }}
-      <span v-if="!t8State.available" class="video-t8-hint">任务会自动重新探测，无需重启</span>
     </div>
 
     <nav v-if="selectedMode !== 'shots'" class="video-jump-nav" aria-label="视频工作区导航"><a href="#video-brief">镜头描述</a><a href="#video-settings">画幅与时长</a><a href="#video-queue">任务状态</a></nav>
@@ -119,6 +118,7 @@
           </div>
           <textarea
             v-model="prompt"
+            aria-label="镜头描述"
             class="textarea video-prompt"
             maxlength="4000"
             rows="7"
@@ -262,7 +262,7 @@
             <span class="video-status-pill" :data-state="environmentState">{{ environmentLabel }}</span>
           </div>
 
-          <div v-if="statusError" class="video-inline-message error">{{ statusError }}</div>
+          <div v-if="statusError" class="video-inline-message error" role="alert">{{ statusError }}</div>
           <template v-else-if="activeModel">
             <div class="video-model-summary">
               <span>{{ activeModel.tier }}</span>
@@ -302,6 +302,7 @@
             class="video-model-row"
             type="button"
             :class="{ active: selectedModelId === model.id }"
+            :aria-pressed="selectedModelId === model.id"
             @click="selectedModelId = model.id"
           >
             <span>
@@ -353,7 +354,7 @@
               traceback）。走一遍分类器换成中文结论，原始串折进「技术细节」，
               与出图路径的失败呈现对齐（2026-08-30 UX 审计）。
             -->
-            <div v-if="jobErrorReport" class="video-inline-message error">
+            <div v-if="jobErrorReport" class="video-inline-message error" role="alert">
               <p>{{ jobErrorReport.title }}：{{ jobErrorReport.message }}</p>
               <details v-if="jobErrorReport.details" class="video-error-detail">
                 <summary>技术细节</summary>

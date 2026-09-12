@@ -97,12 +97,17 @@
             class="companion-chat-speech"
             type="button"
             :data-state="speechState"
-            :disabled="speechBusy || !liveState.chatReady"
+            :disabled="speechState === 'recognizing' || !liveState.chatReady"
             :title="speechError || '按住说话，松开识别；也可按住 Space'"
             @pointerdown.prevent="onSpeechPress"
             @pointerup="onSpeechRelease"
             @pointercancel="onSpeechCancel"
             @pointerleave="onSpeechLeave"
+            @keydown.space.prevent="!$event.repeat && onSpeechPress()"
+            @keydown.enter.prevent="!$event.repeat && onSpeechPress()"
+            @keyup.space.prevent="onSpeechRelease"
+            @keyup.enter.prevent="onSpeechRelease"
+            @blur="onSpeechCancel"
           ><ArchiveIcon name="sound" /><span>{{ speechButtonText }}</span></button>
           <button
             v-else
@@ -112,7 +117,7 @@
             @click="speechSettingsOpen = true"
           ><ArchiveIcon name="sound" /><span>语音设置</span></button>
           <button
-            v-if="liveState.busy"
+            v-if="liveState.busy || liveState.speaking"
             class="companion-chat-stop"
             type="button"
             @click="onStop"
@@ -306,15 +311,16 @@ async function onSend() {
 }
 
 function onStop() {
-  if (bridge) void bridge.chatRelay({ command: 'stop' })
+  if (bridge) void bridge.chatRelay({ command: 'stop' }).catch(() => listenerError('停止失败，请重试。'))
 }
 
 function switchCharacter(id: string) {
-  if (!CHARACTER_IDS.includes(id as CharacterId)) return
+  if (!CHARACTER_IDS.includes(id as CharacterId) || id === activeChar.value) return
   if (bridge) {
-    void bridge.chatRelay({ command: 'switch-character', character: id })
+    void bridge.chatRelay({ command: 'switch-character', character: id }).catch(() => listenerError('角色切换失败，请重试。'))
   } else {
     storage.setActive(id)
+    liveState.activeChar = id
   }
 }
 
@@ -322,7 +328,7 @@ function openFullRoom() {
   if (bridge) { bridge.openAtelier('/chat'); return }
   // 2026-08-30 UX 审计：无桥（浏览器形态）时这里原来是空操作，页面无任何
   // 路由出口，用户既关不掉也回不去。降级为路由跳转。
-  void router.push('/companion')
+  void router.push('/chat')
 }
 
 function closeWindow() {
@@ -404,6 +410,7 @@ function onSpeechRelease() {
   else speechStop()
 }
 function onSpeechCancel() {
+  if (!speechHeldByPointer) return
   speechHeldByPointer = false
   speechCancel()
 }
@@ -526,6 +533,10 @@ onUnmounted(() => {
 })
 
 watch(activeChar, () => {
+  speechHeldByPointer = false
+  speechHeldByKeyboard = false
+  speechCancel()
+  noticeText.value = ''
   speechSession.applyConfig(speechConfig.value, currentCharacter.value.name)
   inputText.value = storage.draft(activeChar.value)
   reconcileAutoListen()

@@ -24,9 +24,9 @@
         故事与完整 prompt——很多旧作只记得里面出现过某个词。
       -->
       <div class="gallery-search-field">
-        <input v-model="searchQuery" type="search" class="gallery-search" aria-label="搜索作品"
+        <input ref="searchInput" v-model="searchQuery" type="search" class="gallery-search" aria-label="搜索作品"
           placeholder="搜场景、角色或关键词…" />
-        <button v-if="searchQuery" class="gallery-search-clear" type="button" aria-label="清空搜索" @click="searchQuery = ''">×</button>
+        <button v-if="searchQuery" class="gallery-search-clear" type="button" aria-label="清空搜索" @click="searchQuery = ''; searchInput?.focus()">×</button>
       </div>
       <button class="gallery-filter" :class="{ active: favoriteOnly }" type="button" :aria-pressed="favoriteOnly" @click="favoriteOnly = !favoriteOnly">
         <ArchiveIcon name="love" /> 收藏 {{ favoriteCount }}
@@ -281,10 +281,10 @@
         </ZoomableImageViewer>
         <div v-else class="viewer-fallback"><ArchiveIcon name="image" /></div>
         <button class="viewer-nav viewer-next" type="button" aria-label="下一幅" :disabled="viewerIndex >= visible.length - 1" @click="step(1)">›</button>
-        <button v-if="hasComparableImage && viewerUrl" class="viewer-compare-toggle" :class="{ active: compareMode }" type="button" :title="compareMode ? '退出对比' : '开启对比滑块'" @click="compareMode = !compareMode">
+        <button v-if="hasComparableImage && viewerUrl" class="viewer-compare-toggle" :class="{ active: compareMode }" type="button" :aria-pressed="compareMode" :title="compareMode ? '退出对比' : '开启对比滑块'" @click="compareMode = !compareMode">
           <ArchiveIcon name="spark" /> 对比
         </button>
-        <button class="viewer-info-toggle" type="button" aria-label="作品信息" @click="infoOpen = !infoOpen">i</button>
+        <button class="viewer-info-toggle" type="button" aria-label="作品信息" :aria-expanded="infoOpen" @click="infoOpen = !infoOpen">i</button>
         <div class="viewer-position">{{ viewerIndex + 1 }} / {{ visible.length }}</div>
       </section>
 
@@ -342,6 +342,8 @@
 </template>
 
 <script setup lang="ts">
+import { ref } from 'vue'
+const searchInput = ref<HTMLInputElement | null>(null)
 import CandidateCompare from '@/components/gallery/CandidateCompare.vue'
 import ArchivePageHero from '@/components/visual/ArchivePageHero.vue'
 import ArchiveStatePanel from '@/components/visual/ArchiveStatePanel.vue'

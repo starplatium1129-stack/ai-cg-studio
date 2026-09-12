@@ -37,14 +37,14 @@
       「请先选择场景或填写故事」，用户根本来不及读。原因改成常驻在按钮旁，
       同时禁用按钮——既要看得见，也不要让人点了才发现不行。
     -->
-    <span v-if="blockedReason && !busy" class="gen-bar-blocked" role="status">{{ blockedReason }}</span>
+    <span v-if="unavailableReason && !busy" class="gen-bar-blocked" role="status">{{ unavailableReason }}</span>
     <div class="gen-bar-actions">
       <button
         :data-testid="engine === 'sd' ? 'sd-generate' : 'anima-generate'"
         class="btn btn-primary"
         type="button"
         :disabled="busy || !online || !!blockedReason"
-        :title="blockedReason || undefined"
+        :title="unavailableReason || undefined"
         @click="$emit('generate')"
       >{{ busy ? '正在绘制…' : '生成图片' }}</button>
       <button v-if="busy" class="btn btn-ghost" type="button" @click="$emit('cancel')">先停一下</button>
@@ -53,12 +53,13 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue'
 import type { DrawEngine } from '@/storage/settingsRepository'
 // 出图条承载主行动（生成按钮），同步导入保证首屏即位，不进异步分片；
 // 体量 ~2KB，路由 CSS 预算余量充足。
 import '@/assets/css/director/components/GenerationActionBar.css'
 
-defineProps<{
+const props = defineProps<{
   engine: DrawEngine
   busy: boolean
   online: boolean
@@ -76,6 +77,8 @@ defineProps<{
    */
   blockedReason?: string
 }>()
+
+const unavailableReason = computed(() => props.blockedReason || (!props.online ? '绘图服务未连接，请先在控制面板启动并检查连接。' : ''))
 
 const emit = defineEmits<{
   'update:size': [value: string]
