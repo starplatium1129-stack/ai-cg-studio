@@ -274,12 +274,9 @@
 }
 
 
-/* Same-origin page changes use a short optical dissolve where supported. */
-@view-transition { navigation: auto; }
-::view-transition-old(root) { animation: aics-page-out var(--motion-hover) var(--ease-out) both; }
-::view-transition-new(root) { animation: aics-page-in var(--motion-surface) var(--ease-out) both; }
-@keyframes aics-page-out { to { opacity:0; transform:scale(.995); } }
-@keyframes aics-page-in { from { opacity:0; transform:translateY(5px) scale(.998); } }
+/* SPA navigation uses AppLayout.vue transitions. Cross-document automatic
+   transitions require both documents to remain opted in; async route startup
+   can otherwise abort the browser transition before the destination is ready. */
 
 /* ---- Reset ---- */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -400,7 +397,7 @@ body > *:has(+ .footer),
   isolation: isolate; width: 100%;
   margin: 0 auto; padding: var(--s-3) 0;
   background: var(--nav-bg); border-bottom: 1px solid var(--border-soft);
-  backdrop-filter: blur(20px); view-transition-name: site-navigation;
+  backdrop-filter: blur(20px);
 }
 .nav-inner {
   position: relative; display: flex; align-items: center; justify-content: space-between;
@@ -1277,7 +1274,6 @@ tr:hover td { background: var(--bg-hover); }
   .layer-fade-leave-active { transition:opacity var(--motion-control) ease-out; }
   .layer-pop-enter-from > :first-child,
   .layer-pop-leave-to > :first-child { opacity:0; }
-  ::view-transition-old(root), ::view-transition-new(root) { animation:none !important; }
   html { scroll-behavior:auto !important; }
 }
 

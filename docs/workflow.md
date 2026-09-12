@@ -108,7 +108,7 @@
 
 `flows`、`anima-quick`、`office-code` 共用模拟上游，统一在 `flows` 项目的单 worker 中运行；其他页面和设备回归仍可并行。多会话验收时给每轮设置不同的 `AICS_E2E_PORT_OFFSET`（例如 `15000`），网关、浏览器和模拟上游按同一映射偏移端口，并使用隔离运行目录、拒绝复用已有服务。浏览器测试期间不得重建共享 dist；先完成构建再验收，并用独立 `--output` 目录保留每轮证据。
 
-无参考素材的办公机可沿用 CI 的 `AICS_REFERENCE_AUDIT_MODE=structure` 执行结构校验；报告必须注明该模式，不能据此声明参考 URL 或图片验收通过。主力机不设置该变量，继续核对实际素材文件。2026-09-09 工程治理范围与验证见[本轮记录](archive/audits/engineering-debt-2026-09-09.md)。
+无参考素材的办公机可沿用 CI 的 `AICS_REFERENCE_AUDIT_MODE=structure` 执行结构校验；报告必须注明该模式，不能据此声明参考 URL 或图片验收通过。主力机不设置该变量，继续核对实际素材文件。2026-09-09 的工程治理历史见[当时记录](archive/audits/engineering-debt-2026-09-09.md)。
 
 首次建立无构建产物的 worktree 时，先执行 `npm run build:runtime` 与 `npm run build`，再运行完整门禁；聊天契约会实际请求已构建的 SPA。隔离验收副本只带入本任务文件，不能通过忽略其他会话的失败文件而宣称原共享工作区全量通过。
 
@@ -133,7 +133,7 @@
 
 `backup:git` 创建本地 bundle 增量链（2 个锚点 + 默认 10 个增量），不能替代 push 或异地副本。`runtime:clean` 默认只预览；`--prune --days 60` 会实际清理。先检查路径与白名单，避免清除当前运行资料。
 
-## 自动化检查与本次审计
+## 自动化检查与审计入口
 
 | 自动化 | 触发与范围 |
 | --- | --- |
@@ -141,4 +141,4 @@
 | Nightly visual regression | 每日北京时间 02:00 / 手动：主题、截图与视觉矩阵 |
 | Windows Native Live2D | main push / 手动：自托管 Windows 的 Tauri、Rust、原生自测与稳定性检查 |
 
-本次检查结果与未执行范围见 [工作流审计](archive/audits/workflow-audit-2026-09-08.md)。本机 gate:full 不包含浏览器、真实出图或原生桌面验收，这些仍按改动另行执行。
+当前办公机修复与未执行范围见 [1.7.1](releases/v1.7.1.md)；[独立审计（2026-09-12）](archive/audits/office-independent-audit-2026-09-12.md) 保留修复前证据，[工作流审计（2026-09-08）](archive/audits/workflow-audit-2026-09-08.md) 保留为历史。本机 gate:full 不包含浏览器、真实出图或原生桌面验收，这些仍按改动另行执行。

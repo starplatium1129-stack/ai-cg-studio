@@ -9,6 +9,24 @@
 
 ## 审计快照
 
+当前结论见 [2026-09-12 独立审计](audits/office-independent-audit-2026-09-12.md)。以下均为历史快照；保留原始成功、失败与未执行记录，不将旧评分、数量或未修复列表当作现状。尚未完成的工作统一留在 [未来规划](../roadmap.md)。
+
+- [工作台包体优化与办公机验收（2026-09-12）](audits/workbench-bundle-2026-09-12.md)
+- [网站体验审计与优化 · 2026-09-09](audits/website-experience-2026-09-09.md)
+- [视频素材与作品导出功能审计](audits/video-gallery-recovery-2026-09-10.md)
+- [场景审计编译检查点与请求层补充修复](audits/scene-audit-compiler-checkpoint-2026-09-10.md)
+- [请求层修复与门禁复核（2026-09-10，办公机）](audits/request-layer-repair-2026-09-10.md)
+- [剩余功能升级与全站回归](audits/remaining-features-upgrade-2026-09-10.md)
+- [工程治理后的六维补充审计（2026-09-09）](audits/remaining-dimensions-2026-09-09.md)
+- [绘遇 HUIYU 项目评价与优化／修复清单](audits/project-review-checklist-2026-09-10.md)
+- [2026-09-10 项目评价复核与修复](audits/project-evaluation-followup-2026-09-10.md)
+- [独立审计问题修复与办公机验收（2026-09-12）](audits/office-audit-fixes-2026-09-12.md)
+- [Live2D 移植复核、性能修复与桌宠办公机验收](audits/live2d-port-fixes-2026-09-12.md)
+- [办公机工程债务治理（2026-09-09）](audits/engineering-debt-2026-09-09.md)
+- [内容门禁修复与回归记录](audits/content-gate-repair-2026-09-10.md)
+- [角色记忆、桌宠行为、参考卡与桌面打包](audits/companion-knowledge-build-2026-09-10.md)
+- [聊天与桌宠功能闭环修复](audits/chat-functional-recovery-2026-09-09.md)
+
 - [项目独立深度审查报告（2026-09-11）](audits/project-independent-review-2026-09-11.md)
 - [办公机代码收尾与验证（2026-09-11）](audits/office-code-2026-09-11.md)
 

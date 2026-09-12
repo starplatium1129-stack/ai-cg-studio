@@ -1,5 +1,7 @@
 # Live2D 原生 overlay 渲染方案（路径 B）—— 前端契约与并行交付
 
+> 历史设计方案（2026-09-12 整理）：原生 overlay 当前已有源码；下文为迁移设计时点的约定，不作为新的实施命令或已安装程序验收。当前运行契约见 [原生运行时](../../guides/desktop/live2d-native-runtime.md)，真实设备待验收留在 [未来规划](../../roadmap.md)。
+
 > 记录日期：2026-08-08
 > 背景：桌面端 Tauri 迁移与 Live2D 重构并行推进。浏览器端继续 wl-live2d 不动；
 > 桌面端新增"原生角色图层窗口"后端：Rust 用 wgpu 直接向 WS_EX_LAYERED overlay

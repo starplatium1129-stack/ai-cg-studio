@@ -251,6 +251,7 @@ async function streamCompatibleApi(input, handlers, gatewayConfig) {
     input = Object.assign({}, input, { api:api });
   }
   var result = await httpClient.request(api.baseUrl, api.pathname, {
+    publicOnly:input.publicOnly === true,
     method:'POST',
     headers:Object.assign(
       { Accept:'text/event-stream, application/json' },
@@ -559,7 +560,8 @@ function createChatRouter(config, dependencies) {
       companionTools:validation.value.companionTools,
       reasoning:validation.value.reasoning,
       messages:validation.value.messages,
-      signal:controller.signal
+      signal:controller.signal,
+      publicOnly:!security.isDirectLocalRequest(req) && !(validation.value.api && validation.value.api.hostConfig)
     }, {
       onStart:async function (meta) {
         res.status(200);

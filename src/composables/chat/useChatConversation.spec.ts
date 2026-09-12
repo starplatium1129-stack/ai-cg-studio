@@ -3,7 +3,8 @@ import { afterEach, describe, expect, it, vi } from 'vitest'
 import { CHARACTERS } from '@/config/characters'
 import { useChatConversation } from './useChatConversation'
 
-vi.mock('@/composables/useCompanionAffection', () => ({ useCompanionAffection: () => ({ addScore: vi.fn() }) }))
+const { addScore } = vi.hoisted(() => ({ addScore: vi.fn() }))
+vi.mock('@/composables/useCompanionAffection', () => ({ useCompanionAffection: () => ({ addScore }) }))
 
 function stream(events: object[], close = true) {
   return new Response(new ReadableStream({ start(controller) {
@@ -30,6 +31,18 @@ function setup() {
 afterEach(() => { vi.unstubAllGlobals(); vi.useRealTimers(); delete window.companionDesktop })
 
 describe('chat recovery and tool lifecycle', () => {
+  it('passes drawing draft status back to the model without rewarding a generated image', async () => {
+    addScore.mockClear()
+    const output = '已保存绘画草稿。尚未提交生成任务，也未生成图片。'
+    const fetchMock = vi.fn()
+      .mockResolvedValueOnce(stream([{ type: 'tool-call', id: 'draft', name: 'generate_character_image', arguments: '{"description":"海边"}' }, { type: 'done' }]))
+      .mockResolvedValueOnce(Response.json({ ok: true, status: 'draft', output }))
+      .mockResolvedValueOnce(stream([{ type: 'token', content: '草稿准备好了' }, { type: 'done' }]))
+    vi.stubGlobal('fetch', fetchMock)
+    await setup().conversation.sendMessage('准备一幅画')
+    expect(JSON.parse(fetchMock.mock.calls[2][1].body).messages.at(-1).content).toContain(output)
+    expect(addScore).not.toHaveBeenCalled()
+  })
   it('preserves received text when the connection ends unexpectedly', async () => {
     vi.stubGlobal('fetch', vi.fn().mockResolvedValue(stream([{ type: 'token', content: '已经收到的回复' }])))
     const { conversation, messages, options, busy } = setup()

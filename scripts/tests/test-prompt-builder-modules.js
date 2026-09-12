@@ -367,8 +367,8 @@ if (!directorCss.includes('stageBreath') || !directorCss.includes('stageSweep'))
 }
 
 const designCss = read('src/assets/css/design-system.css');
-if (!designCss.includes('@view-transition') || !designCss.includes('--glass-fill-strong')) {
-  fail('missing global page transition or liquid glass tokens');
+if (!designCss.includes('--glass-fill-strong')) {
+  fail('missing liquid glass tokens');
 }
 if (!designCss.includes('.nav-back') || !designCss.includes('.page-kicker') || !designCss.includes('.empty-state')) {
   fail('missing shared atelier chrome components');

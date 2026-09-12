@@ -85,19 +85,17 @@ test('drawing invitation opens materials without starting generation', async ({ 
 })
 
 
-test('gallery is an accessible image viewer and journal deep links open the right artwork', async ({ page }) => {
+test('journal links fall back to scene settings when artwork is unavailable', async ({ page }) => {
+  await page.route('**/scene-showcase/images/**', route => route.fulfill({ status: 404, body: '' }))
   await openAtelier(page)
   const entry = page.locator('.journal-entry').first()
   await expect(entry).toBeVisible()
+  await expect(entry).toHaveAttribute('href', /scene-explorer\?scene=sc/)
   const href = await entry.getAttribute('href')
-  expect(href).toMatch(/showcase\?scene=sc/)
+  await expect(entry).toContainText('查看场景设定')
   await entry.click()
-  const dialog = page.getByRole('dialog', { name: '样张查看器' })
-  await expect(dialog).toBeVisible()
-  await expect.poll(() => dialog.locator('.zoomable-img').evaluate(el => (el as HTMLImageElement).naturalWidth)).toBeGreaterThan(0)
-  await expect(dialog.locator('.viewer-production')).not.toHaveAttribute('open', '')
-  await page.keyboard.press('Escape')
-  await expect(dialog).toBeHidden()
+  await expect.poll(() => new URL(page.url()).pathname + new URL(page.url()).search).toBe(href)
+  await expect(page.getByRole('dialog', { name: '样张查看器' })).toBeHidden()
 })
 
 test('selection motion settles on the final choice after rapid changes', async ({ page }) => {

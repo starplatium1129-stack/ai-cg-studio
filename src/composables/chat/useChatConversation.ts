@@ -12,7 +12,6 @@ import {
 import { extractMoodTag } from '@/utils/moodTag'
 import { hasChatUserProfile, type ChatUserProfile } from '@/utils/chatUserProfile'
 import { isLocalStudioHost } from '@/utils/runtimeEnvironment'
-import { useCompanionAffection } from '@/composables/useCompanionAffection'
 import { abortableTask } from '@/utils/abortableTask'
 
 // 2026-08-16 审计：流式对话的两级超时兜底（此前无任何超时，上游挂起=无限 spinner）。
@@ -237,7 +236,7 @@ export function useChatConversation(options: ChatConversationOptions) {
   }
 
   // ── Pipeline 步骤④：单个工具执行（fallible，异常由调用方转译为失败结果）──
-  async function executeToolCall(call: PendingToolCall, characterId: string, signal: AbortSignal): Promise<ToolCallResult> {
+  async function executeToolCall(call: PendingToolCall, signal: AbortSignal): Promise<ToolCallResult> {
     signal.throwIfAborted()
     let parsedArgs: Record<string, unknown> = {}
     try {
@@ -265,10 +264,6 @@ export function useChatConversation(options: ChatConversationOptions) {
     }
     signal.throwIfAborted()
     result.output = typeof result.output === 'string' ? result.output : (result.ok ? '工具已完成。' : '工具执行失败，未返回详情。')
-    if (call.name === 'generate_character_image' && result.ok) {
-      const affection = useCompanionAffection()
-      affection.addScore(characterId, 2, '生成画作')
-    }
     return result
   }
 
@@ -437,7 +432,7 @@ export function useChatConversation(options: ChatConversationOptions) {
           options.onToolActivity?.(`正在执行 ${call.name}…`)
           let result: ToolCallResult
           try {
-            result = await executeToolCall(call, turn.characterId, controller.signal)
+            result = await executeToolCall(call, controller.signal)
           } catch (error) {
             if (controller.signal.aborted) throw error
             result = { ok: false, output: error instanceof Error ? error.message : String(error) }

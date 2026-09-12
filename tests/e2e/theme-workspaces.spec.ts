@@ -65,5 +65,5 @@ test('the loading frame honors light mode before application scripts arrive', as
   await page.route('**/_app/*.js', route => route.abort())
   await page.goto('/')
   await expect(page.locator('html')).toHaveAttribute('data-theme', 'light')
-  expect(await page.locator('#app').evaluate(el => getComputedStyle(el, '::before').backgroundColor)).toBe('rgb(248, 245, 248)')
+  expect(await page.locator('#app').evaluate(el => getComputedStyle(el, '::before').backgroundColor)).toBe('rgb(255, 248, 244)')
 })

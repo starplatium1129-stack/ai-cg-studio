@@ -3,6 +3,7 @@
 import * as http from 'http';
 import * as https from 'https';
 import * as tls from 'tls';
+import { resolvePublicAddress } from './public-upstream';
 import type { IncomingMessage, ClientRequest } from 'http';
 
 interface UpstreamErrorOptions {
@@ -32,6 +33,7 @@ interface AbortError extends Error {
 }
 
 interface RequestOptions {
+  publicOnly?: boolean;
   method?: string;
   headers?: Record<string, string | number | string[] | undefined>;
   json?: unknown;
@@ -142,8 +144,10 @@ function isAbortError(error: unknown): boolean {
   return value.name === 'AbortError' || value.code === 'ABORT_ERR';
 }
 
-function request(baseUrl: string, pathname: string, options?: RequestOptions): Promise<RequestResult> {
+async function request(baseUrl: string, pathname: string, options?: RequestOptions): Promise<RequestResult> {
   const opts = options || {};
+  // Pin checked DNS answers; neither proxy DNS nor pooled sockets may bypass validation.
+  const publicAddress = opts.publicOnly ? await resolvePublicAddress(new URL(pathname, baseUrl)) : null;
   return new Promise(function (resolve, reject) {
     let target: URL;
     try {
@@ -212,11 +216,17 @@ function request(baseUrl: string, pathname: string, options?: RequestOptions): P
       clientReq.end(payload === null ? undefined : payload);
     }
 
-    const proxy = resolveProxy(target);
+    const proxy = opts.publicOnly ? null : resolveProxy(target);
     if (!proxy) {
       const transport = target.protocol === 'https:' ? https : http;
       const agent = target.protocol === 'https:' ? DIRECT_HTTPS_AGENT : DIRECT_HTTP_AGENT;
-      const direct = transport.request(target, { method: method, headers: headers, agent: agent }, onResponse);
+      const direct = transport.request(target, {
+        method: method, headers: headers, agent: publicAddress ? false : agent,
+        ...(publicAddress ? { lookup: (_hostname, _options, callback) => {
+          if (typeof _options === 'object' && _options.all) callback(null, [publicAddress]);
+          else callback(null, publicAddress.address, publicAddress.family);
+        } } : {})
+      }, onResponse);
       attachResponse(direct);
       return;
     }

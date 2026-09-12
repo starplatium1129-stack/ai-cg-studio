@@ -937,7 +937,7 @@ async function run() {
     assert(remoteWrite.status === 421 || remoteWrite.status === 403, 'remote host must not be able to write host config');
 
     // 访客聊天：hostConfig 标记 → 上游必须收到站主密钥
-    var hostChat = await postJson(gatewayBase + '/api/chat', {
+    var hostChat = await postJsonWithHost(gatewayBase + '/api/chat', {
       character:'nene', provider:'api', hostConfig:true,
       messages:[{ role:'user', content:'hello' }]
     });
@@ -947,6 +947,16 @@ async function run() {
         && providerMock.state.compatibleAuth === 'Bearer host-secret-key',
       'hostConfig chat must stream via the stored host key without the visitor supplying one',
     );
+
+    var privateCallsBefore = providerMock.state.compatiblePayloads.length;
+    var privateChat = await postJsonWithHost(gatewayBase + '/api/chat', {
+      character:'nene', provider:'api',
+      api:{ baseUrl:providerBase + '/v1', model:'json-model' },
+      messages:[{ role:'user', content:'private service must not be contacted' }]
+    });
+    assert(privateChat.status === 403, 'remote custom loopback API must be forbidden');
+    assert(providerMock.state.compatiblePayloads.length === privateCallsBefore,
+      'forbidden remote target must receive no request');
 
     var hostClear = await fetch(gatewayBase + '/api/chat-provider/host-config', { method:'DELETE' });
     var hostClearJson = await hostClear.json();
@@ -960,4 +970,68 @@ async function run() {
 }
 
 await run();
+});
+
+test('remote API target policy rejects private DNS, mapped IPs and mixed answers', async () => {
+  const assert = require('node:assert/strict');
+  const { isPublicAddress, resolvePublicAddress } = require('../../services/public-upstream');
+  for (const address of ['127.0.0.1', '10.1.2.3', '172.16.0.1', '192.168.1.1',
+    '169.254.169.254', '100.64.0.1', '0.0.0.0', '::1', '::ffff:127.0.0.1',
+    'fc00::1', 'fe80::1', '2002:7f00:1::', '64:ff9b::7f00:1']) {
+    assert.equal(isPublicAddress(address), false, address);
+  }
+  for (const address of ['8.8.8.8', '2606:4700:4700::1111']) assert.equal(isPublicAddress(address), true);
+  for (const address of ['https://127.1', 'https://2130706433', 'https://[::ffff:127.0.0.1]', 'http://8.8.8.8']) {
+    await assert.rejects(resolvePublicAddress(new URL(address)), { status:403 });
+  }
+  const target = new URL('https://custom.example/v1');
+  for (const addresses of [[], [{ address:'127.0.0.1', family:4 }],
+    [{ address:'8.8.8.8', family:4 }, { address:'10.0.0.1', family:4 }]]) {
+    await assert.rejects(resolvePublicAddress(target, async () => addresses), { status:403 });
+  }
+  assert.deepEqual(await resolvePublicAddress(target, async () => [{ address:'8.8.8.8', family:4 }]),
+    { address:'8.8.8.8', family:4 });
+});
+
+test('public API requests pin DNS, bypass proxy DNS and do not follow redirects', async (t) => {
+  const assert = require('node:assert/strict');
+  const dns = require('node:dns/promises');
+  const https = require('node:https');
+  const { PassThrough } = require('node:stream');
+  const { EventEmitter } = require('node:events');
+  const client = require('../../services/http-client');
+  let resolutions = 0;
+  let requests = 0;
+  t.mock.method(dns, 'lookup', async () => {
+    resolutions += 1;
+    return [{ address:resolutions === 1 ? '8.8.8.8' : '127.0.0.1', family:4 }];
+  });
+  t.mock.method(https, 'request', (target, options, onResponse) => {
+    requests += 1;
+    assert.equal(target.hostname, 'custom.example');
+    assert.equal(options.agent, false);
+    options.lookup(target.hostname, { all:true }, (error, addresses) => {
+      assert.equal(error, null);
+      assert.deepEqual(addresses, [{ address:'8.8.8.8', family:4 }]);
+    });
+    const request = new EventEmitter();
+    request.setTimeout = () => {};
+    request.end = () => {
+      const response = new PassThrough();
+      response.statusCode = 302;
+      response.headers = { location:'http://127.0.0.1/private' };
+      onResponse(response);
+      response.end();
+    };
+    return request;
+  });
+  const oldProxy = process.env.HTTPS_PROXY;
+  process.env.HTTPS_PROXY = 'http://127.0.0.1:1';
+  t.after(() => { if (oldProxy === undefined) delete process.env.HTTPS_PROXY; else process.env.HTTPS_PROXY = oldProxy; });
+  const result = await client.request('https://custom.example', '/v1/chat/completions', { publicOnly:true });
+  assert.equal(result.response.statusCode, 302);
+  assert.equal(resolutions, 1);
+  assert.equal(requests, 1);
+  await assert.rejects(client.request('https://custom.example', '/v1/chat/completions', { publicOnly:true }), { status:403 });
+  assert.equal(requests, 1, 'rebinding to private DNS must not start another request');
 });

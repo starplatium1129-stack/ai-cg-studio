@@ -36,7 +36,8 @@ for (const theme of ['dark', 'light']) {
       await expect(adjust).not.toHaveAttribute('href', /generate=1|quick=1/)
       await adjust.click()
       await expect(page.locator('.gen-bar')).toBeVisible()
-      await expect(page.locator('.scene-context-title')).toBeAttached()
+      await page.locator('[aria-controls="material-story"]').click()
+      await expect(page.locator('.scene-context-title')).toBeVisible()
       expect(submitted).toEqual([])
     })
     test('expert canvas is wider than either rail and fits the desktop', async ({ page }) => {

@@ -1,5 +1,7 @@
 # 「绘遇 · HUIYU」项目独立深度审查报告（双审综合复核版）
 
+> 历史审计快照（2026-09-12 整理）：正文保留当时证据，旧结论和下一步不代表当前状态或授权。当前事实见 [办公机独立审计](office-independent-audit-2026-09-12.md)，尚未完成及暂停事项见 [未来规划](../../roadmap.md)。归档不表示其中问题全部解决。
+
 > **审查基准**：基于提交 `1f5ad30 feat: finish office-side reliability and diagnostics` 后的全量最新工作区源码、配置、测试套件实际运行表现、构建产物，以及 `scripts/archive/huiyu-independent-audit-20260911/REPORT.md` 独立审查发现与复现脚本的对账核验。
 
 ---

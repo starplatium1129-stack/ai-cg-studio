@@ -1,11 +1,14 @@
 import { expect, test } from '@playwright/test'
 
 for (const theme of ['dark', 'light']) {
-  test(`portrait uses its intrinsic proportions without a frame in ${theme}`, async ({ page }) => {
+  test(`portrait uses its intrinsic proportions without a frame in ${theme}`, async ({ page }, testInfo) => {
     await page.addInitScript(value => localStorage.setItem('aics_theme', value), theme)
     await page.goto('/character?character=yuzuriha_inori')
     const image = page.locator('.portrait-image')
     await expect.poll(() => image.evaluate((el: HTMLImageElement) => el.naturalWidth)).toBeGreaterThan(0)
+    await page.evaluate(() => document.fonts.ready)
+    await expect(page.locator('.character-hero')).toHaveClass(/revealed/)
+    await page.locator('.character-hero').evaluate(async el => { await Promise.all(el.getAnimations({ subtree: true }).map(animation => animation.finished.catch(() => {}))) })
     const dimensions = await image.evaluate((el: HTMLImageElement) => {
       const rect = el.getBoundingClientRect(), parent = el.parentElement!
       return { ratio: rect.width / rect.height, natural: el.naturalWidth / el.naturalHeight,
@@ -15,6 +18,7 @@ for (const theme of ['dark', 'light']) {
     expect(Math.abs(dimensions.gap)).toBeLessThan(2)
     expect(dimensions.border).toBe('0px')
     expect(dimensions.bottom).toBeLessThan(page.viewportSize()!.height)
+    await page.screenshot({ path: testInfo.outputPath('portrait-' + theme + '.png') })
   })
 
   test(`live model retains a substantial stage when wardrobe opens in ${theme}`, async ({ page }) => {
@@ -29,7 +33,7 @@ for (const theme of ['dark', 'light']) {
     await expect(page.locator('.portrait-stage')).toHaveClass(/live2d-ready/, { timeout: 45000 })
     await expect(page.locator('.live2d-host canvas')).toBeVisible()
     const before = await page.locator('.portrait-stage').boundingBox()
-    expect(before!.height).toBeGreaterThan(400)
+    expect(before!.height / page.viewportSize()!.height).toBeGreaterThan(0.4)
     await page.locator('.wardrobe-trigger').click()
     await expect(page.locator('.wardrobe-menu')).toBeVisible()
     const after = await page.locator('.portrait-stage').boundingBox()

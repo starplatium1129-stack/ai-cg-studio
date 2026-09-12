@@ -405,7 +405,7 @@ test('get_workspace_info 与未知工具', async () => {
   }
 });
 
-test('generate_character_image：组装角色 LoRA 与生图任务', async () => {
+test('generate_character_image：仅保存草稿，不虚报图片、任务或奖励', async () => {
   const root = tempWorkspace();
   try {
     const res = await runTool(root, 'generate_character_image', {
@@ -415,10 +415,36 @@ test('generate_character_image：组装角色 LoRA 与生图任务', async () =>
     });
     assert.equal(res.ok, true);
     assert.equal(res.character, 'natsume');
-    assert.equal(res.bonusAffection, 2);
+    assert.equal(res.status, 'draft');
+    assert.equal(res.bonusAffection, undefined);
     assert.match(res.output, /四季夏目/);
-    assert.match(res.imageRelativePath, /^generated-images\/companion_natsume_\d+\.png$/);
+    assert.equal(res.imageRelativePath, undefined);
+    assert.equal(res.fullImagePath, undefined);
+    assert.match(res.output, /尚未提交生成任务，也未生成图片/);
+    const draft = JSON.parse(fs.readFileSync(path.join(root, res.draftRelativePath), 'utf8'));
+    assert.equal(draft.status, 'draft');
+    assert.equal(draft.outputPath, undefined);
+    assert.deepEqual(fs.readdirSync(path.join(root, 'generated-images')), [path.basename(res.draftRelativePath)]);
   } finally {
+    fs.rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test('generate_character_image：草稿写入失败明确返回失败', async (t) => {
+  const root = tempWorkspace();
+  const originalWrite = fs.writeFileSync;
+  t.mock.method(fs, 'writeFileSync', function (file, ...args) {
+    if (String(file).startsWith(path.join(root, 'generated-images'))) throw new Error('draft write failed');
+    return originalWrite.call(this, file, ...args);
+  });
+  try {
+    const result = await runTool(root, 'generate_character_image', { character: 'natsume', description: '海边' });
+    assert.equal(result.ok, false);
+    assert.match(result.output, /draft write failed/);
+    assert.equal(result.draftRelativePath, undefined);
+    assert.deepEqual(fs.readdirSync(path.join(root, 'generated-images')), []);
+  } finally {
+    t.mock.restoreAll();
     fs.rmSync(root, { recursive: true, force: true });
   }
 });

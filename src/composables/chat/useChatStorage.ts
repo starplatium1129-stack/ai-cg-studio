@@ -53,22 +53,30 @@ export interface ChatState {
 
 /**
  * 2026-08-16 审计：多窗口并发聊天时单键 last-writer-wins 会静默丢消息。
- * 方案：按 mid 去重合并（远端为基、本地唯一消息追尾——零丢失，极端交错时顺序
- * 近似）+ storage 事件被动同步 + 保存前合并远端。settings 仍 last-writer-wins
+ * 方案：按 mid 去重合并，保留本地正在修改的对象与数组引用；独有消息追尾，
+ * 极端交错时顺序近似。storage 事件被动同步 + 保存前合并远端。settings 仍 last-writer-wins
  * （可接受）；clear() 不合并（清除意图优先，跨窗口清除为已知边界）。
  */
 let chatStorageSyncInstalled = false
 let chatStorageSyncHandler: (() => void) | null = null
 
 /** 按 mid 去重：remote 为基（较旧），local 独有的消息追加到尾部。 */
-function mergeHistories(local: ChatMessage[], remote: ChatMessage[]): ChatMessage[] {
+function mergeHistories(local: ChatMessage[], remote: ChatMessage[], snapshots: Map<string, string>): ChatMessage[] {
+  const localById = new Map(local.map(message => [message.mid, message]))
   const seen = new Set<string>()
   const merged: ChatMessage[] = []
   for (const message of [...remote, ...local]) {
     if (!message || typeof message.mid !== 'string' || !message.mid) continue
     if (seen.has(message.mid)) continue
     seen.add(message.mid)
-    merged.push(message)
+    const existing = localById.get(message.mid)
+    if (existing && snapshots.get(message.mid) === JSON.stringify(existing)) {
+      // Only unchanged local messages may adopt remote updates. Mutate in place:
+      // the streaming callback can still hold the original assistant object.
+      Object.assign(existing, message)
+      snapshots.set(message.mid, JSON.stringify(existing))
+    } else if (!existing) snapshots.set(message.mid, JSON.stringify(message))
+    merged.push(existing || message)
   }
   return merged
 }
@@ -106,6 +114,13 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
   /** 用户从未配置过 API（当前是开箱即用兜底值）；站主配置优先于此标记 */
   const neverConfigured = ref(true)
   const archive = ref<ChatArchive>(emptyChatArchive(Object.keys(CHARACTERS)))
+  const messageSnapshots = new Map<string, string>()
+  function rememberMessages() {
+    messageSnapshots.clear()
+    for (const history of Object.values(state.histories)) {
+      for (const message of history) messageSnapshots.set(message.mid, JSON.stringify(message))
+    }
+  }
 
   function loadArchive() {
     try {
@@ -137,15 +152,17 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
         const remoteRevision = Number.isSafeInteger(parsedCharRevision) && parsedCharRevision >= 0
           ? parsedCharRevision
           : legacyRevision
-        const localRevision = state.historiesRevisions[char] || state.historiesRevision
+        const localRevision = state.historiesRevisions[char] ?? state.historiesRevision
         const list = (remote as Record<string, unknown>)[char]
         if (!Array.isArray(list)) continue
         if (remoteRevision > localRevision) {
           state.historiesRevisions[char] = remoteRevision
           state.histories[char] = list as ChatMessage[]
+          for (const message of state.histories[char]) messageSnapshots.set(message.mid, JSON.stringify(message))
         } else if (remoteRevision === localRevision) {
-          const merged = mergeHistories(state.histories[char] || [], list as ChatMessage[])
-          if (merged.length !== (state.histories[char] || []).length) state.histories[char] = merged
+          const history = state.histories[char] ||= []
+          const merged = mergeHistories(history, list as ChatMessage[], messageSnapshots)
+          history.splice(0, history.length, ...merged)
         }
         state.historiesRevision = Math.max(state.historiesRevision, remoteRevision)
       }
@@ -230,9 +247,26 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
 
   function load() {
     let stored = ''
+    let raw: unknown
     try {
       stored = localStorage.getItem(STORAGE_KEY) || ''
-      const raw = stored ? JSON.parse(stored) : {}
+    } catch {
+      onError('无法读取本地聊天记录，请检查浏览器存储权限。')
+      return
+    }
+    try {
+      raw = stored ? JSON.parse(stored) : {}
+    } catch {
+      const clean = normalizeChatStorage({}, '', normalizeOptions).state
+      applyPersisted(clean)
+      neverConfigured.value = true
+      // Only invalid JSON may be replaced with an empty normalized record.
+      // A write failure remains separate from the parsing decision.
+      try { localStorage.setItem(STORAGE_KEY, serializeChatStorage(clean)) } catch {}
+      onError('本地聊天记录损坏，已恢复为空白会话。')
+      return
+    }
+    try {
       // 先把持久化里的超限消息归档，再走白名单归一化，保证旧消息不丢。
       const rawHistories = raw && typeof raw === 'object' && (raw as Record<string, unknown>).histories
       if (rawHistories && typeof rawHistories === 'object') {
@@ -253,18 +287,14 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
       neverConfigured.value = normalized.neverConfigured
 
       state.settings.apiKey = String(normalized.state.settings.apiKey || normalized.migratedApiKey).trim().slice(0, 1000)
+      rememberMessages()
 
       // Rewriting existing records through the allowlist removes unsupported
       // authorization headers, tokens and unknown fields from localStorage.
       if (stored) localStorage.setItem(STORAGE_KEY, serializeChatStorage(persistedState()))
       saveArchive()
     } catch {
-      const clean = normalizeChatStorage({}, '', normalizeOptions).state
-      applyPersisted(clean)
-      neverConfigured.value = true
-      try { localStorage.setItem(STORAGE_KEY, serializeChatStorage(clean)) } catch {}
-      saveArchive()
-      onError('本地聊天记录损坏，已恢复为空白会话。')
+      onError('浏览器存储不可用或空间不足，聊天记录保留在当前会话中，暂时无法保存。')
     }
   }
 
@@ -277,6 +307,7 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
       if (mergeRemote && !mergeRemoteIntoState()) return
       state.version = STORAGE_VERSION
       localStorage.setItem(STORAGE_KEY, serializeChatStorage(persistedState()))
+      rememberMessages()
       localStorage.setItem('aics_chat_model', state.settings.model || '')
       saveArchive()
     } catch {

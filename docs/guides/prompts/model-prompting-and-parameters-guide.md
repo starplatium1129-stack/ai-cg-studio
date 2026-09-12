@@ -6,7 +6,7 @@
 > **状态基线**：2026-08-14（2026-08-14 并入原 `krea-prompt-recipe.md` 的 Krea 官方配方与本地映射）
 > **适用底模**：WAI Illustrious SDXL v17 | Anima Base v1.0 | Anima Aesthetic v1.1 | Krea 2 Turbo
 > **权威依据**：WAI 官方模型卡 (`LyliaEngine/waiIllustriousSDXL_v170`)、Anima 官方模型仓库 (`circlestone-labs/Anima`)、Krea 2 官方 Prompting 文档 (`krea-ai/krea-2/docs/prompting.md`) 及 AI-CG-Studio 训练契约。
-> **实操经验**：本文是参数/提示词契约权威；Anima/V20B/R18 出图实操与踩坑见 `showcase-generation-craft.md`（部分实测结论以该文为准）。
+> **适用边界（2026-09-12 整理）**：本文是历史参数与实验材料，不是当前参数/提示词执行契约。当前编译规则见 [项目 skill](../../../.agents/skills/studio-prompt-craft/SKILL.md)，字段见 [工程契约](../../engineering-contracts.md)；本文旧表中的“固定”“唯一标签流”不覆盖当前 profile 和实际编译请求。历史出图经验见 [样张工艺](../../archive/troubleshooting/showcase-generation-craft.md)，使用前仍须核对版本。
 
 ---
 

@@ -1,4 +1,5 @@
 import { expect, test, type Page } from '@playwright/test'
+import { installShowcaseFixture } from './helpers/showcase'
 
 async function seedWork(page: Page, id: number, title: string) {
   await page.evaluate(async ({ id, title }) => {
@@ -30,12 +31,14 @@ test('global search routes saved work to history and refreshes its index on reop
   await page.getByRole('searchbox', { name: '搜索场景、作品或页面' }).fill('桌面检索回归甲')
   await page.getByRole('option').filter({ hasText: '桌面检索回归甲' }).click()
   await expect(page).toHaveURL(/regen=424201/)
+  await page.locator('[aria-controls="material-story"]').click()
   await expect(page.locator('.story-input')).toHaveValue('桌面检索回归甲')
   await seedWork(page, 424202, '桌面检索回归乙')
   await page.keyboard.press('Control+k')
   await page.getByRole('searchbox', { name: '搜索场景、作品或页面' }).fill('桌面检索回归乙')
   await page.getByRole('option').filter({ hasText: '桌面检索回归乙' }).click()
   await expect(page).toHaveURL(/regen=424202/)
+  await page.locator('[aria-controls="material-story"]').click()
   await expect(page.locator('.story-input')).toHaveValue('桌面检索回归乙')
 })
 
@@ -48,6 +51,7 @@ test('canvas scene selection stays in the working view and focuses the scene tab
 })
 
 test('popular CG handoff keeps its character and blueprint, and back restores filters', async ({ page }) => {
+  await installShowcaseFixture(page)
   let jobs = 0
   page.on('request', request => { if (request.method() === 'POST' && request.url().endsWith('/api/anima/jobs')) jobs++ })
   await page.goto('/showcase')
@@ -70,8 +74,11 @@ test('popular CG handoff keeps its character and blueprint, and back restores fi
 })
 
 test('closing a linked CG clears its URL and does not reopen on reload', async ({ page }) => {
+  await installShowcaseFixture(page)
   await page.goto('/showcase?scene=sc001')
-  await expect(page.getByRole('dialog', { name: '样张查看器' })).toBeVisible()
+  const dialog = page.getByRole('dialog', { name: '样张查看器' })
+  await expect(dialog).toBeVisible()
+  await expect.poll(() => dialog.locator('.zoomable-img').evaluate(el => (el as HTMLImageElement).naturalWidth)).toBeGreaterThan(0)
   await page.keyboard.press('Escape')
   await expect(page).toHaveURL(/showcase$/)
   await page.reload()
@@ -80,10 +87,10 @@ test('closing a linked CG clears its URL and does not reopen on reload', async (
 })
 
 test('a failed media load can be retried in place', async ({ page }) => {
-  let first = true
-  await page.route('**/scene-showcase/manifest.json', route => { if (first) { first = false; return route.fulfill({ status: 503, body: '{}' }) } return route.continue() })
+  const fixture = await installShowcaseFixture(page, { failFirst: true })
   await page.goto('/showcase')
   await page.getByRole('button', { name: '重新读取样张' }).click()
+  await expect.poll(() => fixture.requests()).toBe(2)
   await expect(page.locator('.sample-visual').first()).toBeVisible()
 })
 

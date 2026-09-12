@@ -317,11 +317,9 @@ function runTool(workspaceRoot, name, args, context) {
         }
         var timestamp = Date.now();
         var fileCharacter = encodeURIComponent(targetChar).replace(/\./g, '%2E').slice(0, 100);
-        var fileName = 'companion_' + fileCharacter + '_' + timestamp + '.png';
         var metaFile = 'companion_' + fileCharacter + '_' + timestamp + '.json';
         var charName = targetChar === 'natsume' ? '四季夏目' : targetChar === 'nene' ? '绫地宁宁' : targetChar;
 
-        var fullImagePath = path.join(outDir, fileName);
         var metaPayload = {
           character: targetChar,
           characterName: charName,
@@ -332,19 +330,16 @@ function runTool(workspaceRoot, name, args, context) {
           // 审计字段如实记录：outfit=nsfw_nude 同样视为成人内容（与 wantsMature 判定同源）
           mature: wantsMature,
           createdAt: timestamp,
-          outputPath: fullImagePath
+          status: 'draft'
         };
-        try {
-          fs.writeFileSync(path.join(outDir, metaFile), JSON.stringify(metaPayload, null, 2), 'utf8');
-        } catch (e) { /* ignore */ }
+        fs.writeFileSync(path.join(outDir, metaFile), JSON.stringify(metaPayload, null, 2), 'utf8');
 
         return {
           ok: true,
-          output: '已成功为角色【' + charName + '】组装并下发生图任务：“' + desc + '”。专属 LoRA 已绑定，生成的插画将保存在 AI 工作区目录：【' + fullImagePath + '】。',
+          status: 'draft',
+          output: '已为角色【' + charName + '】保存绘画草稿：“' + desc + '”。尚未提交生成任务，也未生成图片；请在工作台确认后出图。',
           character: targetChar,
-          imageRelativePath: 'generated-images/' + fileName,
-          fullImagePath: fullImagePath,
-          bonusAffection: 2,
+          draftRelativePath: 'generated-images/' + metaFile,
         };
       }
       default:

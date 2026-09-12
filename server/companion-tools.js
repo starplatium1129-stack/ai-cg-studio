@@ -102,7 +102,7 @@ var TOOL_DEFINITIONS = [
     type:'function',
     function:{
       name:'generate_character_image',
-      description:'根据角色名与场景描述自动调用 AI 绘画引擎生成角色插画。宁宁与夏目会自动绑定专属高精 LoRA。生成完成后会返回图片路径与状态。',
+      description:'根据角色名与场景描述保存绘画草稿，宁宁与夏目会附带专属 LoRA 配置。当前只准备草稿，不调用绘画引擎、不提交生成任务，也不返回图片；需用户在工作台确认后出图。不得宣称图片已生成。',
       parameters:{
         type:'object',
         properties:{
