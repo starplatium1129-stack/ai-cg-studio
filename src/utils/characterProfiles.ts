@@ -14,6 +14,7 @@ export interface CharacterPortrait {
 }
 
 export interface CharacterLora {
+  name?: string
   trigger_words?: string[]
   recommended_scene?: string[]
 }
@@ -58,6 +59,7 @@ function stringList(value: unknown): string[] {
 }
 
 function parseIdentity(value: unknown): CharacterIdentity | undefined {
+  if (typeof value === 'string') return value.trim() ? { role: value.trim() } : undefined
   if (!isRecord(value)) return undefined
   const identity = {
     role: optionalString(value.role),
@@ -81,8 +83,10 @@ function parseLora(value: unknown): CharacterLora | undefined {
   if (!isRecord(value)) return undefined
   const triggerWords = stringList(value.trigger_words)
   const recommendedScenes = stringList(value.recommended_scene)
-  if (!triggerWords.length && !recommendedScenes.length) return undefined
+  const name = optionalString(value.name)
+  if (!name && !triggerWords.length && !recommendedScenes.length) return undefined
   return {
+    name,
     trigger_words: triggerWords,
     recommended_scene: recommendedScenes,
   }
@@ -104,7 +108,7 @@ export function parseCharacterProfiles(value: unknown): CharacterProfile[] {
       icon: optionalString(item.icon) ?? '',
       source: optionalString(item.source) ?? '',
       alias: stringList(item.alias),
-      voice: optionalString(item.voice) ?? '',
+      voice: optionalString(item.voice) ?? optionalString(item.speech) ?? '',
       tags: stringList(item.tags),
       bg_story: optionalString(item.bg_story) ?? '',
       personality: stringList(item.personality),

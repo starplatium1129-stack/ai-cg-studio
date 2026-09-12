@@ -42,6 +42,7 @@
             <span v-if="current.identity?.role" class="item role">{{ current.identity.role }}</span>
             <span v-if="current.identity?.age" class="item">{{ current.identity.age }}</span>
             <span v-if="current.identity?.occupation" class="item">{{ current.identity.occupation }}</span>
+            <span v-if="current.identity?.faction" class="item">{{ current.identity.faction }}</span>
           </div>
           <div v-if="current.alias?.length" class="character-alias">{{ current.alias.join(' / ') }}</div>
           <div v-if="current.voice" class="voice-block">
@@ -74,7 +75,9 @@
             <section class="detail-section"><div class="lab">喜欢的事</div><div class="chips"><span v-for="l in current.likes" :key="l" class="chip">{{ l }}</span></div></section>
             <section v-if="current.lora" class="detail-section wide">
               <div class="lab">绑定 LoRA</div>
-              <div class="char-lora">触发词：<code>{{ (current.lora.trigger_words||[]).join(', ') }}</code></div>
+              <div v-if="current.lora.name" class="char-lora">档案登记：<code>{{ current.lora.name }}</code></div>
+              <div v-if="current.lora.trigger_words?.length" class="char-lora">触发词：<code>{{ current.lora.trigger_words.join(', ') }}</code></div>
+              <div v-else class="char-lora">当前模型与触发词请在绘图工作台查看。</div>
             </section>
           </div>
         </div>
