@@ -2,6 +2,8 @@
 
 当前总优先级见 [未来规划](../docs/roadmap.md)。
 
+- [006：工作流与内容数据治理](006-workflow-and-content-governance.md)：后续规划；执行条件、交付证据、人物／服装／场景职责、变更影响和审核状态。
+
 - [005：PC 桌面架构整理](005-desktop-architecture-consolidation.md)：已实施布局与状态接口整理；持久化及任务恢复交付隔离原型与设计，真机验收单列。
 
 - [004：反推满意图入场景](004-scene-save-from-interrogate.md)：暂缓，保留原显存约束与决策。
