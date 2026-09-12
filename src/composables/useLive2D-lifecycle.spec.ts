@@ -45,6 +45,56 @@ function setup() {
 afterEach(() => { vi.clearAllTimers(); vi.useRealTimers() })
 
 describe('Live2D lifecycle races', () => {
+  it('quality changes cancel an obsolete load and keep the latest profile', async () => {
+    const h = setup()
+    const connection = deferred<Live2DStageSession>()
+    h.connect.mockReturnValueOnce(connection.promise)
+    const original = h.lifecycle.setCharacter('nene')
+    const standard = h.lifecycle.setQuality('standard')
+    const compact = h.lifecycle.setQuality('compact')
+    await Promise.resolve()
+    const old = { ...h.session, destroy: vi.fn() }
+    connection.resolve(old)
+    await Promise.resolve()
+    h.loaded()
+    await Promise.all([original, standard, compact])
+    expect(h.connect.mock.calls[0]![0].signal!.aborted).toBe(true)
+    expect(h.connect).toHaveBeenLastCalledWith(expect.objectContaining({ modelUrl: '/api/live2d-model/nene/compact', textureScale: 4 }))
+    expect(old.destroy).toHaveBeenCalledOnce()
+    expect(h.ctx.quality.value).toBe('compact')
+    expect(h.ctx.ready.value).toBe(true)
+    h.lifecycle.destroy()
+  })
+
+  it('applies the requested FPS as soon as a single-outfit model is ready', async () => {
+    const h = setup()
+    h.ctx.catalog!.models.natsume = { available: true, modelUrl: '/natsume.model3.json', source: '', missing: [] }
+    h.ctx.maxFps = 30
+    const loading = h.lifecycle.setCharacter('natsume')
+    await Promise.resolve()
+    h.loaded()
+    await loading
+    expect(h.session.setMaxFps).toHaveBeenCalledWith(30)
+    expect(h.model.expression).not.toHaveBeenCalled()
+    h.lifecycle.destroy()
+  })
+
+  it('a hidden desktop stays paused after loading, speech wakeups and recovery', async () => {
+    const h = setup()
+    vi.spyOn(document, 'hidden', 'get').mockReturnValue(false)
+    h.lifecycle.setPaused(true)
+    const loading = h.lifecycle.setCharacter('nene')
+    await Promise.resolve()
+    h.loaded()
+    await loading
+    h.lifecycle.resumeRendering()
+    await h.lifecycle.recover()
+    expect(h.session.setPaused).toHaveBeenLastCalledWith(true)
+    h.lifecycle.setPaused(false)
+    expect(h.session.setPaused).toHaveBeenLastCalledWith(false)
+    h.lifecycle.destroy()
+  })
+
   it('a hanging connect times out, and its late result cannot clear a retry', async () => {
     const h = setup()
     const connection = deferred<Live2DStageSession>()

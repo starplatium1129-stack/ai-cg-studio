@@ -1,6 +1,6 @@
 import { CHARACTERS } from '@/config/characters'
 import { computeOverlayRect } from '@/utils/live2dOverlayLayout'
-import type { Live2DCtx } from '@/composables/live2d/context'
+import { isStageHidden, prefersReducedMotion, type Live2DCtx } from '@/composables/live2d/context'
 
 /**
  * 桌面窗口物理像素 bounds（IPC 注入）。Companion 单窗口，属全局窗口状态：
@@ -89,13 +89,14 @@ export function createLayoutFitController(
           windowBounds: { x: 0, y: 0, width: bounds.width, height: bounds.height },
         })
         ctx.nativeOverlayReady = true
-        ctx.session.updateOverlay(overlayRect, true)
-        ctx.session.setPaused(false)
-        hooks.startEmotionClock()
+        const visible = !isStageHidden(ctx) && !prefersReducedMotion()
+        ctx.session.updateOverlay(overlayRect, visible)
+        ctx.session.setPaused(!visible)
+        if (visible) hooks.startEmotionClock()
       } catch {}
       return
     }
-    if (document.hidden) return
+    if (isStageHidden(ctx)) return
     try {
       const wrapper = ctx.hostEl.firstElementChild as HTMLElement | null
       if (!wrapper) return

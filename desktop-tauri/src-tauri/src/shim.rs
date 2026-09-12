@@ -145,7 +145,8 @@ pub const COMPANION_SHIM_JS: &str = r#"
   // browser backend，避免两个窗口争用同一个全局 overlay。
   if (enableNativeLive2D) window.aicsLive2dNative = {
     isNativeLive2D: true,
-    setCharacter: (modelPath, options) => invoke('aics_live2d_set_character', { modelPath, character: options && options.character }),
+    supportsTextureQuality: true,
+    setCharacter: (modelPath, options) => invoke('aics_live2d_set_character', { modelPath, character: options && options.character, textureScale: options && options.textureScale }),
     setFrame: (frame) => invoke('aics_live2d_set_frame', {
       rect: frame.rect,
       visible: frame.visible,

@@ -58,6 +58,7 @@
         :active-id="activeChar"
         :character="currentCharacter"
         :speaking="isSpeaking"
+        :volume="volume"
         :chat-status-text="chatStatusText"
         :status-kind="statusKind"
         :auto-load="storage.state.settings.live2dEnabled"

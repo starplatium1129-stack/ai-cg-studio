@@ -131,6 +131,7 @@
           </button>
         </div>
       </div>
+      <Live2DQualityControl :native="live2d.backendKind.value === 'native'" />
     </div>
   </aside>
 </template>
@@ -147,6 +148,8 @@ import {
   type CharacterConfig,
 } from '@/config/characters'
 import { useLive2D } from '@/composables/useLive2D'
+import Live2DQualityControl from '@/components/Live2DQualityControl.vue'
+import { useLive2DPreferences } from '@/composables/live2d/preferences'
 import { useRovingTabs } from '@/composables/useRovingTabs'
 import { createEmotionRuntime, NATSUME_RUNTIME_CONFIG, NENE_RUNTIME_CONFIG } from '@/utils/emotionRuntime'
 import type { Live2DBackendKind } from '@/live2d/types'
@@ -163,6 +166,7 @@ const props = defineProps<{
   presence?: string
   desktopWindowBounds?: { x: number; y: number; width: number; height: number } | null
   outfit: string
+  volume?: number
   /**
    * 渲染后端：'auto' 时按 html dataset `data-live2d-backend` 或 URL
    * `?live2dBackend=` 解析（桌面 Rust 壳注入用），默认浏览器 wl-live2d。
@@ -212,6 +216,12 @@ const live2d = useLive2D((status) => {
   avatarDetail.value = status.detail
   avatarRetryable.value = status.retryable
 })
+const { quality } = useLive2DPreferences()
+watch([quality, live2d.backendKind], ([value, backend]) => {
+  const legacyNative = backend === 'native' && window.aicsLive2dNative && !window.aicsLive2dNative.supportsTextureQuality
+  void live2d.setQuality(legacyNative ? 'original' : value)
+}, { immediate: true, flush: 'sync' })
+watch(() => props.volume, value => live2d.setVolume((value ?? 80) / 100), { immediate: true })
 
 const neneRuntime = createEmotionRuntime(NENE_RUNTIME_CONFIG)
 const natsumeRuntime = createEmotionRuntime(NATSUME_RUNTIME_CONFIG)
@@ -316,11 +326,18 @@ function releasePointerFocus() {
   live2d.releasePointerFocus()
 }
 
-function setDesktopPerformanceMode(onBatteryPower: boolean) {
+let desktopBatteryPower: boolean | null = null
+function applyDesktopPerformanceMode() {
+  if (desktopBatteryPower === null) return
   // 原生后端：电池 30fps，接电恢复 165fps；browser 后端维持 60fps 上限。
   const native = live2d.backendKind.value === 'native'
-  live2d.setMaxFps(onBatteryPower ? 30 : (native ? 165 : 60))
+  live2d.setMaxFps(desktopBatteryPower ? 30 : (native ? 165 : 60))
 }
+function setDesktopPerformanceMode(onBatteryPower: boolean) {
+  desktopBatteryPower = Boolean(onBatteryPower)
+  applyDesktopPerformanceMode()
+}
+watch(live2d.backendKind, applyDesktopPerformanceMode, { flush: 'sync' })
 
 async function handleOutfitChange(next: string) {
   if (outfitBusy.value) return
@@ -424,6 +441,7 @@ onMounted(() => {
 })
 
 onUnmounted(() => {
+  clearTimeout(touchTimer)
   live2d.attachEmotionRuntime(null)
   live2d.destroy()
 })

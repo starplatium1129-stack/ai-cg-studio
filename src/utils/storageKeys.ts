@@ -10,6 +10,7 @@
 
 /** 精确活键：全站仍在读写的 localStorage 键。 */
 export const COMPANION_LIVE2D_KEY = 'aics_companion_live2d_v1'
+export const LIVE2D_QUALITY_KEY = 'aics_live2d_quality_v1'
 export const COMPANION_BEHAVIOR_KEY = 'aics_companion_behavior_v1'
 export const COMPANION_AFFECTION_KEY = 'aics_companion_affection_v1'
 /** 角色窗 → 聊天窗的实时状态通道（低频繁写入，storage 事件跨窗下发） */
@@ -104,6 +105,7 @@ export const LIVE_LOCAL_KEYS = [
   CHAT_USER_PROFILE_KEY,
   CHAT_MEMORY_KEY,
   COMPANION_LIVE2D_KEY,
+  LIVE2D_QUALITY_KEY,
   COMPANION_BEHAVIOR_KEY,
   COMPANION_AFFECTION_KEY,
   SPEECH_INPUT_KEY,

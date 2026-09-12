@@ -29,7 +29,7 @@ export type Live2DHitArea = string
 
 export interface Live2DNativeCommands {
   /** 创建/切换模型。modelPath 只接受 Rust 侧白名单资产，不接收任意路径。 */
-  setCharacter(modelPath: string, options?: { character: string }): Promise<{ ok: boolean; error?: string }>
+  setCharacter(modelPath: string, options?: { character: string; textureScale?: number }): Promise<{ ok: boolean; error?: string }>
   /** 移动 overlay 并设置可见性。visible=false 时 Rust 可隐藏窗口并暂停渲染。 */
   setFrame(frame: {
     rect: Live2DOverlayRect
@@ -78,6 +78,7 @@ export interface Live2DNativeEvents {
  */
 export interface Live2DNativeBridge extends Live2DNativeCommands, Live2DNativeEvents {
   readonly isNativeLive2D: true
+  readonly supportsTextureQuality?: boolean
 }
 
 declare global {

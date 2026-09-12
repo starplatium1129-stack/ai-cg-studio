@@ -1,4 +1,4 @@
-import type { Live2DCtx } from '@/composables/live2d/context'
+import { isStageHidden, prefersReducedMotion, type Live2DCtx } from '@/composables/live2d/context'
 
 /**
  * 原生情绪时钟（拆分 Step 5 自 useLive2D.ts 原样搬出）：
@@ -23,7 +23,7 @@ export function createNativeEmotionClock(ctx: Live2DCtx) {
     ctx.frames.nativeEmotion = 0
     if (
       ctx.destroyed.value
-      || document.hidden
+      || isStageHidden(ctx) || prefersReducedMotion()
       || !ctx.model?.visible
       || ctx.session?.capability.emotionChannel !== 'bridge'
     ) return
@@ -36,7 +36,7 @@ export function createNativeEmotionClock(ctx: Live2DCtx) {
   }
 
   function start() {
-    if (ctx.session?.capability.emotionChannel !== 'bridge' || ctx.frames.nativeEmotion || document.hidden) return
+    if (ctx.session?.capability.emotionChannel !== 'bridge' || ctx.frames.nativeEmotion || isStageHidden(ctx) || prefersReducedMotion()) return
     ctx.nativeEmotionLastFrame = performance.now()
     ctx.frames.nativeEmotion = window.requestAnimationFrame(tick)
   }

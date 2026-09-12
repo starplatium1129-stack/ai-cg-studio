@@ -174,6 +174,9 @@ export function useCompanionWorkspace() {
     let interactionModeSubscription: number | undefined;
     let globalMouseSubscription: number | undefined;
     let viewAlive = true;
+    let visibilityRevision = 0;
+    let powerRevision = 0;
+    let boundsRevision = 0;
     /** 沉浸模式：鼠标在舞台活动时 UI 浮现，静止数秒后自动隐去（桌面窗口）。 */
     function setUiHidden(hidden: boolean) {
         if (uiHidden === hidden)
@@ -359,6 +362,7 @@ export function useCompanionWorkspace() {
         mouseToggleBlockedUntil = Date.now() + 400;
     }
     function setDesktopVisibility(visible: boolean) {
+        characterStageRef.value?.setDesktopVisible?.(visible);
         if (!visible) {
             cancelSpeechActivity();
             characterStageRef.value?.releasePointerFocus?.();
@@ -377,7 +381,6 @@ export function useCompanionWorkspace() {
             maybeGreetByTime();
             noteActivity();
         }
-        characterStageRef.value?.setDesktopVisible?.(visible);
         reconcileAutoListen();
     }
     function setDesktopPowerMode(onBattery: boolean) {
@@ -399,20 +402,21 @@ export function useCompanionWorkspace() {
             // 真双窗口：先下行一次实时状态，聊天窗打开即有正确内容
             publishLiveState();
             chatCommandSubscription = desktopBridge.onChatCommand(onChatCommand);
-            shownSubscription = desktopBridge.onShown(() => setDesktopVisibility(true));
-            visibilitySubscription = desktopBridge.onVisibilityChanged(setDesktopVisibility);
+            shownSubscription = desktopBridge.onShown(() => { visibilityRevision++; setDesktopVisibility(true); });
+            visibilitySubscription = desktopBridge.onVisibilityChanged(visible => { visibilityRevision++; setDesktopVisibility(visible); });
             if (desktopBridge.onWindowBoundsChanged) {
                 windowBoundsSubscription = desktopBridge.onWindowBoundsChanged(bounds => {
+                    boundsRevision++;
                     desktopWindowBounds.value = bounds;
                     characterStageRef.value?.setDesktopWindowBounds?.(bounds);
                 });
             }
-            powerModeSubscription = desktopBridge.onPowerModeChanged(setDesktopPowerMode);
+            powerModeSubscription = desktopBridge.onPowerModeChanged(onBattery => { powerRevision++; setDesktopPowerMode(onBattery); });
             interactionModeSubscription = desktopBridge.onInteractionModeChanged(value => { ignoreMouseEvents.value = value; });
             // 全局目光跟随：鼠标在悬浮窗之外时，角色目光仍随屏幕鼠标转动。
             // 窗口内由舞台 DOM 事件驱动（更平滑），这里跳过 inWindow 更新。
             globalMouseSubscription = desktopBridge.onGlobalMouse(state => {
-                if (state.inWindow)
+                if (state.inWindow || !desktopWindowVisible.value)
                     return;
                 characterStageRef.value?.setGlobalPointer?.(state.x, state.y, state.bounds);
             });
@@ -423,6 +427,7 @@ export function useCompanionWorkspace() {
                 void refreshRoomState();
             });
             let desktopState: Awaited<ReturnType<typeof desktopBridge.getState>> | null = null;
+            const initialRevision = { visibility: visibilityRevision, power: powerRevision, bounds: boundsRevision };
             try {
                 desktopState = await desktopBridge.getState();
             }
@@ -439,14 +444,15 @@ export function useCompanionWorkspace() {
                 if (desktopState.live2dEnabled == null && legacyLive2dOverride != null) {
                     desktopBridge.setLive2dEnabled(legacyLive2dOverride);
                 }
-                setDesktopVisibility(desktopState.visible);
-                setDesktopPowerMode(desktopState.onBatteryPower);
-                if (desktopState.bounds)
+                // Events received after the snapshot request own the newer state.
+                if (visibilityRevision === initialRevision.visibility) setDesktopVisibility(desktopState.visible);
+                if (powerRevision === initialRevision.power) setDesktopPowerMode(desktopState.onBatteryPower);
+                if (desktopState.bounds && boundsRevision === initialRevision.bounds)
                     desktopWindowBounds.value = desktopState.bounds;
             }
             else {
                 // IPC 失败时按页面可见性兜底，保证可见窗口里的 Live2D 仍能按需加载
-                setDesktopVisibility(!document.hidden);
+                if (visibilityRevision === initialRevision.visibility) setDesktopVisibility(!document.hidden);
             }
         }
     });

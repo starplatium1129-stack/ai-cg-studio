@@ -10,6 +10,8 @@
 use std::collections::HashMap;
 use std::sync::atomic::{AtomicBool, AtomicU32, AtomicU64, Ordering};
 use std::sync::mpsc::{channel, Receiver, Sender, TryRecvError};
+#[path = "live2d_frame_pacing.rs"]
+mod frame_pacing;
 use std::sync::{Arc, Mutex, OnceLock};
 use std::thread;
 use std::time::{Duration, Instant};
@@ -204,6 +206,7 @@ fn followed_overlay_rect(
 pub enum OverlayCommand {
     SetCharacter {
         character: String,
+        texture_scale: u32,
         reply: tokio::sync::oneshot::Sender<Result<(), String>>,
     },
     PlayMotion {
@@ -683,7 +686,7 @@ fn hidden_drawables_for(character: &str) -> Vec<i32> {
 }
 
 impl RenderContext {
-    fn load_model(&mut self, assets_root: &std::path::Path, character: &str) -> Result<(), String> {
+    fn load_model(&mut self, assets_root: &std::path::Path, character: &str, texture_scale: u32) -> Result<(), String> {
         if let Some(renderer) = self.renderer.as_mut() {
             renderer.release_model_resources();
         }
@@ -771,6 +774,10 @@ impl RenderContext {
                     .map_err(|e| format!("open texture {}: {e}", path.display()))?
                     .to_rgba8();
                 let (w, h) = img.dimensions();
+                let (w, h) = frame_pacing::texture_dimensions(w, h, texture_scale);
+                let img = if texture_scale > 1 {
+                    image::imageops::resize(&img, w, h, image::imageops::FilterType::Lanczos3)
+                } else { img };
                 textures.push(renderer.load_texture(&img.into_raw(), w, h));
                 eprintln!(
                     "[live2d] texture {}/{} {w}x{h} {:.2}s",
@@ -1299,12 +1306,7 @@ fn overlay_window_thread(
 
     // 目标帧率：默认 165（vsync 由 surface present 决定，165Hz 屏即 165fps），
     // 可用 L2D_TARGET_FPS 覆盖；前端也可通过 setMaxFps 动态调整。
-    let initial_fps = std::env::var("L2D_TARGET_FPS")
-        .ok()
-        .and_then(|v| v.parse::<u64>().ok())
-        .filter(|f| (1..=1000).contains(f))
-        .unwrap_or(165);
-    state.target_fps.store(initial_fps as u32, Ordering::SeqCst);
+    state.target_fps.store(frame_pacing::initial_fps(std::env::var("L2D_TARGET_FPS").ok().as_deref()), Ordering::SeqCst);
 
     let mut last_frame = Instant::now();
     let mut last_z_order_sync = Instant::now() - Duration::from_secs(1);
@@ -1313,6 +1315,7 @@ fn overlay_window_thread(
     // 此时前端通常已不在；其余错误路径必须带原因广播，前端才能显示重试。
     let mut stopped_reason: Option<String> = None;
     while running {
+        let iteration_started = Instant::now();
         unsafe {
             let mut msg = std::mem::zeroed::<MSG>();
             while PeekMessageW(&mut msg, std::ptr::null_mut(), 0, 0, PM_REMOVE) > 0 {
@@ -1406,8 +1409,9 @@ fn overlay_window_thread(
                 }
             }
         }
-        let target_fps = state.target_fps.load(Ordering::Relaxed).clamp(1, 1000) as u64;
-        thread::sleep(Duration::from_micros((1_000_000 / target_fps).max(1)));
+        if let Some(cmd) = if running { frame_pacing::wait(&rx, state.visible.load(Ordering::SeqCst), state.target_fps.load(Ordering::Relaxed), iteration_started.elapsed()) } else { None } {
+            handle_command(&state, &mut ctx, &assets_root, app.as_ref(), hwnd, cmd);
+        }
     }
 
     unsafe {
@@ -1428,7 +1432,7 @@ fn handle_command(
     cmd: OverlayCommand,
 ) {
     match cmd {
-        OverlayCommand::SetCharacter { character, reply } => {
+        OverlayCommand::SetCharacter { character, texture_scale, reply } => {
             clear_model_state(state);
             ctx.mouth_level = 0.0;
             state.visible.store(false, Ordering::SeqCst);
@@ -1437,7 +1441,7 @@ fn handle_command(
             }
             let result = (|| {
                 ctx.ensure_surface(hwnd)?;
-                ctx.load_model(assets_root, &character)?;
+                ctx.load_model(assets_root, &character, texture_scale)?;
                 ctx.start_initial_motion(app)
             })();
             if result.is_ok() {
@@ -1606,6 +1610,7 @@ pub fn selftest(assets_root: std::path::PathBuf) -> Result<(), String> {
     let (reply_tx, reply_rx) = tokio::sync::oneshot::channel();
     tx.send(OverlayCommand::SetCharacter {
         character: "nene".to_string(),
+        texture_scale: 1,
         reply: reply_tx,
     })
     .map_err(|e| format!("selftest: send set_character: {e}"))?;
@@ -1629,8 +1634,9 @@ pub fn selftest(assets_root: std::path::PathBuf) -> Result<(), String> {
     let cmd = |c: OverlayCommand, timeout_ms: u64| -> Result<Result<(), String>, String> {
         let (r_tx, mut r_rx) = tokio::sync::oneshot::channel::<Result<(), String>>();
         let c = match c {
-            OverlayCommand::SetCharacter { character, .. } => OverlayCommand::SetCharacter {
+            OverlayCommand::SetCharacter { character, texture_scale, .. } => OverlayCommand::SetCharacter {
                 character,
+                texture_scale,
                 reply: r_tx,
             },
             OverlayCommand::PlayMotion {
@@ -1745,6 +1751,7 @@ pub fn selftest(assets_root: std::path::PathBuf) -> Result<(), String> {
         cmd(
             OverlayCommand::SetCharacter {
                 character: "natsume".into(),
+                texture_scale: 1,
                 reply: tokio::sync::oneshot::channel().0,
             },
             120000,
@@ -1934,6 +1941,7 @@ pub async fn aics_live2d_set_character(
     app: AppHandle,
     model_path: String,
     character: Option<String>,
+    texture_scale: Option<u32>,
 ) -> Result<serde_json::Value, String> {
     // 白名单：character 只接受已知角色；model_path 忽略（资产由 Rust 从
     // assets_root/live2d/{character} 读取，不接收任意路径）。
@@ -1944,6 +1952,8 @@ pub async fn aics_live2d_set_character(
         );
     }
     let _ = model_path;
+    let texture_scale = texture_scale.unwrap_or(1);
+    if !matches!(texture_scale, 1 | 2 | 4) { return Err("invalid Live2D texture scale".into()); }
     let assets_root = overlay_assets_root(&app);
     let state = ensure_overlay(&app, assets_root);
     let (tx, rx) = tokio::sync::oneshot::channel();
@@ -1953,6 +1963,7 @@ pub async fn aics_live2d_set_character(
         &state,
         OverlayCommand::SetCharacter {
             character,
+            texture_scale,
             reply: tx,
         },
     )

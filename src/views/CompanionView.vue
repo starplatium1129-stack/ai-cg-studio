@@ -44,6 +44,7 @@
         <div v-if="settingsOpen" class="companion-settings-popover" role="dialog" aria-label="桌宠设置" @pointerdown.stop>
           <div class="companion-pop-group">
             <strong>陪伴</strong>
+            <Live2DQualityControl :native="Boolean(desktopBridge)" />
             <label class="companion-pop-item" title="实时配音">
               <input type="checkbox" v-model="autoVoice" @change="onAutoVoiceChange" />
               <span title="播放聊天回复和新问候；勿扰时暂停主动问候">实时配音：{{ autoVoice ? '开' : '关' }}</span>
@@ -128,6 +129,7 @@
         :active-id="activeChar"
         :character="currentCharacter"
         :speaking="isSpeaking"
+        :volume="volume"
         :chat-status-text="chatStatusText"
         :status-kind="statusKind"
         :auto-load="companionAutoLoad"
@@ -385,6 +387,7 @@ import '@/assets/css/companion.css'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import { submitChatOnEnter } from '@/utils/chatInput'
 import ChatCharacterStage from '@/components/ChatCharacterStage.vue'
+import Live2DQualityControl from '@/components/Live2DQualityControl.vue'
 import SpeechInputSettings from '@/components/SpeechInputSettings.vue'
 import { useCompanionWorkspace } from "@/composables/chat/useCompanionWorkspace"
 const {

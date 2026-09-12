@@ -536,16 +536,16 @@ test('useControlStatus stopPolling aborts isolated in-flight status and logs req
     },
   });
   status.startPolling();
-  // 控制室打开后立即检测；下一拍替换仍在途的请求，停止时释放所有信号。
+  // 控制室打开后立即检测；下一拍等待在途请求，停止时仍释放两个独立信号。
   try {
     assert.equal(statusSignals.length, 1);
     assert.equal(logSignals.length, 1);
     assert.notEqual(statusSignals[0], logSignals[0]);
     await new Promise(resolve => setTimeout(resolve, 3100));
-    assert.equal(statusSignals.length, 2);
-    assert.equal(logSignals.length, 2);
-    assert.equal(statusSignals[0].aborted, true);
-    assert.equal(logSignals[0].aborted, true);
+    assert.equal(statusSignals.length, 1, 'slow status must not be replaced by a timer tick');
+    assert.equal(logSignals.length, 1, 'slow logs must not be replaced by a timer tick');
+    assert.equal(statusSignals[0].aborted, false);
+    assert.equal(logSignals[0].aborted, false);
   } finally {
     status.stopPolling();
   }

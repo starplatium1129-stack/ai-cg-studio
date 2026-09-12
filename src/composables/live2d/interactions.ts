@@ -116,11 +116,11 @@ export function createInteractionController(
   }
 
   function playNativeInteractionSound(soundUrl?: string) {
-    if (!soundUrl || ctx.mouthValue.value > 0) return
+    if (!soundUrl || ctx.speaking || ctx.interactionVolume === 0) return
     try {
       stopAudio()
       const audio = new Audio(soundUrl)
-      audio.volume = 0.8
+      audio.volume = ctx.interactionVolume
       ctx.interactionAudio = audio
       audio.play().catch(() => {
         // 浏览器静音策略或交互时机拦截静默降级

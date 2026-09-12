@@ -19,6 +19,8 @@ interface Live2DCoreModel {
 }
 
 interface WlLive2DModel {
+  autoUpdate?: boolean
+  update?(deltaMs: number): void
   visible: boolean
   width: number
   height: number
@@ -39,10 +41,14 @@ interface WlLive2DModel {
 
 interface WlLive2DApp {
   app?: {
+    render?(): void
     screen?: { width: number; height: number }
     ticker?: {
       started: boolean
       maxFPS?: number
+      deltaMS?: number
+      add?(callback: () => void, context?: unknown, priority?: number): void
+      remove?(callback: () => void): void
       start(): void
       stop(): void
     }
@@ -139,7 +145,17 @@ export function createBrowserLive2DBackend(): Live2DStageBackend {
       let app: WlLive2DApp
       let modelHandle: Live2DModelHandle | null = null
       let destroyed = false
+      let paused = false
+      let rendered = false
+      let rawModel: WlLive2DModel | null = null
       let screenSize = { width: options.canvasWidth, height: options.canvasHeight }
+      // Own the model clock together with rendering. The library otherwise
+      // advances it on Pixi's shared ticker even while this app is paused.
+      const advanceModel = () => {
+        if (destroyed || paused || !rawModel) return
+        rawModel.update?.(Math.min(100, app.app?.ticker?.deltaMS ?? 1000 / 60))
+        rendered = true
+      }
 
       app = library.wlLive2d({
         selector: options.selector,
@@ -173,7 +189,13 @@ export function createBrowserLive2DBackend(): Live2DStageBackend {
         capability: BROWSER_CAPABILITY,
         onModelLoaded(callback) {
           app.onModelLoaded((model) => {
+            if (!model) return // wl-live2d also emits null after a load error.
             if (destroyed) { model.visible = false; return }
+            rawModel = model
+            if (typeof model.update === 'function' && app.app?.ticker?.add) {
+              model.autoUpdate = false
+              app.app.ticker.add(advanceModel, undefined, 50)
+            }
             modelHandle = wrapModel(model)
             screenSize = {
               width: Number(app.app?.screen?.width) || options.canvasWidth,
@@ -185,11 +207,23 @@ export function createBrowserLive2DBackend(): Live2DStageBackend {
         onModelError(callback) {
           app.onModelError(error => { if (!destroyed) callback(error) })
         },
-        setPaused(paused) {
+        setPaused(value, renderFirstFrame = false) {
           if (destroyed) return
+          paused = value
           const ticker = app.app?.ticker
           if (!ticker) return
-          if (paused) { if (ticker.started) ticker.stop(); return }
+          if (paused) {
+            if (ticker.started) ticker.stop()
+            // Only explicit reduced-motion presentation may draw a static frame.
+            // Drawing during teardown starts an async idle motion against a model
+            // that wl-live2d is about to destroy (its queueManager is then gone).
+            if (renderFirstFrame && !rendered && rawModel?.visible) {
+              rawModel.update?.(0)
+              app.app?.render?.()
+              rendered = true
+            }
+            return
+          }
           if (!ticker.started) ticker.start()
         },
         setMaxFps(fps) {
@@ -226,6 +260,9 @@ export function createBrowserLive2DBackend(): Live2DStageBackend {
           destroyed = true
           const ticker = app.app?.ticker
           if (ticker?.started) ticker.stop()
+          ticker?.remove?.(advanceModel)
+          if (rawModel) rawModel.autoUpdate = false
+          rawModel = null
           if (modelHandle) modelHandle.visible = false
           modelHandle = null
           if (typeof app.destroy === 'function') { try { app.destroy() } catch { /* 与原 destroyRuntime 一致 */ } }

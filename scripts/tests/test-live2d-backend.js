@@ -195,6 +195,7 @@ test('原生后端：意图通道（口型/情绪/凝视）与 overlay 帧', asy
   session.sendMouthLevel(0.42);
   assert.deepEqual(bridge.calls.setMouthLevel[0], [0.42]);
   session.sendMouthLevel(1.5);
+  await new Promise(resolve => setTimeout(resolve, 35));
   assert.deepEqual(bridge.calls.setMouthLevel[1], [1], '口型电平应钳制到 0..1');
 
   session.sendEmotion('happy', 0.8);
@@ -223,6 +224,7 @@ test('原生后端：意图通道（口型/情绪/凝视）与 overlay 帧', asy
 
   session.setPaused(false);
   assert.equal(bridge.calls.setFrame[2][0].visible, true, '恢复 → overlay 显示');
+  session.destroy();
 });
 
 test('凝视轨迹：坐标归一化、边界钳制与连续回中', () => {
@@ -425,6 +427,36 @@ test('原生后端：点击查询拒绝不会产生未处理异常', async () =>
   session.onModelLoaded(model => { handle = model; });
   assert.deepEqual(handle.hitTest(0.5, 0.5), []);
   await new Promise(resolve => setImmediate(resolve));
+  session.destroy();
+});
+
+test('native texture quality is sent only to bridges that advertise support', async () => {
+  for (const supported of [false, true]) {
+    const bridge = createStubBridge();
+    bridge.supportsTextureQuality = supported;
+    const session = await createNativeLive2DBackend(() => bridge).connect({ selector: '#host', modelUrl: '/nene.model3.json', canvasWidth: 420, canvasHeight: 610, character: 'nene', textureScale: 4 });
+    assert.deepEqual(bridge.calls.setCharacter[0][1], supported ? { character: 'nene', textureScale: 4 } : { character: 'nene' });
+    session.destroy();
+  }
+});
+
+test('native pause clears queued samples, closes the mouth and blocks hidden gaze', async () => {
+  const bridge = createStubBridge();
+  const session = await createNativeLive2DBackend(() => bridge).connect({ selector: '#host', modelUrl: '/nene.model3.json', canvasWidth: 420, canvasHeight: 610, character: 'nene' });
+  session.sendMouthLevel(0.7);
+  session.sendEmotion('happy', 0.8);
+  session.sendGaze(0.1, 0.2);
+  session.setPaused(true);
+  session.sendMouthLevel(1);
+  session.sendEmotion('sad', 1);
+  session.sendGaze(0.9, 0.9);
+  await new Promise(resolve => setTimeout(resolve, 60));
+  assert.deepEqual(bridge.calls.setMouthLevel, [[0.7], [0]]);
+  assert.deepEqual(bridge.calls.setEmotion, [['happy', 0.8]]);
+  assert.deepEqual(bridge.calls.setGaze, [[0.1, 0.2]]);
+  session.setPaused(false);
+  session.sendGaze(-0.2, 0.3);
+  assert.deepEqual(bridge.calls.setGaze[1], [-0.2, 0.3]);
   session.destroy();
 });
 

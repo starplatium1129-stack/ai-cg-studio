@@ -24,6 +24,7 @@ const srcRoot = path.join(root, 'src');
 
 /** 受管键 → 允许出现字面量的文件（相对仓库根，正斜杠）。 */
 const REGISTERED_KEYS = {
+  'aics_live2d_quality_v1': ['src/utils/storageKeys.ts'],
   'aics_pb_history': [
     'src/utils/storageKeys.ts',
     // 零依赖纯逻辑核心（被 scripts/tests/test-desktop-import.js 直接 require），

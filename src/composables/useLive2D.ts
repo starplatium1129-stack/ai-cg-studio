@@ -69,6 +69,11 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
     ctx.emotionRuntime?.setAudioLevel(level, peak)
   }
 
+  function setVolume(value: number) {
+    ctx.interactionVolume = Number.isFinite(value) ? Math.max(0, Math.min(1, value)) : 0.8
+    if (ctx.interactionAudio) ctx.interactionAudio.volume = ctx.interactionVolume
+  }
+
   // 换装和口型都依赖 Pixi ticker。某些 Cubism 模型在切换 Expression 后会停掉 idle
   // motion；语音开始时显式恢复渲染，避免出现"有声音但立绘冻结"。
   function setSpeaking(value: boolean) {
@@ -86,10 +91,10 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
 
   return {
     ready: ctx.ready, enabled: ctx.enabled, character: ctx.character, loadedCharacter: ctx.loadedCharacter,
-    mouthValue: ctx.mouthValue, interactionHint: ctx.interactionHint, outfit: ctx.outfit,
+    mouthValue: ctx.mouthValue, interactionHint: ctx.interactionHint, outfit: ctx.outfit, quality: ctx.quality,
     backendKind: ctx.backendKind, backendFallback: ctx.backendFallback,
     init: lifecycle.init, enable: lifecycle.enable, disable: lifecycle.disable,
-    setCharacter: lifecycle.setCharacter, setMouth, setAudioLevel, setOutfit: lifecycle.setOutfit, setSpeaking,
+    setCharacter: lifecycle.setCharacter, setMouth, setAudioLevel, setVolume, setOutfit: lifecycle.setOutfit, setQuality: lifecycle.setQuality, setSpeaking,
     attachEmotionRuntime, setPaused: lifecycle.setPaused, setMaxFps, recover: lifecycle.recover,
     layout: layoutFit.layout, retry: lifecycle.retry, destroy: lifecycle.destroy,
     setGlobalPointer: pointerGaze.setGlobalPointer, releasePointerFocus: pointerGaze.release,

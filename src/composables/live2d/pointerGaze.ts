@@ -1,4 +1,4 @@
-import type { Live2DCtx } from '@/composables/live2d/context'
+import { isStageHidden, prefersReducedMotion, type Live2DCtx } from '@/composables/live2d/context'
 import { gazeFromClientPoint, gazeSettled, stepGaze } from '@/utils/live2dGaze'
 
 /**
@@ -28,14 +28,14 @@ export function createPointerGazeController(ctx: Live2DCtx) {
   }
 
   function schedule() {
-    if (ctx.frames.gaze || !ctx.ready.value || !ctx.model) return
+    if (ctx.frames.gaze || !ctx.ready.value || !ctx.model || isStageHidden(ctx) || prefersReducedMotion()) return
     ctx.gaze.lastFrame = performance.now()
     ctx.frames.gaze = window.requestAnimationFrame(runFrame)
   }
 
   function runFrame(now: number) {
     ctx.frames.gaze = 0
-    if (!ctx.ready.value || !ctx.model || ctx.destroyed.value) return
+    if (!ctx.ready.value || !ctx.model || ctx.destroyed.value || isStageHidden(ctx) || prefersReducedMotion()) return
     const dt = Math.max(1 / 240, Math.min(0.05, (now - ctx.gaze.lastFrame) / 1000))
     ctx.gaze.lastFrame = now
     const next = stepGaze(

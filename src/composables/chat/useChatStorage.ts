@@ -317,7 +317,7 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
     save()
   }
   function setAutoVoice(v: boolean) { state.settings.autoVoice = Boolean(v); save() }
-  function setVolume(v: number) { state.settings.volume = Math.max(0, Math.min(100, Math.round(Number(v) || 80))); save() }
+  function setVolume(v: number) { state.settings.volume = Math.max(0, Math.min(100, Number.isFinite(Number(v)) ? Math.round(Number(v)) : 80)); save() }
   function draft(char = state.active) { return state.settings.drafts[char] || '' }
   function setDraft(char: string, val: string) {
     if (!CHARACTERS[char]) return

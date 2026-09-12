@@ -4,15 +4,16 @@ import type { Live2DModelHandle } from '@/live2d/types'
 
 async function setup() {
   const model = {
+    autoUpdate: true, update: vi.fn(),
     visible: true, width: 420, height: 610, x: 0, y: 0,
     scale: { x: 1, y: 1, set: vi.fn() },
     internalModel: { on: vi.fn(), motionManager: { state: { currentGroup: 'TapSkirt' as string | undefined } } },
   }
   let loaded!: (value: typeof model) => void
   let failed!: (error: Error) => void
-  const ticker = { started: true, start: vi.fn(), stop: vi.fn() }
+  const ticker = { started: true, start: vi.fn(), stop: vi.fn(), add: vi.fn(), remove: vi.fn(), deltaMS: 16 }
   const app = {
-    app: { ticker },
+    app: { ticker, render: vi.fn() },
     onModelLoaded: (callback: typeof loaded) => { loaded = callback },
     onModelError: (callback: typeof failed) => { failed = callback },
     destroy: vi.fn(),
@@ -27,6 +28,65 @@ async function setup() {
 afterEach(() => { Reflect.deleteProperty(window, 'wl-live2d') })
 
 describe('browser Live2D session', () => {
+  it('renders a first static frame for reduced motion, and caps the resume delta', async () => {
+    const h = await setup()
+    h.session.onModelLoaded(() => {})
+    h.loaded()
+    h.session.setPaused(true, true)
+    h.session.setPaused(true, true)
+    expect(h.model.update).toHaveBeenCalledExactlyOnceWith(0)
+    expect(h.app.app.render).toHaveBeenCalledOnce()
+    h.ticker.deltaMS = 5000
+    h.session.setPaused(false)
+    const tick = h.ticker.add.mock.calls[0]![0] as () => void
+    tick()
+    expect(h.model.update).toHaveBeenLastCalledWith(100)
+    h.session.destroy()
+  })
+
+  it('pausing before disposal does not start a first frame or a late idle motion', async () => {
+    const h = await setup()
+    h.session.onModelLoaded(() => {})
+    h.loaded()
+    h.session.setPaused(true)
+    h.session.destroy()
+    expect(h.model.update).not.toHaveBeenCalled()
+    expect(h.app.app.render).not.toHaveBeenCalled()
+  })
+
+  it('pausing one session leaves another model clock running', async () => {
+    const a = await setup(), b = await setup()
+    for (const h of [a, b]) { h.session.onModelLoaded(() => {}); h.loaded() }
+    a.session.setPaused(true)
+    a.model.update.mockClear()
+    for (const h of [a, b]) (h.ticker.add.mock.calls[0]![0] as () => void)()
+    expect(a.model.update).not.toHaveBeenCalled()
+    expect(b.model.update).toHaveBeenCalledOnce()
+    expect(b.ticker.stop).not.toHaveBeenCalled()
+    a.session.destroy(); b.session.destroy()
+  })
+
+  it('model and render clocks pause together without changing another app shared ticker', async () => {
+    const h = await setup()
+    h.session.onModelLoaded(() => {})
+    h.loaded()
+    expect(h.model.autoUpdate).toBe(false)
+    const tick = h.ticker.add.mock.calls[0]![0] as () => void
+    tick()
+    expect(h.model.update).toHaveBeenLastCalledWith(16)
+    h.session.setPaused(true)
+    h.model.update.mockClear()
+    tick()
+    expect(h.model.update).not.toHaveBeenCalled()
+    h.session.setPaused(false)
+    tick()
+    expect(h.model.update).toHaveBeenCalledOnce()
+    h.session.destroy()
+    expect(h.ticker.remove).toHaveBeenCalledWith(tick)
+    tick()
+    expect(h.model.update).toHaveBeenCalledOnce()
+  })
+
   it('reports motion ownership from the runtime, including idle and completion', async () => {
     const h = await setup()
     let handle!: Live2DModelHandle

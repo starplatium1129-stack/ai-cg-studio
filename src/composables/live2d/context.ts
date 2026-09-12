@@ -10,6 +10,7 @@ import type {
 } from '@/live2d/types'
 import type { Live2DCatalog } from '@/composables/live2d/catalog'
 import { DEFAULT_LIVE2D_OUTFIT } from '@/config/characters'
+import type { Live2DQuality } from '@/live2d/quality'
 
 export interface Live2DStatus {
   state: 'checking' | 'idle' | 'static' | 'loading' | 'ready' | 'degraded' | 'fallback'
@@ -26,6 +27,13 @@ export interface Live2DStatus {
  */
 export function prefersReducedMotion(): boolean {
   try { return window.matchMedia('(prefers-reduced-motion: reduce)').matches } catch { return false }
+}
+
+/** Native transparent windows may be visible without an active WebView. */
+export function isStageHidden(ctx: Live2DCtx): boolean {
+  if (ctx.desktopVisible === false) return true
+  if (ctx.session?.kind === 'native' && ctx.desktopVisible === true) return false
+  return document.hidden
 }
 
 export interface NatsumeOverlaySettle {
@@ -49,6 +57,7 @@ export interface Live2DCtx {
   mouthValue: Ref<number>
   interactionHint: Ref<string>
   outfit: Ref<string>
+  quality: Ref<Live2DQuality>
   backendKind: Ref<Live2DBackendKind>
   backendFallback: Ref<string | null>
 
@@ -84,11 +93,13 @@ export interface Live2DCtx {
   // 互动域
   activeInteraction: string
   interactionAudio: HTMLAudioElement | null
+  interactionVolume: number
 
   // 生命周期卫兵与帧率窗口
   lifecycleToken: number
   entranceUntil: number
   maxFps: number
+  desktopVisible: boolean | null
 
   // 口型 / 情绪
   mouthHooked: boolean
@@ -116,6 +127,8 @@ export interface Live2DCtx {
   resizeObserver: ResizeObserver | null
   onResize: (() => void) | null
   visibilityHandler: (() => void) | null
+  motionQuery: MediaQueryList | null
+  motionPreferenceHandler: (() => void) | null
   pointerClickHandler: ((event: MouseEvent) => void) | null
   pointerGazeHandler: ((event: MouseEvent) => void) | null
   pointerGazeLeaveHandler: (() => void) | null
@@ -131,6 +144,7 @@ export function createLive2DCtx(): Live2DCtx {
     mouthValue: ref(0),
     interactionHint: ref(''),
     outfit: ref<string>(DEFAULT_LIVE2D_OUTFIT),
+    quality: ref<Live2DQuality>('original'),
     backendKind: ref<Live2DBackendKind>('browser'),
     backendFallback: ref<string | null>(null),
 
@@ -151,10 +165,12 @@ export function createLive2DCtx(): Live2DCtx {
 
     activeInteraction: '',
     interactionAudio: null,
+    interactionVolume: 0.8,
 
     lifecycleToken: 0,
     entranceUntil: 0,
     maxFps: 60,
+    desktopVisible: null,
 
     mouthHooked: false,
     speaking: false,
@@ -176,6 +192,8 @@ export function createLive2DCtx(): Live2DCtx {
     resizeObserver: null,
     onResize: null,
     visibilityHandler: null,
+    motionQuery: null,
+    motionPreferenceHandler: null,
     pointerClickHandler: null,
     pointerGazeHandler: null,
     pointerGazeLeaveHandler: null,

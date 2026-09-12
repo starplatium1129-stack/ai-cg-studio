@@ -22,6 +22,7 @@
 - [办公机代码收尾与验证](archive/audits/office-code-2026-09-11.md)：真实工具取消、首次入册、按需加载、脱敏诊断、桌宠演出与浏览器安全策略复验。
 - [独立审计问题修复与办公机验收](archive/audits/office-audit-fixes-2026-09-12.md)：跨窗口保存、异步结果归属、SD 权限、文件工具与 Windows 命令、语音策略及主力机验收边界。
 - [工作台包体优化与办公机验收](archive/audits/workbench-bundle-2026-09-12.md)：真实按需加载、路由与依赖体积、312 项浏览器回归、性能样本及剩余预算边界。
+- [Live2D 移植复核与桌宠性能修复](archive/audits/live2d-port-fixes-2026-09-12.md)：原有适配保全、模型时钟、窗口可见性、纹理档位、音量与本次原生验收边界。
 
 - [内容门禁修复与回归](archive/audits/content-gate-repair-2026-09-10.md)：服装引用覆盖、环境词分层、单句结构误报的修复与本次真实验证边界。
 

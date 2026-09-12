@@ -19,6 +19,7 @@ import {
   type Live2DStageSession,
 } from './types.ts'
 import type { Live2DMotionPriority, Live2DNativeBridge } from '@/types/live2dNative'
+import { createLatestIntent } from './latestIntent.ts'
 
 /**
  * 原生渲染线程停止错误名。useLive2D 依此区分"渲染线程退出"与普通模型
@@ -53,7 +54,9 @@ async function connectCharacter(bridge: Live2DNativeBridge, options: Live2DConne
   })
   try {
     return await Promise.race([
-      bridge.setCharacter(options.modelUrl, { character: options.character || 'nene' }),
+      bridge.setCharacter(options.modelUrl, { character: options.character || 'nene',
+        ...(bridge.supportsTextureQuality ? { textureScale: options.textureScale ?? 1 } : {}),
+      }),
       cancelled,
     ])
   } finally {
@@ -81,6 +84,14 @@ export function createNativeLive2DBackend(provider: NativeBridgeProvider = defau
       let lastVisible = false
       let gazeInFlight = false
       let queuedGaze: { x: number; y: number } | null = null
+      let streamsPaused = false
+      let emotionName = ''
+      const unit = (value: number) => Number.isFinite(value) ? Math.round(Math.max(0, Math.min(1, value)) * 1000) / 1000 : 0
+      const mouthIntent = createLatestIntent<number>(value => bridge.setMouthLevel(value), Object.is, 16)
+      const emotionIntent = createLatestIntent<{ name: string; intensity: number }>(
+        value => bridge.setEmotion(value.name, value.intensity),
+        (a, b) => a.name === b.name && a.intensity === b.intensity, 50,
+      )
       const hitTestListeners = new Set<(areas: string[]) => void>()
       const motionStartedListeners = new Set<() => void>()
       const motionFailedListeners = new Set<(info: { group: string; index?: number; reason: string }) => void>()
@@ -112,7 +123,7 @@ export function createNativeLive2DBackend(provider: NativeBridgeProvider = defau
       }
 
       const pushGaze = (x: number, y: number) => {
-        if (destroyed) return
+        if (destroyed || streamsPaused) return
         if (gazeInFlight) {
           queuedGaze = { x, y }
           return
@@ -194,6 +205,13 @@ export function createNativeLive2DBackend(provider: NativeBridgeProvider = defau
         },
         setPaused(paused) {
           if (destroyed) return
+          if (paused && !streamsPaused) {
+            emotionIntent.clear()
+            mouthIntent.clear()
+            mouthIntent.push(0, true)
+            queuedGaze = null
+          }
+          streamsPaused = paused
           lastVisible = !paused
           pushFrame()
         },
@@ -229,12 +247,14 @@ export function createNativeLive2DBackend(provider: NativeBridgeProvider = defau
           return () => { motionFailedListeners.delete(callback) }
         },
         sendMouthLevel(level) {
-          if (destroyed) return
-          void Promise.resolve(bridge.setMouthLevel(Math.max(0, Math.min(1, level)))).catch(() => {})
+          if (destroyed || streamsPaused) return
+          const value = unit(level)
+          mouthIntent.push(value, value === 0)
         },
         sendEmotion(name, intensity) {
-          if (destroyed) return
-          void Promise.resolve(bridge.setEmotion(name, Math.max(0, Math.min(1, intensity)))).catch(() => {})
+          if (destroyed || streamsPaused) return
+          emotionIntent.push({ name, intensity: unit(intensity) }, name !== emotionName)
+          emotionName = name
         },
         sendGaze(x, y) {
           pushGaze(Math.max(-1, Math.min(1, x)), Math.max(-1, Math.min(1, y)))
@@ -242,6 +262,8 @@ export function createNativeLive2DBackend(provider: NativeBridgeProvider = defau
         destroy() {
           if (destroyed) return
           destroyed = true
+          mouthIntent.dispose()
+          emotionIntent.dispose()
           queuedGaze = null
           hitTestListeners.clear()
           motionStartedListeners.clear()

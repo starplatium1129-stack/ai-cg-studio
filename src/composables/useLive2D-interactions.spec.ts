@@ -27,6 +27,40 @@ function setup() {
 afterEach(() => { vi.restoreAllMocks(); vi.useRealTimers() })
 
 describe('Live2D interaction completion', () => {
+  it('interaction audio follows room volume and stays silent during speech or mute', () => {
+    vi.useFakeTimers()
+    const h = setup()
+    h.setGroup('Idle')
+    h.ctx.stageEl = document.createElement('div')
+    vi.spyOn(h.ctx.stageEl, 'getBoundingClientRect').mockReturnValue({ left: 0, top: 0, width: 100, height: 100 } as DOMRect)
+    const played: { volume: number; play: ReturnType<typeof vi.fn>; pause: ReturnType<typeof vi.fn> }[] = []
+    class TestAudio {
+      volume = 1
+      play = vi.fn(async () => {})
+      pause = vi.fn()
+      constructor() { played.push(this) }
+    }
+    vi.stubGlobal('Audio', TestAudio)
+    try {
+      h.ctx.interactionVolume = 0.23
+      h.interactions.bind()
+      const tap = () => {
+        h.ctx.activeInteraction = ''
+        h.ctx.stageEl!.dispatchEvent(new MouseEvent('click', { clientX: 50, clientY: 8 }))
+      }
+      tap()
+      expect(played).toHaveLength(1)
+      expect(played[0]!.volume).toBe(0.23)
+      h.interactions.stopAudio()
+      h.ctx.interactionVolume = 0
+      tap()
+      h.ctx.interactionVolume = 0.8
+      h.ctx.speaking = true
+      tap()
+      expect(played).toHaveLength(1)
+    } finally { vi.clearAllTimers(); vi.unstubAllGlobals() }
+  })
+
   it('settles short variants when Cubism returns to idle, without waiting for the longest variant', () => {
     const h = setup()
     let now = 0

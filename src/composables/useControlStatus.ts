@@ -319,7 +319,7 @@ export function useControlStatus({ showToast, api = controlApi }: StatusHooks) {
   let visibilityBound = false
   const polling = usePolling({
     intervalMs: 3000,
-    tick: () => { pollStatus(); pollLogs() },
+    tick: async () => { await Promise.all([pollStatus(), pollLogs()]) },
     paused: () => typeof document !== 'undefined' && document.hidden,
     immediate: true,
   })

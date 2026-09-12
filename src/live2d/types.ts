@@ -86,6 +86,8 @@ export interface Live2DConnectOptions {
   canvasHeight: number
   /** 角色 id（原生端决定动作组/情绪映射） */
   character: string
+  /** Optional texture downsampling divisor; source atlases remain unchanged. */
+  textureScale?: number
 }
 
 /** 后端会话：连接后管理一个模型实例的生命周期与舞台交互。 */
@@ -97,7 +99,7 @@ export interface Live2DStageSession {
   onModelError(callback: (error: Error) => void): void
 
   /** 暂停/恢复渲染循环（浏览器：Pixi ticker；原生：Rust 渲染循环） */
-  setPaused(paused: boolean): void
+  setPaused(paused: boolean, renderFirstFrame?: boolean): void
   /** 帧率上限（浏览器：ticker.maxFPS；原生：Rust 侧 fps clamp） */
   setMaxFps(fps: number): void
 

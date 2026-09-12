@@ -14,6 +14,28 @@ function snapshot(overrides: Partial<ControlStatus> = {}): ControlStatus {
   }
 }
 describe('control room state', () => {
+  it('lets a slow first status finish instead of aborting it on every polling interval', async () => {
+    vi.useFakeTimers()
+    let resolveStatus!: (value: ControlStatus) => void
+    const getStatus = vi.fn(() => new Promise<ControlStatus>(resolve => { resolveStatus = resolve }))
+    const status = useControlStatus({ showToast: vi.fn(), api: {
+      getStatus,
+      getLogs: vi.fn().mockResolvedValue({ logs: [], total: 0 }),
+      getShareLink: vi.fn().mockResolvedValue({ shareLink: '' }),
+    } as never })
+    try {
+      status.startPolling()
+      await vi.advanceTimersByTimeAsync(6500)
+      expect(getStatus).toHaveBeenCalledOnce()
+      expect(status.statusLoaded.value).toBe(false)
+      resolveStatus(snapshot())
+      await vi.advanceTimersByTimeAsync(0)
+      expect(status.statusLoaded.value).toBe(true)
+      await vi.advanceTimersByTimeAsync(2500)
+      expect(getStatus).toHaveBeenCalledTimes(2)
+    } finally { status.stopPolling(); vi.useRealTimers() }
+  })
+
   it('includes ComfyUI in readiness and the four-service count', () => {
     const status = useControlStatus({ showToast: vi.fn() })
     status.renderStatus(snapshot())

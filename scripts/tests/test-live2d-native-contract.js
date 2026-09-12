@@ -129,7 +129,7 @@ test('Native destroy keeps the overlay thread alive for reuse (long-lived contra
   // destroy 不得触发 stopped 事件（那是线程退出路径的专属）。
   assert.doesNotMatch(overlay, /OverlayCommand::Destroy \{ reply \} => \{[\s\S]{0,900}?emit_stopped/)
   // SetCharacter 复用同一清理函数：重复加载前先清模型态。
-  assert.match(overlay, /OverlayCommand::SetCharacter \{ character, reply \} => \{\s*clear_model_state\(state\)/)
+  assert.match(overlay, /OverlayCommand::SetCharacter \{ character, texture_scale, reply \} => \{\s*clear_model_state\(state\)/)
   // 单元测试锁定契约：清模型态但保留 window_ready/renderer_attached/cmd_tx。
   assert.match(overlay, /fn destroy_clears_model_state_but_keeps_thread_for_reuse\(\)/)
 })
@@ -145,14 +145,15 @@ test('Native frontend lifecycle forwards reset, bounds, FPS and emotion ticks', 
 
   assert.match(live2d, /session\?\.sendMouthLevel\?\.\(0\)/)
   assert.match(emotionClock, /requestAnimationFrame\(tick\)/)
-  assert.match(layoutFit, /session\.updateOverlay\(overlayRect, true\)/)
+  assert.match(layoutFit, /const visible = !isStageHidden\(ctx\) && !prefersReducedMotion\(\)/)
+  assert.match(layoutFit, /session\.updateOverlay\(overlayRect, visible\)/)
   assert.match(layoutFit, /windowBounds: \{ x: 0, y: 0, width: bounds\.width, height: bounds\.height \}/)
   assert.match(interactions, /model\?\.hitTest\(/)
   assert.match(layoutFit, /nativeSession && ctx\.nativeOverlayReady && !sizeChanged/)
   assert.match(layoutFit, /function scheduleNativeLayout/)
-  assert.match(layoutFit, /if \(document\.hidden\) return/)
+  assert.match(layoutFit, /if \(isStageHidden\(ctx\)\) return/)
   assert.match(layoutFit, /tick\(\)/)
-  assert.match(layoutFit, /session\.setPaused\(false\)/)
+  assert.match(layoutFit, /session\.setPaused\(!visible\)/)
   assert.match(live2d, /setDesktopWindowBounds/)
   const lifecycle = read('src/composables/live2d/lifecycle.ts')
   assert.match(lifecycle, /destroyed\.value = true; ctx\.enabled\.value = false; destroyRuntime\(\)\s+controllers\.layoutFit\.resetWindowBounds\(\)/)
