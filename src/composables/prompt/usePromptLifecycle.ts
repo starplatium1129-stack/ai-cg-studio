@@ -1,8 +1,42 @@
 
 import { quickCreateSummary,readQuickCreate } from '@/utils/quickCreate';
-import { nextTick,onMounted,watch } from 'vue';
-import type { usePromptWorkspace } from './usePromptWorkspace';
-export function usePromptLifecycle({ refreshShotsPending, refreshAnimaBackend, drawEngine, sd, startStatusPolling, DIRECTOR_MODE_KEY, pb, sceneCollection, applyDeepLink, route, displayResultUrl, restoreTempResult, sdSize, applyManagedRoute, refreshManagedRoute, restorePopularDraft, applyQuickCreateSettings, animaState, patchAnimaState, engineOnline, livePrompt, callGenerate, effectiveNegative, updateAnimaPromptState, setDrawEngine, syncManagedRoute, popularBlueprintPool, blueprintCategories, popularCategory, syncAnimaCharacter, sceneLimit, applyRecommendedSize, animaSession }: Pick<ReturnType<typeof usePromptWorkspace>, "refreshShotsPending" | "refreshAnimaBackend" | "drawEngine" | "sd" | "startStatusPolling" | "DIRECTOR_MODE_KEY" | "pb" | "sceneCollection" | "applyDeepLink" | "route" | "displayResultUrl" | "restoreTempResult" | "sdSize" | "applyManagedRoute" | "refreshManagedRoute" | "restorePopularDraft" | "applyQuickCreateSettings" | "animaState" | "patchAnimaState" | "engineOnline" | "livePrompt" | "callGenerate" | "effectiveNegative" | "updateAnimaPromptState" | "setDrawEngine" | "syncManagedRoute" | "popularBlueprintPool" | "blueprintCategories" | "popularCategory" | "syncAnimaCharacter" | "sceneLimit" | "applyRecommendedSize" | "animaSession">): void {
+import { nextTick,onBeforeUnmount,onMounted,watch } from 'vue';
+import type { RouteLocationNormalizedLoaded } from 'vue-router';
+import type { UseDirectorPopularInput, useDirectorPopular } from '@/composables/scene/useDirectorPopular';
+import type { useDirectorEngine } from '@/composables/scene/useDirectorEngine';
+import type { useAnimaSession } from '@/composables/generation/useAnimaSession';
+import type { useUnifiedPromptAssembly } from '@/composables/useUnifiedPromptAssembly';
+import type { usePromptMaterials } from './usePromptMaterials';
+import type { usePromptDeepLink } from './usePromptDeepLink';
+import type { useTempResult } from './useTempResult';
+import type { useQuickCreateApply } from './useQuickCreateApply';
+import type { usePromptVideoBridge } from './usePromptVideoBridge';
+
+export interface PromptLifecycleDeps extends
+    Pick<UseDirectorPopularInput, 'pb' | 'sd' | 'drawEngine' | 'sdSize' | 'animaState' | 'patchAnimaState' | 'refreshAnimaBackend' | 'setDrawEngine' | 'applyRecommendedSize'>,
+    Pick<ReturnType<typeof useDirectorPopular>, 'applyManagedRoute' | 'refreshManagedRoute' | 'restorePopularDraft' | 'syncManagedRoute' | 'popularBlueprintPool' | 'blueprintCategories' | 'popularCategory'>,
+    Pick<ReturnType<typeof useDirectorEngine>, 'displayResultUrl' | 'engineOnline' | 'updateAnimaPromptState'>,
+    Pick<ReturnType<typeof usePromptMaterials>, 'sceneCollection' | 'sceneLimit'>,
+    Pick<ReturnType<typeof usePromptDeepLink>, 'applyDeepLink'>,
+    Pick<ReturnType<typeof useTempResult>, 'restoreTempResult'>,
+    Pick<ReturnType<typeof useQuickCreateApply>, 'applyQuickCreateSettings'>,
+    Pick<ReturnType<typeof usePromptVideoBridge>, 'refreshShotsPending'> {
+    route: RouteLocationNormalizedLoaded;
+    DIRECTOR_MODE_KEY: string;
+    startStatusPolling: ReturnType<typeof useAnimaSession>['startStatusPolling'];
+    syncAnimaCharacter: ReturnType<typeof useAnimaSession>['syncCharacter'];
+    animaSession: Pick<ReturnType<typeof useAnimaSession>, 'startStatusPolling' | 'stopStatusPolling'>;
+    livePrompt: ReturnType<typeof useUnifiedPromptAssembly>['positivePrompt'];
+    effectiveNegative: ReturnType<typeof useUnifiedPromptAssembly>['negativePrompt'];
+    callGenerate: () => Promise<void>;
+}
+
+/** Installed once by the workspace owner, independent of how its view exposes panels. */
+export function usePromptLifecycle({ refreshShotsPending, refreshAnimaBackend, drawEngine, sd, startStatusPolling, DIRECTOR_MODE_KEY, pb, sceneCollection, applyDeepLink, route, displayResultUrl, restoreTempResult, sdSize, applyManagedRoute, refreshManagedRoute, restorePopularDraft, applyQuickCreateSettings, animaState, patchAnimaState, engineOnline, livePrompt, callGenerate, effectiveNegative, updateAnimaPromptState, setDrawEngine, syncManagedRoute, popularBlueprintPool, blueprintCategories, popularCategory, syncAnimaCharacter, sceneLimit, applyRecommendedSize, animaSession }: PromptLifecycleDeps): void {
+    // A delayed storage/backend response must not resume setup or submit a deep-link job
+    // after its workspace has been destroyed. KeepAlive deactivation retains its tasks.
+    let disposed = false;
+    onBeforeUnmount(() => { disposed = true; });
     // ── Lifecycle ─────────────────────────────────────────────────────────────
     onMounted(async () => {
         void refreshShotsPending();
@@ -17,19 +51,25 @@ export function usePromptLifecycle({ refreshShotsPending, refreshAnimaBackend, d
             sceneCollection.value = savedMode === 'pro' ? 'all' : 'core';
         }
         await pb.loadData();
+        if (disposed) return;
         await refreshAnimaBackend();
+        if (disposed) return;
         await sd.checkStatus();
+        if (disposed) return;
         // 拿到 WebUI 真实 checkpoint 后，再按对应 model profile 填参数
         pb.applyModelProfile(pb.sdModelName || sd.checkpoint.value);
         // 历史载入（IndexedDB）
         await pb.loadHistory();
+        if (disposed) return;
         // 深链参数恢复（?scene / ?char / ?mood / ?scenario / ?regen / ?resume / ?quick / ?variant / ?generate）
         const handledDeepLink = await applyDeepLink(route.query);
+        if (disposed) return;
         if (!handledDeepLink)
             pb.restoreDraft();
         // F2：画布为空时找回上次未入册的临时成片（深链出图优先，不抢新任务）。
         if ((!handledDeepLink || route.query.resume === '1') && !displayResultUrl.value) {
             await restoreTempResult();
+            if (disposed) return;
         }
         // 推荐尺寸同步到出图选择
         if (pb.lastRecommendedSize)
@@ -38,6 +78,7 @@ export function usePromptLifecycle({ refreshShotsPending, refreshAnimaBackend, d
             await applyManagedRoute({ silent: true });
         else
             await refreshManagedRoute();
+        if (disposed) return;
         // 热门角色草稿恢复（底模/蓝图尺寸/导演决策/后端白名单收敛）已下沉 useDirectorPopular
         restorePopularDraft();
         if (route.query.quick === '1') {
@@ -47,6 +88,7 @@ export function usePromptLifecycle({ refreshShotsPending, refreshAnimaBackend, d
             // pro 模式不会走 applyManagedRoute，这里显式对齐，避免落到 anima-base-v1.0。
             if (drawEngine.value !== 'sd' && !pb.isPopular) {
                 const route = await refreshManagedRoute();
+                if (disposed) return;
                 if ((route.engine === 'anima' || route.engine === 'krea2')
                     && animaState.value.modelId !== route.modelId
                     && animaState.value.models.some(model => model.id === route.modelId)) {
@@ -54,6 +96,7 @@ export function usePromptLifecycle({ refreshShotsPending, refreshAnimaBackend, d
                 }
             }
             await nextTick();
+            if (disposed) return;
             if (!engineOnline.value) {
                 pb.flash('快速出图未启动：SD WebUI 当前未连接，Prompt 已保留');
             }
@@ -66,6 +109,7 @@ export function usePromptLifecycle({ refreshShotsPending, refreshAnimaBackend, d
         else if (route.query.generate === '1') {
             // 样张/场景抽屉的「调整后生成」：场景与词条已在上面载入，这里直接出图
             await nextTick();
+            if (disposed) return;
             if (!engineOnline.value) {
                 pb.flash(`${drawEngine.value === 'anima' ? 'Anima' : drawEngine.value === 'krea2' ? 'Krea 2' : 'SD WebUI'} 未连接，场景与词条已就位，可稍后生成`);
             }

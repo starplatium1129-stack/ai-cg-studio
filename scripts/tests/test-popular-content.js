@@ -895,10 +895,13 @@ test('view source sentinels: popular copy/preview, studio refresh, preview badge
   var root = path.resolve(__dirname, '..', '..');
   var view = fs.readFileSync(path.join(root, 'src', 'views', 'PromptBuilderView.vue'), 'utf8');
   view += '\n' + fs.readFileSync(path.join(root, 'src/composables/prompt/usePromptWorkspace.ts'), 'utf8');
-  // Controls keep the same workspace; their templates now load with the inspector tab.
-  for (const owner of ['PromptInspectorRender', 'PromptInspectorStyle']) {
-    assert.ok(view.includes(`<${owner} :workspace="workspace"`), `${owner} must be connected`);
-    view += '\n' + fs.readFileSync(path.join(root, 'src/components/director', owner + '.vue'), 'utf8');
+  var materials = fs.readFileSync(path.join(root, 'src/composables/prompt/usePromptMaterials.ts'), 'utf8');
+  // Lazy controls receive their own capabilities while sharing the original state refs.
+  for (const [owner, bindings] of [['PromptInspectorRender', 'renderBindings'], ['PromptInspectorStyle', 'styleBindings']]) {
+    assert.ok(view.includes(`<${owner} :bindings="${bindings}"`), `${owner} must receive its own bindings`);
+    var controlSource = fs.readFileSync(path.join(root, 'src/components/director', owner + '.vue'), 'utf8');
+    assert.ok(!controlSource.includes('usePromptWorkspace'), `${owner} must not depend on the full workspace type`);
+    view += '\n' + controlSource;
   }
   var panel = fs.readFileSync(path.join(root, 'src', 'components', 'AnimaQuickPanel.vue'), 'utf8');
 
@@ -932,7 +935,8 @@ test('view source sentinels: popular copy/preview, studio refresh, preview badge
     'recommended engine must map krea2-turbo-fp8 to the krea2 engine');
   assert.ok(/applyRecommendedEngine\(character\)/.test(directorPopularSource) && /applyRecommendedEngine\(first\)/.test(directorPopularSource),
     'recommended engine must be applied on character/source selection');
-  assert.ok(view.includes('useDirectorPopular'), 'PromptBuilderView must consume the popular orchestration composable');
+  assert.ok(view.includes('usePromptMaterials(') && materials.includes('useDirectorPopular(input)'),
+    'workspace material selection must consume the popular orchestration composable');
 
   // Finding 2：蓝图尺寸必须收敛到当前底模 sizes。
   // 2026-08-28 编排下沉：closestSupportedSize 归 useDirectorEngine、

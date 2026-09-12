@@ -16,11 +16,11 @@
 
 <script setup lang="ts">
 import { defineAsyncComponent } from 'vue'
-import type { usePromptWorkspace } from '@/composables/prompt/usePromptWorkspace'
+import type { PromptHealthBindings } from '@/composables/prompt/promptPanelBindings'
 import DeferredPanel from '@/components/director/DeferredPanel.vue'
 const DirectorTagWorkbench = defineAsyncComponent(() => import('@/components/director/DirectorTagWorkbench.vue'))
 const PromptHealthPanel = defineAsyncComponent(() => import('@/components/PromptHealthPanel.vue'))
 
-const props = defineProps<{ workspace: ReturnType<typeof usePromptWorkspace> }>()
-const { pb, previewPromptView, modelProfileView, reportView, artViolationsView, loraSpecs, copyPrompt, saveCurrentResult } = props.workspace
+const props = defineProps<{ bindings: PromptHealthBindings }>()
+const { pb, previewPromptView, modelProfileView, reportView, artViolationsView, loraSpecs, copyPrompt, saveCurrentResult } = props.bindings
 </script>

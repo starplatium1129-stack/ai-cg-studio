@@ -2,8 +2,21 @@
 import { confirmAction } from '@/composables/useConfirm';
 import { scrollBehavior } from '@/utils/motionPreference';
 import { classifySDError,LIGHT_LOAD,SAFE_SAMPLING,type SDRecoveryId } from '@/utils/sdError';
-import type { usePromptWorkspace } from './usePromptWorkspace';
-type Context = Pick<ReturnType<typeof usePromptWorkspace>, "pb" | "applyManagedRoute" | "drawEngine" | "sd" | "livePrompt" | "currentCapabilities" | "generateAnima" | "sdErrorReport" | "captureJob" | "runJob" | "tempResultTools" | "sdSize" | "animaState" | "patchAnimaState" | "displayResultSeed" | "resetBlueprintRotation">;
+import type { PromptSdQueueDeps, usePromptSdQueue } from './usePromptSdQueue';
+import type { useDirectorEngine } from '@/composables/scene/useDirectorEngine';
+import type { useDirectorPopular } from '@/composables/scene/useDirectorPopular';
+import type { useAnimaSession } from '@/composables/generation/useAnimaSession';
+import type { useTempResult } from './useTempResult';
+export interface PromptGenerationContext extends
+    Pick<PromptSdQueueDeps, 'pb' | 'drawEngine' | 'sd' | 'livePrompt' | 'sdSize' | 'animaState' | 'displayResultSeed'>,
+    Pick<ReturnType<typeof usePromptSdQueue>, 'sdErrorReport' | 'captureJob' | 'runJob'>,
+    Pick<ReturnType<typeof useDirectorEngine>, 'currentCapabilities'>,
+    Pick<ReturnType<typeof useDirectorPopular>, 'applyManagedRoute' | 'resetBlueprintRotation'> {
+    generateAnima: ReturnType<typeof useAnimaSession>['generate'];
+    patchAnimaState: ReturnType<typeof useAnimaSession>['patchState'];
+    tempResultTools: Pick<ReturnType<typeof useTempResult>, 'handleSdResult'>;
+}
+type Context = PromptGenerationContext;
 export async function callGenerateAction(ctx: Context, opts: {
     disableLora?: boolean;
 } = {}): Promise<void> {

@@ -82,7 +82,7 @@
 
         </template>
         <template #scenes>
-          <PromptMaterialScenes :workspace="workspace" />
+          <PromptMaterialScenes :bindings="materialBindings" />
         </template>
         <template #history>
         <HistoryPanel class="advanced-decision"
@@ -162,16 +162,16 @@
       </div>
       <DirectorInspector ref="inspector" :expert="pb.directorMode === 'pro'" :queue-count="sdQueue.total.value" :busy="generationBusy">
         <template #render>
-          <PromptInspectorRender :workspace="workspace" />
+          <PromptInspectorRender :bindings="renderBindings" />
         </template>
         <template #style>
-          <PromptInspectorStyle :workspace="workspace" />
+          <PromptInspectorStyle :bindings="styleBindings" />
         </template>
         <template #prompt>
-          <PromptInspectorPrompt :workspace="workspace" />
+          <PromptInspectorPrompt :bindings="healthBindings" />
         </template>
         <template #delivery>
-          <PromptInspectorDelivery :workspace="workspace" />
+          <PromptInspectorDelivery :bindings="deliveryBindings" />
         </template>
       </DirectorInspector>
     </div>
@@ -179,7 +179,7 @@
     <!-- Toast 已于 2026-08-29 UX 收编退役，统一走全局 useToast（AppToast）；空壳 Transition 一并清除 -->
 
     <DeferredPanel :active="compareOpen || inpaintOpen">
-      <PromptResultDialogs :workspace="workspace" />
+      <PromptResultDialogs :bindings="dialogBindings" />
     </DeferredPanel>
   </article>
 </template>
@@ -203,13 +203,11 @@ const DirectorStoryPanel = defineAsyncComponent(() => import('@/components/direc
 const DirectorCharacterPanel = defineAsyncComponent(() => import('@/components/director/DirectorCharacterPanel.vue'))
 const PromptMaterialScenes = defineAsyncComponent(() => import('@/components/director/PromptMaterialScenes.vue'))
 const DirectorStagePanel = defineAsyncComponent(() => import('@/components/director/DirectorStagePanel.vue'))
-import ArchiveIcon, { type ArchiveIconName } from '@/components/visual/ArchiveIcon.vue'
+import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import WorkspaceArchiveBar from '@/components/visual/WorkspaceArchiveBar.vue'
 import GenerationActionBar from '@/components/director/GenerationActionBar.vue'
 import { usePromptWorkspace } from "@/composables/prompt/usePromptWorkspace"
-import { usePromptLifecycle } from '@/composables/prompt/usePromptLifecycle'
 const workspace = usePromptWorkspace()
-usePromptLifecycle(workspace)
 const {
 pb,
 displayResultUrl,
@@ -275,7 +273,13 @@ cancelGeneration,
 outfitOverridden,
 outfitReplacedLabel,
 outfitOverrideTokens,
-sdQueue
+sdQueue,
+materialBindings,
+renderBindings,
+styleBindings,
+healthBindings,
+deliveryBindings,
+dialogBindings
 } = workspace
 </script>
 

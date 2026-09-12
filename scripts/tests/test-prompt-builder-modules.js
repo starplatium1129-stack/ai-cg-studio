@@ -135,13 +135,32 @@ if (!/nene:\s*'1girl, solo/.test(storeSource) || !/natsume:\s*'1girl, solo/.test
 
 // ── 2. 导演台视图必须真正接线这些能力 ────────────────────────────────────
 const viewShell = read('src/views/PromptBuilderView.vue');
-const panelOwners = ['PromptInspectorRender', 'PromptInspectorStyle', 'PromptInspectorPrompt', 'PromptInspectorDelivery', 'PromptMaterialScenes', 'PromptResultDialogs'];
-for (const owner of panelOwners) {
-  assert(viewShell.includes(`<${owner} :workspace="workspace"`), `${owner} must consume the same workspace`);
+const panelContracts = {
+  PromptInspectorRender: ['renderBindings', 'PromptRenderBindings'],
+  PromptInspectorStyle: ['styleBindings', 'PromptStyleBindings'],
+  PromptInspectorPrompt: ['healthBindings', 'PromptHealthBindings'],
+  PromptInspectorDelivery: ['deliveryBindings', 'PromptDeliveryBindings'],
+  PromptMaterialScenes: ['materialBindings', 'PromptMaterialBindings'],
+  PromptResultDialogs: ['dialogBindings', 'PromptDialogBindings'],
+};
+const panelOwners = Object.keys(panelContracts);
+for (const [owner, [bindings, contract]] of Object.entries(panelContracts)) {
+  assert(viewShell.includes(`<${owner} :bindings="${bindings}"`), `${owner} must consume only its own bindings`);
   assert(viewShell.includes(`import('@/components/director/${owner}.vue')`), `${owner} must remain lazy`);
+  const source = read(`src/components/director/${owner}.vue`);
+  assert(source.includes(`bindings: ${contract}`), `${owner} must declare its narrow contract`);
+  assert(!source.includes('usePromptWorkspace'), `${owner} must not import the complete workspace type`);
 }
+const workspaceSource = read('src/composables/prompt/usePromptWorkspace.ts');
+const materialsSource = read('src/composables/prompt/usePromptMaterials.ts');
+const lifecycleSource = read('src/composables/prompt/usePromptLifecycle.ts');
+assert(!viewShell.includes('usePromptLifecycle'), 'the presentation view must not install workspace lifecycle');
+assert.strictEqual((workspaceSource.match(/\busePromptLifecycle\(/g) || []).length, 1, 'workspace must install lifecycle exactly once');
+assert(!lifecycleSource.includes('usePromptWorkspace'), 'lifecycle dependency types must come from their actual owners');
+assert(workspaceSource.includes('usePromptMaterials(') && materialsSource.includes('useDirectorPopular(input)'), 'material selection must compose the existing popular owner');
+assert(materialsSource.includes('useDirectorDerived(') && materialsSource.includes('function selectScene('), 'catalog derivation and scene selection must share the material owner');
 const view = [viewShell, ...panelOwners.map(owner => read(`src/components/director/${owner}.vue`)),
-  read('src/composables/prompt/usePromptWorkspace.ts'), read('src/composables/prompt/usePromptLifecycle.ts'),
+  workspaceSource, lifecycleSource, materialsSource, read('src/composables/prompt/usePromptWorkspaceUi.ts'),
   read('src/composables/prompt/promptGenerationActions.ts')].join('\n');
 const promptAssembly = read('src/composables/prompt/usePromptAssembly.ts');
 const drawingRoute = read('src/utils/drawingRoute.ts');
@@ -195,8 +214,8 @@ const directorPopularSource = read('src/composables/scene/useDirectorPopular.ts'
 if (!directorPopularSource.includes('recommendDrawingRoute') || !directorPopularSource.includes('refreshManagedRoute')) {
   fail('managed drawing route must be owned by useDirectorPopular after the 2026-08-28 orchestration sink');
 }
-if (!view.includes('useDirectorPopular')) {
-  fail('PromptBuilderView must consume the dedicated popular orchestration composable');
+if (!materialsSource.includes('useDirectorPopular(input)')) {
+  fail('material selection must consume the dedicated popular orchestration composable');
 }
 for (const marker of ['managedRoute', 'applyManagedRoute', 'reuseSuccessfulRecipe', 'ManagedDrawingRouteCard']) {
   if (!view.includes(marker)) fail('scene mode must consume the managed drawing route: ' + marker);

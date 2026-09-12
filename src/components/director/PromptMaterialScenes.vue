@@ -26,7 +26,7 @@
 
 <script setup lang="ts">
 import DirectorScenesPanel from './DirectorScenesPanel.vue'
-import type { usePromptWorkspace } from '@/composables/prompt/usePromptWorkspace'
-const props = defineProps<{ workspace: ReturnType<typeof usePromptWorkspace> }>()
-const { popularBlueprintPool, blueprintCategories, recommendedBlueprints, filteredPopularBlueprints, popularCategory, showAllBlueprints, availableScenes, visibleScenes, sceneCollection, personaCoreCount, curatedCount, personaCoreIds, sceneLimit, selectBlueprint, rotateBlueprintSet, toggleBlueprintList, setSceneCollection, selectScene } = props.workspace
+import type { PromptMaterialBindings } from '@/composables/prompt/promptPanelBindings'
+const props = defineProps<{ bindings: PromptMaterialBindings }>()
+const { popularBlueprintPool, blueprintCategories, recommendedBlueprints, filteredPopularBlueprints, popularCategory, showAllBlueprints, availableScenes, visibleScenes, sceneCollection, personaCoreCount, curatedCount, personaCoreIds, sceneLimit, selectBlueprint, rotateBlueprintSet, toggleBlueprintList, setSceneCollection, selectScene } = props.bindings
 </script>

@@ -1,16 +1,4 @@
-/* Night journal: layout and surface ownership for the drawing workspace.
-   The extra root class keeps lazy-loaded panel styles from changing the shell. */
-.pb.journal-workspace {
-  /* 吸顶基准 = 贴顶导航(.nav)占用高度 + 呼吸余量。导航高度变化时只改这一处，
-     下方 max-height / scroll-margin-top 全部由它派生，避免三处魔数各自漂移。 */
-  --drawing-sticky-top: 80px;
-  /* 侧栏底部净空：含视口底安全区，吸顶基准之外再留出的高度 */
-  --drawing-sticky-bottom-gap: 30px;
-  /* 锚点跳转时标题上方的额外留白 */
-  --drawing-anchor-offset: 20px;
-  max-width: 1680px;
-  padding: var(--s-4) var(--s-5);
-}
+/* Workspace surfaces and typography. Viewport and columns belong to layout.css. */
 body:has(.pb.journal-workspace) .route-atmosphere-field,
 body:has(.pb.journal-workspace) .sakura-fall { display: none; }
 .pb.journal-workspace > .nav-back { display: none; }
@@ -29,16 +17,10 @@ body:has(.pb.journal-workspace) .sakura-fall { display: none; }
 .pb.journal-workspace .focus-mode-btn, .pb.journal-workspace .utility-trigger,
 .pb.journal-workspace .api-status .badge { background: var(--bg-surface); box-shadow: none; backdrop-filter: none; border-color: var(--border-soft); }
 .pb.journal-workspace .pb-managed-route-banner { margin-bottom: var(--s-4); border-color: var(--border-soft); background: var(--bg-surface); box-shadow: none; }
-.pb.journal-workspace .director-workspace { grid-template-columns: 310px minmax(0, 1fr) 270px; grid-template-areas: "story stage decisions"; gap: var(--s-4); align-items: start; }
-.pb.journal-workspace[data-director-mode="basic"] .director-workspace { grid-template-columns: 330px minmax(0, 1fr); grid-template-areas: "story stage"; }
-.pb.journal-workspace .col-left, .pb.journal-workspace .col-right { position: sticky; top: var(--drawing-sticky-top); max-height: calc(100dvh - var(--drawing-sticky-top) - var(--drawing-sticky-bottom-gap)); overflow-y: auto; padding-right: 0; scrollbar-width: thin; overscroll-behavior: contain; }
-.pb.journal-workspace .col-right { display: flex; flex-direction: column; }
-.pb.journal-workspace[data-director-mode="basic"] .col-right { display: none; }
-.pb.journal-workspace .col-center { gap: var(--s-3); }
 .pb.journal-workspace .panel, .pb.journal-workspace .result-frame { border-color: var(--border-soft); border-radius: var(--r-xl); box-shadow: none; background: var(--bg-surface); }
 .pb.journal-workspace .panel::before, .pb.journal-workspace .panel::after { display: none; }
 .pb.journal-workspace .panel-title { letter-spacing: .02em; font-weight: 600; }
-.pb.journal-workspace .stage-placeholder { min-height: clamp(280px, calc(100dvh - 390px - var(--desktop-chrome-height, 0px)), 580px); max-height: none; border-color: var(--border-soft); border-radius: var(--r-xl); background: radial-gradient(ellipse at 85% 100%, var(--character-soft), transparent 60%), var(--bg-deep); box-shadow: none; transition: none; }
+.pb.journal-workspace .stage-placeholder { min-height: clamp(280px, calc(var(--drawing-viewport-height) - 390px), 580px); max-height: none; border-color: var(--border-soft); border-radius: var(--r-xl); background: radial-gradient(ellipse at 85% 100%, var(--character-soft), transparent 60%), var(--bg-deep); box-shadow: none; transition: none; }
 .pb.journal-workspace .stage-placeholder::before { background: none; }
 .pb.journal-workspace .stage-chrome { background: transparent; box-shadow: none; border: 0; backdrop-filter: none; }
 .pb.journal-workspace .stage-muse { animation: none; filter: none; }
@@ -49,41 +31,26 @@ body:has(.pb.journal-workspace) .sakura-fall { display: none; }
 .pb.journal-workspace .stage-quick-actions .btn { font-size: var(--fs-label); }
 .pb.journal-workspace .stage-quick-actions .btn-ghost { background: var(--bg-surface); }
 .pb.journal-workspace .result-image-wrap { border-color: var(--border-soft); border-radius: var(--r-xl); box-shadow: none; }
-.pb.journal-workspace .gen-bar { top: var(--drawing-sticky-top); padding: var(--s-3) var(--s-4); background: var(--bg-surface); border-color: var(--border-soft); border-radius: var(--r-lg); box-shadow: none; backdrop-filter: none; transition: none; }
+.pb.journal-workspace .gen-bar { padding: var(--s-3) var(--s-4); background: var(--bg-surface); border-color: var(--border-soft); border-radius: var(--r-lg); box-shadow: none; backdrop-filter: none; transition: none; }
 .pb.journal-workspace .gen-bar-actions .btn { border-radius: var(--r-md); min-height: 42px; }
 .pb.journal-workspace .gen-bar-actions .btn-primary:not(:disabled) { box-shadow: none; }
-.pb.journal-workspace .col-center > #stepResult { order: 2; }
 .pb.journal-workspace .drawing-jump-links { display: none; }
-.pb.journal-workspace #drawing-materials, .pb.journal-workspace #drawing-canvas, .pb.journal-workspace #stepResult { scroll-margin-top: calc(var(--drawing-sticky-top) + var(--drawing-anchor-offset)); }
 @media (max-width: 1200px) {
-  .pb.journal-workspace .director-workspace { grid-template-columns: 300px minmax(0, 1fr); grid-template-areas: "story stage" "story decisions"; }
-  .pb.journal-workspace[data-director-mode="basic"] .director-workspace { grid-template-columns: 300px minmax(0, 1fr); }
-  .pb.journal-workspace .col-right { position: static; max-height: none; overflow: visible; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .pb.journal-workspace .pb-topline { flex-direction: column; gap: var(--s-3); }
   .pb.journal-workspace .pb-header { max-width: none; }
   .pb.journal-workspace .pb-top-actions { width: 100%; justify-content: flex-start; }
 }
 @media (max-width: 900px) {
-  .pb.journal-workspace[data-director-mode="basic"] .director-workspace > .col-left { grid-row: auto; }
-  .pb.journal-workspace .director-workspace,
-  .pb.journal-workspace[data-director-mode="basic"] .director-workspace { grid-template-columns: minmax(0, 1fr); grid-template-areas: "story" "stage" "decisions"; }
-  .pb.journal-workspace.has-result .director-workspace { grid-template-areas: "stage" "story" "decisions"; }
-  .pb.journal-workspace .col-left, .pb.journal-workspace .col-right { position: static; max-height: none; overflow: visible; }
   .pb.journal-workspace .drawing-jump-links { display: flex; gap: var(--s-2); margin-bottom: var(--s-4); }
   .pb.journal-workspace .drawing-jump-links a { flex: 1; text-align: center; padding: var(--s-2); border: 1px solid var(--border-soft); border-radius: var(--r-md); color: var(--text-secondary); background: var(--bg-surface); font-size: var(--fs-label-sm); }
   .pb.journal-workspace .drawing-jump-links a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-  .pb.journal-workspace .material-content { max-height: 420px; overflow-y: auto; }
 }
 @media (max-width: 600px) {
-  .pb.journal-workspace { padding: var(--s-4); }
   .pb.journal-workspace .workspace-copy strong, .pb.journal-workspace .workspace-state { display: none; }
   .pb.journal-workspace .api-status { width: 100%; flex-wrap: wrap; min-width: 0; justify-content: space-between; }
   .pb.journal-workspace .api-status .badge { max-width: 100%; white-space: normal; text-align: left; }
   .pb.journal-workspace .stage-placeholder { min-height: 360px; }
   .pb.journal-workspace .stage-quick-actions { flex-direction: column; }
-  .pb.journal-workspace .col-right { grid-template-columns: minmax(0, 1fr); }
   .pb.journal-workspace .gen-bar { padding: var(--s-3); }
 }
-.pb.journal-workspace.focus-mode .director-workspace { grid-template-columns: minmax(0, 1fr); grid-template-areas: "stage"; }
 .pb.journal-workspace.focus-mode .workspace-archive-bar, .pb.journal-workspace.focus-mode .pb-managed-route-banner, .pb.journal-workspace.focus-mode .drawing-jump-links { display: none; }
-.pb.journal-workspace.focus-mode .gen-bar { top: var(--s-3); }

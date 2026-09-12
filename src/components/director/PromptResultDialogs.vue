@@ -13,11 +13,11 @@
       <AnimaInpaintModal
         :open="inpaintOpen"
         :image-url="displayResultUrl"
-        :image-blob="animaState.result?.blob"
+        :image-blob="resultBlob"
         :current-prompt="livePrompt"
         :current-negative="negativePrompt"
         :character="inpaintCharacter"
-        :adult-enabled="pb.showMatureScenes"
+        :adult-enabled="adultEnabled"
         :seed="displayResultSeed"
         :submitting="generationBusy"
         @close="inpaintOpen = false"
@@ -29,10 +29,10 @@
 
 <script setup lang="ts">
 import { defineAsyncComponent } from 'vue'
-import type { usePromptWorkspace } from '@/composables/prompt/usePromptWorkspace'
+import type { PromptDialogBindings } from '@/composables/prompt/promptPanelBindings'
 import DeferredPanel from './DeferredPanel.vue'
 const PromptComparePanel = defineAsyncComponent(() => import('./PromptComparePanel.vue'))
 const AnimaInpaintModal = defineAsyncComponent(() => import('@/components/AnimaInpaintModal.vue'))
-const props = defineProps<{ workspace: ReturnType<typeof usePromptWorkspace> }>()
-const { compareEl, pb, displayResultUrl, generationBusy, animaState, prevResult, inpaintOpen, compareOpen, displayResultSeed, lastResult, closeCompare, livePrompt, negativePrompt, inpaintCharacter, handleInpaintSubmit } = props.workspace
+const props = defineProps<{ bindings: PromptDialogBindings }>()
+const { compareEl, adultEnabled, displayResultUrl, generationBusy, resultBlob, prevResult, inpaintOpen, compareOpen, displayResultSeed, lastResult, closeCompare, livePrompt, negativePrompt, inpaintCharacter, handleInpaintSubmit } = props.bindings
 </script>

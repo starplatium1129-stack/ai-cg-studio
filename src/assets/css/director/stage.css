@@ -123,10 +123,7 @@
   .pb.focus-mode .col-center > .monitor, .pb.focus-mode .col-center > .generation-settings { display:none !important; }
   /* 专注成片模式：配音面板（含折叠态）整体不占舞台——配音是独立工序，出片时不需要 */
   .pb.focus-mode .voice-studio { display:none !important; }
-  .pb.focus-mode { padding-top:var(--s-3); padding-bottom:0; }
   .pb.focus-mode .pb-topline { align-items:center; justify-content:flex-end; margin-bottom:var(--s-3); }
-  .pb.focus-mode .director-workspace { grid-template-columns:minmax(0,1fr); grid-template-areas:"stage"; }
-  .pb.focus-mode .col-center { width:100%; margin-inline:auto; }
   /* 专注成片：舞台恢复大尺寸（单列全宽），输出控制台保持紧凑防空位 */
   .pb.focus-mode .stage-placeholder { min-height:clamp(380px, 46vh, 560px); }
   .pb.focus-mode #stepResult { min-height:clamp(300px, 40vh, 420px); }

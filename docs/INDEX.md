@@ -21,7 +21,7 @@
 
 ## 当前审计与待办
 
-- [PC 桌面架构整理计划（005）](../plans/005-desktop-architecture-consolidation.md)：下一对话交接；布局与状态接口分阶段实施，持久化和恢复先评估。
+- [PC 桌面架构整理（005）](../plans/005-desktop-architecture-consolidation.md)：布局与状态接口整理、持久化和恢复原型、职责映射及本轮验收记录。
 - [场景滚动与角色档案补全](archive/audits/scene-scroll-character-profiles-2026-09-12.md)：专家模式完整列表滚动、旧字段恢复显示与六位角色资料来源。
 - [全站交互细节优化（2026-09-12）](archive/audits/interaction-detail-polish-2026-09-12.md)：状态联动、菜单/搜索/灯箱焦点、录音、分镜反馈与双主题页面复验。
 - [1.7.1 办公机修复](releases/v1.7.1.md)：独立审计 A01–A05 的修复、浏览器契约整理与发布验收边界。

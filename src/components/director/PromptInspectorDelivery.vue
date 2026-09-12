@@ -49,9 +49,9 @@
           <DeferredPanel :active="batchOpen">
           <BatchSceneDrawPanel
             :open="batchOpen"
-            :scenes="sceneStore.sceneBlueprints"
-            :sd-available="sd.online.value"
-            :anima-available="animaState.online"
+            :scenes="scenes"
+            :sd-available="sdOnline"
+            :anima-available="animaOnline"
             :deps="batchPanelDeps"
             @close="batchOpen = false"
             @running-change="batchRunning = $event"
@@ -63,7 +63,7 @@
 
 <script setup lang="ts">
 import { defineAsyncComponent } from 'vue'
-import type { usePromptWorkspace } from '@/composables/prompt/usePromptWorkspace'
+import type { PromptDeliveryBindings } from '@/composables/prompt/promptPanelBindings'
 import ToggleSwitch from '@/components/visual/ToggleSwitch.vue'
 const SDRecoveryPanel = defineAsyncComponent(() => import('@/components/SDRecoveryPanel.vue'))
 const GenerationQueuePanel = defineAsyncComponent(() => import('@/components/GenerationQueuePanel.vue'))
@@ -71,8 +71,8 @@ const VoiceStudio = defineAsyncComponent(() => import('@/components/VoiceStudio.
 import DeferredPanel from '@/components/director/DeferredPanel.vue'
 const BatchSceneDrawPanel = defineAsyncComponent(() => import('@/components/BatchSceneDrawPanel.vue'))
 
-const props = defineProps<{ workspace: ReturnType<typeof usePromptWorkspace> }>()
-const { voiceStudioRef, pb, sd, generationBusy, generationProgress, animaState, drawEngine, shotsPending, inspector, goToShots, sdQueue, BUSY_HINT, autoSaveToGallery, batchRunning, batchOpen, sdErrorReport, runRecovery, dismissError, queuePausedReason, sceneStore, batchPanelDeps } = props.workspace
+const props = defineProps<{ bindings: PromptDeliveryBindings }>()
+const { voiceStudioRef, pb, sdOnline, generationBusy, generationProgress, animaOnline, drawEngine, shotsPending, goToShots, sdQueue, BUSY_HINT, autoSaveToGallery, batchRunning, batchOpen, sdErrorReport, runRecovery, dismissError, queuePausedReason, scenes, batchPanelDeps } = props.bindings
 </script>
 
 <style src="@/assets/css/director/components/PromptInspectorDelivery.css"></style>

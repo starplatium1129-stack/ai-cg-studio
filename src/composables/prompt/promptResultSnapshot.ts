@@ -1,4 +1,4 @@
-import type { usePromptWorkspace } from './usePromptWorkspace'
+import type { PromptSdQueueDeps } from './usePromptSdQueue'
 export interface ResultSnapshot {
   url: string
   seed: number | null
@@ -10,7 +10,7 @@ export interface ResultSnapshot {
   hires: string
   at: string
 }
-export function snapshotResult(ctx: Pick<ReturnType<typeof usePromptWorkspace>, "animaState" | "drawEngine" | "displayResultSeed" | "pb" | "sdSize" | "sd">, persistentUrl: string): ResultSnapshot {
+export function snapshotResult(ctx: Pick<PromptSdQueueDeps, 'animaState' | 'drawEngine' | 'displayResultSeed' | 'pb' | 'sdSize' | 'sd'>, persistentUrl: string): ResultSnapshot {
   const { animaState, drawEngine, displayResultSeed, pb, sdSize, sd } = ctx
   const metadata = animaState.value.result?.metadata
   const isComfy = drawEngine.value !== 'sd'

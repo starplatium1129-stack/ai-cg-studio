@@ -8,7 +8,7 @@
   .pb .scene-result-count strong { color:var(--accent); }
   .pb .scene-filter-reset { border:0; background:transparent; color:var(--text-muted); cursor:pointer; font:600 var(--fs-mono-sm) var(--font-sans); }
   .pb .scene-filter-reset:hover { color:var(--accent); }
-  .pb .scene-list { display: flex; flex-direction: column; gap: 2px; max-height:min(46vh,540px); overflow-y: auto; }
+  .pb .scene-list { display: flex; flex-direction: column; gap: 2px; max-height: var(--scene-list-max-height, min(46vh, 540px)); overflow-y: auto; }
   /* 与全局滚动条同一套渐变语言：细版但同色系，避免暗色下灰线突兀 */
   .pb .scene-list::-webkit-scrollbar { width: 6px; }
   .pb .scene-list::-webkit-scrollbar-thumb {
@@ -22,7 +22,7 @@
     background-clip: padding-box;
   }
   .pb .scene-search:focus ~ .scene-list,
-  .pb .scene-list:hover { max-height:min(54vh,640px); }
+  .pb .scene-list:hover { max-height: var(--scene-list-max-height, min(54vh, 640px)); }
   .pb .scene-scope {
     display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:3px;
     margin-bottom:var(--s-2); padding:3px;

@@ -265,23 +265,9 @@
    @keyframes directorStageIn { from { opacity:0; filter:blur(5px); transform:scale(.994); } to { opacity:1; filter:none; transform:none; } }
 
   @media (min-width: 1380px) and (max-height:780px) {
-    .pb .col-left, .pb .col-right { position:static; max-height:none; overflow:visible; }
     .pb .stage-placeholder { min-height:430px; }
   }
   @media (max-width: 900px) {
-    /* 生成前: 故事 → 画布 */
-    .pb:not(.has-result) .director-workspace { grid-template-columns:1fr; grid-template-areas:"story" "stage" "decisions"; }
-    .pb[data-director-mode="basic"]:not(.has-result) .director-workspace { grid-template-columns:1fr; grid-template-areas:"story" "stage"; }
-    /* 生成后: 结果画面 → 其他参数 */
-    .pb.has-result .director-workspace { grid-template-columns:1fr; grid-template-areas:"stage" "story" "decisions"; }
-    .pb[data-director-mode="basic"].has-result .director-workspace { grid-template-columns:1fr; grid-template-areas:"stage" "story"; }
-    .pb .col-left, .pb .col-center, .pb .col-right { grid-column:1; position:static; max-height:none; overflow:visible; }
-    .pb:not(.has-result) .col-left { grid-area:story; }
-    .pb:not(.has-result) .col-center { grid-area:stage; }
-    .pb:not(.has-result) .col-right { grid-area:decisions; }
-    .pb.has-result .col-center { grid-area:stage; }
-    .pb.has-result .col-left { grid-area:story; }
-    .pb.has-result .col-right { grid-area:decisions; }
     .pb .stage-placeholder { min-height:clamp(340px, 44vh, 520px); }
     .pb.has-result #stepResult { min-height:clamp(300px, 40vh, 420px); }
     .pb .stage-message { width:min(78%,360px); transform:none; }
@@ -290,12 +276,9 @@
     .pb[data-character="triad"] .stage-muse { opacity:.1 !important; }
   }
   @media (max-width: 768px) {
-    .pb { padding-inline:var(--s-3); }
     .pb .nav-back, .pb-kicker { display:none; }
     .pb .director-mode-head { align-items:stretch; flex-direction:column; }
     .pb .director-mode-switch { align-self:flex-start; }
-    .pb .col-right, .pb .col-center { grid-template-columns:1fr; }
-    .pb .col-right > * { grid-column:1 !important; }
     .pb #stepResult > * { grid-column:1 !important; grid-row:auto !important; }
     .pb .voice-controls { grid-template-columns:1fr; }
     .pb .story-chip, .pb .char-btn, .pb .scene-cat, .pb .scene-filter-reset, .pb .chip-select, .pb .tag-chip, .pb .option, .pb .cat-tab { min-height: 44px; }
@@ -350,7 +333,6 @@
     .pb.has-result #stepResult .voice-studio { order:3; }
     .pb-backup-actions .btn { flex:1 1 100%; min-height:44px; }
     .pb .col-right .generate-btn { min-height:50px; }
-    .pb.focus-mode { padding:var(--s-2); }
     .pb.focus-mode .pb-top-actions { justify-content:flex-end; }
     .pb.focus-mode .focus-mode-label { display:inline; }
     .pb.focus-mode .focus-mode-btn { width:auto; padding:0 var(--s-4); }
@@ -382,7 +364,6 @@
      这条以前是全局泄漏出去、替 mood.css 兜底的那一条。 */
   .pb .mood-card .mood-name { display:block; padding:4px 8px 0; font-size:var(--fs-label-sm); font-weight:700; }
   .pb .mood-card .mood-desc { display:block; padding:2px 8px 8px; font-size:var(--fs-mono-xs); color:var(--text-muted); line-height:var(--lh-label); }
-  .pb .col-center { flex-direction:column; }
   /* 出图快门曝光动效 */
   /* Liquid glass is reserved for floating controls and navigation surfaces. */
   .pb .focus-mode-btn, .pb .utility-trigger, .pb .api-status .badge, .pb .stage-chrome {

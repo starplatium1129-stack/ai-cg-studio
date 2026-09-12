@@ -1,7 +1,5 @@
 import { hasOnboardingTheme } from '@/utils/popularPortraitSource';
-import { onActivated,onDeactivated } from 'vue';
 import { snapshotResult,type ResultSnapshot } from './promptResultSnapshot';
-// 导演台专属样式（91.6KB）随本路由块加载，不再进全局包
 
 import { useAnimaInpaint } from '@/composables/generation/useAnimaInpaint';
 import { useAnimaSession } from '@/composables/generation/useAnimaSession';
@@ -13,45 +11,35 @@ import { usePromptVideoBridge } from '@/composables/prompt/usePromptVideoBridge'
 import { useQuickCreateApply } from '@/composables/prompt/useQuickCreateApply';
 import { useTempResult } from '@/composables/prompt/useTempResult';
 
-import { useDirectorDerived } from '@/composables/scene/useDirectorDerived';
+import { usePromptMaterials } from './usePromptMaterials';
+import { usePromptLifecycle } from './usePromptLifecycle';
+import { usePromptWorkspaceUi } from './usePromptWorkspaceUi';
+import type { PromptMaterialBindings, PromptRenderBindings, PromptStyleBindings, PromptHealthBindings, PromptDeliveryBindings, PromptDialogBindings } from './promptPanelBindings';
 import { useDirectorEngine } from '@/composables/scene/useDirectorEngine';
-import { useDirectorPopular } from '@/composables/scene/useDirectorPopular';
 import { useCompareSnapshots } from '@/composables/useCompareSnapshots';
 import { useUnifiedPromptAssembly } from '@/composables/useUnifiedPromptAssembly';
-import { usePromptBuilderStore,type HistoryEntry,type Scene } from '@/stores/promptBuilderStore';
+import { usePromptBuilderStore,type HistoryEntry } from '@/stores/promptBuilderStore';
 import { useSceneStore } from '@/stores/sceneStore';
 import type { AnimaResult,AnimaResultContext } from '@/types/anima';
 import { captureResultContext as snapshotResultContext } from '@/utils/resultContext';
 import { type SDRecoveryId } from '@/utils/sdError';
-import { computed,onBeforeUnmount,ref,watch } from 'vue';
+import { computed,reactive,ref,toRef,watch } from 'vue';
 import { useRoute,useRouter } from 'vue-router';
-// 吸附出图条承载主行动（生成按钮），同步导入保证首屏即位；体量小，不进异步分片。
-import { AUTO_SAVE_TO_GALLERY_SETTING,DRAW_ENGINE_SETTING,settingsRepository,type DrawEngine,} from '@/storage/settingsRepository';
-import { readHiddenScenes,recordSceneUsage,rememberRecent } from '@/utils/sceneUX';
+import { DRAW_ENGINE_SETTING,settingsRepository,type DrawEngine,} from '@/storage/settingsRepository';
 /** Owns workspace state and lifecycle; the view only binds presentation. */
 export function usePromptWorkspace() {
-    const inspector = ref<InstanceType<typeof import('@/components/director/DirectorInspector.vue')['default']> | null>(null);
-    const materialDrawer = ref<InstanceType<typeof import('@/components/director/DirectorMaterialDrawer.vue')['default']> | null>(null);
     const router = useRouter();
     const route = useRoute();
     const pb = usePromptBuilderStore();
     const sceneStore = useSceneStore();
     const sd = useSDGenerate();
+    const { inspector, materialDrawer, voiceStudioRef, batchOpen, batchRunning, autoSaveToGallery, characterShifting } = usePromptWorkspaceUi(pb, route);
 
     // ── UI state ──────────────────────────────────────────────────────────────
-    const sceneLimit = ref(20);
     const sdSize = ref('832x1216');
-    const sceneCollection = ref<'core' | 'curated' | 'all'>('core');
-    const hiddenSceneIds = ref(readHiddenScenes());
-    const voiceStudioRef = ref<{
-        setSuggestedCaption?: (caption: string) => void;
-    } | null>(null);
     const DIRECTOR_MODE_KEY = 'aics_pb_director_mode';
     const storedDrawEngine = settingsRepository.get(DRAW_ENGINE_SETTING);
     const drawEngine = ref<DrawEngine>(storedDrawEngine ?? 'sd');
-    // 出图自动入册偏好（2026-08-31 用户偏好：默认关；开则直出成片自动写作品册）。
-    const autoSaveToGallery = ref(settingsRepository.get(AUTO_SAVE_TO_GALLERY_SETTING) ?? false);
-    watch(autoSaveToGallery, (value) => settingsRepository.set(AUTO_SAVE_TO_GALLERY_SETTING, value));
     /**
      * 当前显示结果的冻结上下文（2026-09-06 体验报告 F3）。
      * Anima/Krea 由会话在提交时采样（state.resultContext）；SD 由 usePromptSdQueue
@@ -82,15 +70,6 @@ export function usePromptWorkspace() {
         engine.onAnimaResult(result);
         void tempResultTools.handleAnimaResult(result, inpaintSourceHistoryId.value);
     }
-    // currentCuratedArtistStyles 已迁入 promptBuilderStore（2026-09-05 单体拆分，纯 store 派生）
-    // ── Derived（场景筛选 / 词条目录 / 摘要 / 显存提示）──────────────────────
-    const { emotionSummary, shotSummary, lightingSummary, compositionSummary, moodSummary, personaCoreIds, availableScenes, visibleScenes, personaCoreCount, curatedCount, modeDescription, vramLevel, baseResolutionRisk, vramHint, baseResolutionHint, canUseFaceDetailer } = useDirectorDerived({
-        pb,
-        hiddenSceneIds,
-        sceneCollection,
-        sceneLimit,
-        sdSize,
-    });
     // ── Prompt 组装（统一出口，消除视图三元分发）──────────────────────
     const unified = useUnifiedPromptAssembly(pb, sd.checkpoint, drawEngine, animaModelId, computed(() => animaState.value.loraId));
     const { currentTraits, modelProfile, effectiveScene, loraSpecs, negativePrompt } = unified.studio;
@@ -153,7 +132,8 @@ export function usePromptWorkspace() {
     });
     // ── 热门角色编排层（2026-08-28 编排下沉）：subject/服装/蓝图选择与轮换、
     // 蓝图池过滤与推荐、受控绘图路线、热门草稿恢复。
-    const { popularCategory, showAllBlueprints, popularCharacter, archiveBarShape, managedRoute, refreshManagedRoute, popularBlueprintPool, filteredPopularBlueprints, blueprintCategories, recommendedBlueprints, resetBlueprintRotation, applyRecommendedEngine, selectPopularSource, selectPopularCharacter, selectPopularOutfit, selectBlueprint, rotateBlueprintSet, toggleBlueprintList, applyManagedRoute, syncManagedRoute, restorePopularDraft } = useDirectorPopular({
+    const materials = usePromptMaterials({
+        voiceStudioRef,
         pb,
         sd,
         drawEngine,
@@ -167,6 +147,9 @@ export function usePromptWorkspace() {
         sdSize,
         flash: message => pb.flash(message),
     });
+    const { popularCategory, showAllBlueprints, popularCharacter, archiveBarShape, managedRoute, refreshManagedRoute, popularBlueprintPool, filteredPopularBlueprints, blueprintCategories, recommendedBlueprints, resetBlueprintRotation, applyRecommendedEngine, selectPopularSource, selectPopularCharacter, selectPopularOutfit, selectBlueprint, rotateBlueprintSet, toggleBlueprintList, applyManagedRoute, syncManagedRoute, restorePopularDraft } = materials.popular;
+    const { emotionSummary, shotSummary, lightingSummary, compositionSummary, moodSummary, personaCoreIds, availableScenes, visibleScenes, personaCoreCount, curatedCount, modeDescription, vramLevel, baseResolutionRisk, vramHint, baseResolutionHint, canUseFaceDetailer } = materials.derived;
+    const { sceneLimit, sceneCollection, setDirectorMode, setSceneCollection, selectScene, currentBlueprintData, handleLoadBlueprint } = materials;
     // ── 出图对比：记住上一张结果，生成新图后可并排大图对比 ──────────────
     // URL 克隆保活/延迟释放/token 防乱序/焦点陷阱等生命周期归
     // useCompareSnapshots（2026-08-21 拆出）；这里只保留业务元数据组装。
@@ -178,47 +161,6 @@ export function usePromptWorkspace() {
     /** 快照业务字段：URL 已由 composable 克隆保活，这里只读引擎状态组装元数据。 */
     function buildResultSnapshot(persistentUrl: string): ResultSnapshot { return snapshotResult({ animaState, drawEngine, displayResultSeed, pb, sdSize, sd }, persistentUrl); }
     // ── Actions ───────────────────────────────────────────────────────────────
-    function setDirectorMode(mode: 'basic' | 'pro') {
-        pb.directorMode = mode;
-        sceneCollection.value = mode === 'basic' ? 'core' : 'all';
-        sceneLimit.value = 20;
-        syncManagedRoute();
-    }
-    function setSceneCollection(collection: 'core' | 'curated' | 'all') {
-        if (collection === 'all' && pb.directorMode === 'basic') {
-            setDirectorMode('pro');
-            return;
-        }
-        sceneCollection.value = collection;
-        sceneLimit.value = 20;
-    }
-    const currentBlueprintData = computed(() => ({
-        char: pb.char,
-        sceneId: pb.sceneId,
-        story: pb.story,
-        manualTags: Array.from(pb.manualTags),
-        drawEngine: drawEngine.value,
-        sdParams: { ...pb.sdParams },
-        size: sdSize.value,
-    }));
-    async function handleLoadBlueprint(data: Record<string, unknown>): Promise<void> { const { loadBlueprint } = await import('./promptBlueprintActions'); loadBlueprint(data, { pb, selectScene, setDrawEngine, sdSize }) }
-    function selectScene(scene: Scene) {
-        if (pb.isPopular) {
-            // 热门角色模式直接切到工作室场景（?scene= 深链/左侧场景卡）：立即刷新 Anima
-            // 后端白名单，让 studio 的宁宁/夏目模型与 LoRA 立即可选（不等 15s 轮询）；
-            // subject 切回 studio 由 loadScene 内部兜底，保证提示词跟随本场景。
-            void refreshAnimaBackend();
-        }
-        pb.loadScene(scene);
-        pb.applyModelProfile(pb.sdModelName || sd.checkpoint.value, { applySize: false });
-        applyRecommendedSize(pb.lastRecommendedSize);
-        patchAnimaState({ styleLoraId: '' });
-        voiceStudioRef.value?.setSuggestedCaption?.(scene.story ?? '');
-        rememberRecent(scene);
-        recordSceneUsage(scene);
-        sceneLimit.value = 20;
-        syncManagedRoute();
-    }
     async function handleInterrogateResult(result: unknown) {
         const { applyInterrogateResult } = await import('@/composables/prompt/applyInterrogateResult');
         await applyInterrogateResult(pb, result);
@@ -277,13 +219,6 @@ export function usePromptWorkspace() {
     // ── 多场景批量出图（编排由 BatchSceneDrawPanel 持有，宿主只注入依赖快照）──
     // 选 N 个场景蓝图 → 逐张串行出图（SD 走 runJob 同路径 / Anima 直接提交
     // ComfyUI 任务）→ 每张自动入册历史 → 面板内直接预览挑选。
-    const batchOpen = ref(false);
-    onDeactivated(() => { batchOpen.value = false; });
-    onActivated(() => {
-        if (route.query.taskCenter === 'batch')
-            batchOpen.value = true;
-    });
-    const batchRunning = ref(false);
     // ref/函数引用在 setup 期即稳定，面板内部用这份快照接线 usePromptBatchRunners。
     const batchPanelDeps = {
         pb,
@@ -511,22 +446,6 @@ export function usePromptWorkspace() {
                 void refreshManagedRoute();
         }
     });
-    // plans/002 Step 6：character-shifting 舞台类挂载——CSS 侧（DirectorStagePanel.css
-    // 扫光 characterGlassSweep + tokens.css 侧栏/令牌过渡）早已备好但从未挂载，属死代码。
-    // 有效身份 = studio 的 pb.char 或 popular 的 characterId；切换后 760ms 清理类名
-    // （扫光 .72s + 余量），快速连切只重置计时不会堆叠；卸载清计时器防泄漏。
-    const characterShifting = ref(false);
-    let characterShiftTimer: ReturnType<typeof setTimeout> | null = null;
-    watch(() => pb.subject.kind === 'popular' ? pb.subject.characterId : pb.char, () => {
-        characterShifting.value = true;
-        if (characterShiftTimer)
-            clearTimeout(characterShiftTimer);
-        characterShiftTimer = setTimeout(() => { characterShifting.value = false; }, 760);
-    });
-    onBeforeUnmount(() => {
-        if (characterShiftTimer)
-            clearTimeout(characterShiftTimer);
-    });
     const generationContext = { pb, applyManagedRoute, drawEngine, sd, livePrompt, currentCapabilities, generateAnima, sdErrorReport, captureJob, runJob, tempResultTools, sdSize, animaState, patchAnimaState, displayResultSeed, resetBlueprintRotation }
     function callGenerate(opts: {
         disableLora?: boolean;
@@ -534,34 +453,74 @@ export function usePromptWorkspace() {
     function runRecovery(id: SDRecoveryId): Promise<void> { return import('./promptGenerationActions').then(({ runRecoveryAction }) => runRecoveryAction(generationContext, id)); }
     function upscaleCurrentResult(): Promise<void> { return import('./promptGenerationActions').then(({ upscaleCurrentResultAction }) => upscaleCurrentResultAction(generationContext)); }
     function resetAll(): Promise<void> { return import('./promptGenerationActions').then(({ resetAllAction }) => resetAllAction(generationContext)); }
+    // Each lazy panel receives a stable, explicit capability surface. Store fields are
+    // projected with toRef, so writes still reach the single existing state owner.
+    const materialBindings: PromptMaterialBindings = {
+        popularBlueprintPool, blueprintCategories, recommendedBlueprints, filteredPopularBlueprints,
+        popularCategory, showAllBlueprints, availableScenes, visibleScenes, sceneCollection,
+        personaCoreCount, curatedCount, personaCoreIds, sceneLimit, selectBlueprint,
+        rotateBlueprintSet, toggleBlueprintList, setSceneCollection, selectScene,
+    };
+    const renderBindings: PromptRenderBindings = {
+        pb: reactive({
+            directorMode: toRef(pb, 'directorMode'), history: toRef(pb, 'history'),
+            subject: toRef(pb, 'subject'), isPopular: toRef(pb, 'isPopular'), char: toRef(pb, 'char'),
+            sdModelName: toRef(pb, 'sdModelName'), sdParams: toRef(pb, 'sdParams'), markParamTouched: pb.markParamTouched,
+        }),
+        sd: { models: sd.models, samplers: sd.samplers, schedulers: sd.schedulers },
+        sdQueue: { canEnqueue: sdQueue.canEnqueue },
+        displayResultUrl, generationBusy, animaState, drawEngine, upscaleCurrentResult,
+        generationPresetSummary, managedRoute, applyManagedRoute, reuseSuccessfulRecipe,
+        engineTitle, setDrawEngine, supportsDualCharacter, BUSY_HINT, selectAnimaModel,
+        displayResultSeed, reuseLastSeed, resetSdParams, animaNoLoraMode, patchAnimaState,
+        retryAnima, vramHint, vramLevel, baseResolutionRisk, baseResolutionHint,
+        canUseFaceDetailer, enqueueCurrent, enqueue3Variants, resetAll,
+    };
+    const styleBindings: PromptStyleBindings = {
+        pb: reactive({ directorMode: toRef(pb, 'directorMode'), artistStyleIds: toRef(pb, 'artistStyleIds'),
+            currentCuratedArtistStyles: toRef(pb, 'currentCuratedArtistStyles'), setArtistStyleIds: pb.setArtistStyleIds }),
+        drawEngine, emotionSummary, shotSummary, lightingSummary, compositionSummary, moodSummary, onArtistLimitReached,
+    };
+    const healthBindings: PromptHealthBindings = {
+        pb: reactive({ directorMode: toRef(pb, 'directorMode'), isPopular: toRef(pb, 'isPopular') }),
+        previewPromptView, modelProfileView, reportView, artViolationsView, loraSpecs, copyPrompt, saveCurrentResult,
+    };
+    const deliveryBindings: PromptDeliveryBindings = {
+        pb: reactive({ char: toRef(pb, 'char'), activeScene: toRef(pb, 'activeScene'), story: toRef(pb, 'story') }),
+        voiceStudioRef, sdOnline: sd.online, animaOnline: computed(() => animaState.value.online),
+        scenes: toRef(sceneStore, 'sceneBlueprints'), generationBusy, generationProgress, drawEngine,
+        shotsPending, goToShots,
+        sdQueue: { total: sdQueue.total, done: sdQueue.done, paused: sdQueue.paused,
+            activeJob: sdQueue.activeJob, queue: sdQueue.queue,
+            pause: sdQueue.pause, resume: sdQueue.resume, clear: sdQueue.clear, remove: sdQueue.remove },
+        BUSY_HINT, autoSaveToGallery, batchRunning, batchOpen, sdErrorReport, runRecovery,
+        dismissError, queuePausedReason, batchPanelDeps,
+    };
+    const dialogBindings: PromptDialogBindings = {
+        compareEl, adultEnabled: toRef(pb, 'showMatureScenes'), resultBlob: computed(() => animaState.value.result?.blob),
+        displayResultUrl, generationBusy, prevResult, inpaintOpen, compareOpen, displayResultSeed,
+        lastResult, closeCompare, livePrompt, negativePrompt, inpaintCharacter, handleInpaintSubmit,
+    };
+    usePromptLifecycle({
+        refreshShotsPending, refreshAnimaBackend, drawEngine, sd, startStatusPolling, DIRECTOR_MODE_KEY,
+        pb, sceneCollection, applyDeepLink, route, displayResultUrl, restoreTempResult, sdSize,
+        applyManagedRoute, refreshManagedRoute, restorePopularDraft, applyQuickCreateSettings,
+        animaState, patchAnimaState, engineOnline, livePrompt, callGenerate, effectiveNegative,
+        updateAnimaPromptState, setDrawEngine, syncManagedRoute, popularBlueprintPool, blueprintCategories,
+        popularCategory, syncAnimaCharacter, sceneLimit, applyRecommendedSize, animaSession,
+    });
     return {
-compareEl,
-voiceStudioRef,
         pb, displayResultUrl, characterShifting, hasOnboardingTheme, popularCharacter, sd,
         animaSession, archiveBarShape, modeDescription, setDirectorMode, engineOnline, engineStatusText,
         recheckEngineConnection, drawEngineLabel, currentBlueprintData, handleLoadBlueprint, route, currentTraits,
-        selectPopularSource, selectPopularCharacter, selectPopularOutfit, popularBlueprintPool, blueprintCategories, recommendedBlueprints,
-        filteredPopularBlueprints, popularCategory, showAllBlueprints, availableScenes, visibleScenes, sceneCollection,
-        personaCoreCount, curatedCount, personaCoreIds, sceneLimit, selectBlueprint, rotateBlueprintSet,
-        toggleBlueprintList, setSceneCollection, selectScene, resumeHistory, duplicateHistory, deleteHistory,
+        selectPopularSource, selectPopularCharacter, selectPopularOutfit, resumeHistory, duplicateHistory, deleteHistory,
         handleHistoryToShots, handleHistoryToShotsBatch, generationBusy, generationError, generationStopped, generationStatusText,
         generationProgress, generationProgressStyle, animaState, drawEngine, inpaintOriginalUrl, inpaintCompareActive,
-        shotsPending, prevResult, resultArchived, savingResult, resultTemporary, hasStashedResult, callGenerate,
-        inpaintOpen, inspector, materialDrawer, upscaleCurrentResult, goToVideo, addToShots,
-        goToShots, saveResult, compareOpen, onClearResult, onRestoreStashed, handleInterrogateResult,
-        handleInterrogateError, genBarSize, animaBarSizes, generationPresetSummary, generateBlockReason, cancelGeneration,
-        outfitOverridden, outfitReplacedLabel, outfitOverrideTokens, sdQueue, managedRoute, applyManagedRoute,
-        reuseSuccessfulRecipe, engineTitle, setDrawEngine, supportsDualCharacter, BUSY_HINT, selectAnimaModel,
-        displayResultSeed, reuseLastSeed, resetSdParams, animaNoLoraMode, patchAnimaState, retryAnima,
-        vramHint, vramLevel, baseResolutionRisk, baseResolutionHint, canUseFaceDetailer, enqueueCurrent,
-        enqueue3Variants, resetAll, emotionSummary, shotSummary, lightingSummary, compositionSummary,
-        moodSummary, onArtistLimitReached, previewPromptView, modelProfileView, reportView, artViolationsView,
-        loraSpecs, copyPrompt, saveCurrentResult, autoSaveToGallery, batchRunning, batchOpen,
-        sdErrorReport, runRecovery, dismissError, queuePausedReason, sceneStore, batchPanelDeps,
-        lastResult, closeCompare, livePrompt, negativePrompt, inpaintCharacter, handleInpaintSubmit,
-        refreshShotsPending, refreshAnimaBackend, startStatusPolling, DIRECTOR_MODE_KEY, applyDeepLink, restoreTempResult,
-        sdSize, refreshManagedRoute, restorePopularDraft, applyQuickCreateSettings, effectiveNegative,
-        updateAnimaPromptState, syncManagedRoute, syncAnimaCharacter, applyRecommendedSize, currentCapabilities,
-        generateAnima, captureJob, runJob, tempResultTools, resetBlueprintRotation,
+        shotsPending, prevResult, resultArchived, savingResult, resultTemporary, hasStashedResult,
+        callGenerate, inpaintOpen, inspector, materialDrawer, upscaleCurrentResult, goToVideo,
+        addToShots, goToShots, saveResult, compareOpen, onClearResult, onRestoreStashed,
+        handleInterrogateResult, handleInterrogateError, genBarSize, animaBarSizes, generationPresetSummary, generateBlockReason,
+        cancelGeneration, outfitOverridden, outfitReplacedLabel, outfitOverrideTokens, sdQueue,
+        materialBindings, renderBindings, styleBindings, healthBindings, deliveryBindings, dialogBindings,
     };
 }

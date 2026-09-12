@@ -184,7 +184,7 @@ html.aics-desktop-shell #app > .route-stage {
    底部仍会露出标题栏上方（实测 0-33px 可见）。隐藏态改 clip-path 完全裁剪
    （保持可聚焦，visibility:hidden 会移出 Tab 序）；聚焦态显示在标题栏正下方。 */
 html.aics-desktop-shell .skip-link {
-  top: calc(var(--s-3) + 38px);
+  top: calc(var(--s-3) + var(--desktop-chrome-height));
   clip-path: inset(0 0 100% 0);
   transform: none;
 }

@@ -18,10 +18,10 @@
 
 <script setup lang="ts">
 import { defineAsyncComponent } from 'vue'
-import type { usePromptWorkspace } from '@/composables/prompt/usePromptWorkspace'
+import type { PromptStyleBindings } from '@/composables/prompt/promptPanelBindings'
 const DirectorDecisionsRail = defineAsyncComponent(() => import('@/components/director/DirectorDecisionsRail.vue'))
 const ArtistStylePicker = defineAsyncComponent(() => import('@/components/ArtistStylePicker.vue'))
 
-const props = defineProps<{ workspace: ReturnType<typeof usePromptWorkspace> }>()
-const { pb, drawEngine, emotionSummary, shotSummary, lightingSummary, compositionSummary, moodSummary, onArtistLimitReached } = props.workspace
+const props = defineProps<{ bindings: PromptStyleBindings }>()
+const { pb, drawEngine, emotionSummary, shotSummary, lightingSummary, compositionSummary, moodSummary, onArtistLimitReached } = props.bindings
 </script>

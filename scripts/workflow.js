@@ -28,6 +28,7 @@ const WORKFLOWS = {
   'models:download-h3': { desc: '下载 H3 可选模型（大文件；--models-root 指定目录）', cmd: ['node', 'scripts/maintenance/download-minimax-h3.js'], required: ['--models-root'], docs: 'docs/workflow.md' },
   'desktop:verify-gateway': { desc: '按安装包资源映射隔离验证网关和桌宠页面', cmd: ['node', 'scripts/maintenance/verify-desktop-gateway.js'], docs: 'docs/desktop-deployment.md' },
   'desktop:doctor': { desc: '检查 Windows 桌面打包工具链与 Cubism SDK', cmd: ['node', 'scripts/maintenance/desktop-build-environment.js'], docs: 'docs/desktop-deployment.md' },
+  'desktop:storage-benchmark': { desc: '用临时库和私有浏览器比较 IndexedDB 与 SQLite 原型，不访问用户数据', cmd: ['node', 'scripts/tests/prototypes/benchmark-artwork-storage.js'], docs: 'plans/005-desktop-architecture-consolidation.md' },
   'desktop:package-local': { desc: '跳过压缩生成本机测试安装包', cmd: ['npm', 'run', 'package:tauri', '--', '--config', 'tauri.local.json'], docs: 'docs/desktop-deployment.md' },
   'brand:build': { desc: '从手绘 SVG 母版生成绘遇字标、网站与桌面图标', cmd: ['node', 'scripts/maintenance/build-brand-assets.js'], docs: 'docs/workflow.md' },
   'docs:check': { desc: '检查文档文件链接与旧地址映射', cmd: ['node', 'scripts/maintenance/check-doc-links.js'], docs: 'docs/workflow.md' },

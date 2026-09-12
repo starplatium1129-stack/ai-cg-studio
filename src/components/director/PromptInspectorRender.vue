@@ -97,14 +97,14 @@
 
 <script setup lang="ts">
 import { defineAsyncComponent } from 'vue'
-import type { usePromptWorkspace } from '@/composables/prompt/usePromptWorkspace'
+import type { PromptRenderBindings } from '@/composables/prompt/promptPanelBindings'
 const ManagedDrawingRouteCard = defineAsyncComponent(() => import('@/components/ManagedDrawingRouteCard.vue'))
 const GenerationParamsPanel = defineAsyncComponent(() => import('@/components/GenerationParamsPanel.vue'))
 const AnimaQuickPanel = defineAsyncComponent(() => import('@/components/AnimaQuickPanel.vue'))
 const GenerationOutputControls = defineAsyncComponent(() => import('@/components/GenerationOutputControls.vue'))
 
-const props = defineProps<{ workspace: ReturnType<typeof usePromptWorkspace> }>()
-const { pb, displayResultUrl, sd, route, generationBusy, animaState, drawEngine, inspector, upscaleCurrentResult, generationPresetSummary, sdQueue, managedRoute, applyManagedRoute, reuseSuccessfulRecipe, engineTitle, setDrawEngine, supportsDualCharacter, BUSY_HINT, selectAnimaModel, displayResultSeed, reuseLastSeed, resetSdParams, animaNoLoraMode, patchAnimaState, retryAnima, vramHint, vramLevel, baseResolutionRisk, baseResolutionHint, canUseFaceDetailer, enqueueCurrent, enqueue3Variants, resetAll } = props.workspace
+const props = defineProps<{ bindings: PromptRenderBindings }>()
+const { pb, displayResultUrl, sd, generationBusy, animaState, drawEngine, upscaleCurrentResult, generationPresetSummary, sdQueue, managedRoute, applyManagedRoute, reuseSuccessfulRecipe, engineTitle, setDrawEngine, supportsDualCharacter, BUSY_HINT, selectAnimaModel, displayResultSeed, reuseLastSeed, resetSdParams, animaNoLoraMode, patchAnimaState, retryAnima, vramHint, vramLevel, baseResolutionRisk, baseResolutionHint, canUseFaceDetailer, enqueueCurrent, enqueue3Variants, resetAll } = props.bindings
 </script>
 
 <style src="@/assets/css/director/components/PromptInspectorRender.css"></style>
